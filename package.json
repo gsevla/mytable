@@ -9,5 +9,8 @@
     "packages": [
       "packages/*"
     ]
+  },
+  "devDependencies": {
+    "typescript": "^4.4.2"
   }
 }
