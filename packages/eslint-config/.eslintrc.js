@@ -4,20 +4,11 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "react",
-        "@typescript-eslint"
-    ],
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "airbnb-typescript",
-    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -25,8 +16,14 @@ module.exports = {
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-typescript",
+    ],
     "plugins": [
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
     }
