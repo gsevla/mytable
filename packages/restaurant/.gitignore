@@ -32,3 +32,6 @@ web-build/
 /.pnp
 .pnp.js
 # @end @expo/next-adapter
+
+# mytable
+next-env.d.ts

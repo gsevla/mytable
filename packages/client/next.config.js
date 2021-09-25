@@ -2,11 +2,20 @@
 // Learn more: https://github.com/expo/expo/blob/master/docs/pages/versions/unversioned/guides/using-nextjs.md#withexpo
 
 const { withExpo } = require('@expo/next-adapter');
+const withFonts = require('next-fonts');
+const withImages = require('next-images');
 
 const withTM = require('next-transpile-modules')(['react-native-web']);
 
 module.exports = withExpo(
-  withTM({
-    projectRoot: __dirname,
-  }),
+  withTM(
+    withFonts(
+      withImages({
+        projectRoot: __dirname,
+        images: {
+          disableStaticImages: true,
+        },
+      }),
+    ),
+  ),
 );
