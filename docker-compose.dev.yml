@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  restaurant:
+    container_name: restaurant-app
+    image: node:14-alpine
+    volumes:
+      - ./:/mytable
+    working_dir: /mytable/
+    ports:
+      - 4000:4000
+    command: sh -c "yarn && yarn restaurant:dev"
+
+  client:
+    container_name: client-app
+    image: node:14-alpine
+    volumes:
+      - ./:/mytable
+    working_dir: /mytable/
+    ports:
+      - 4001:4001
+    command: sh -c "yarn && yarn client:dev"
