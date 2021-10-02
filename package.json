@@ -11,8 +11,8 @@
     ]
   },
   "devDependencies": {
-    "typescript": "^4.4.2",
-    "@mytable/eslint-config": "*"
+    "@mytable/eslint-config": "*",
+    "typescript": "^4.4.2"
   },
   "scripts": {
     "postinstall": "cd ./packages/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
