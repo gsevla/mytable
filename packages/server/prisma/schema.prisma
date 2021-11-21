@@ -29,7 +29,7 @@ enum EmployeeRole {
 model Employee {
   id           Int          @id @default(autoincrement())
   name         String
-  username     String
+  username     String       @unique
   password     String
   role         EmployeeRole @default(ORDINARY)
   restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
@@ -39,8 +39,8 @@ model Employee {
 model Client {
   id         Int    @id @default(autoincrement())
   name       String
-  phone      String
-  email      String
-  cpf        String
+  phone      String @unique
+  email      String @unique
+  cpf        String @unique
   identifier String @unique @default(cuid())
 }
