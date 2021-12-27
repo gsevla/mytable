@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { AskForCpfPage } from './pages/AskForCpf';
 import { AuthorizationCodePage } from './pages/AuthorizationCode';
 import { ForgotPasswordPage } from './pages/ForgotPassword';
@@ -41,7 +41,7 @@ export function AuthContextProvider({ children, selectedStepPage }) {
 
   return (
     <AuthContext.Provider value={{ step, setStep: _setStep, renderStepPage }}>
-      <View style={{ height: 92 }}>
+      <View style={{ height: 72 }}>
         {step > 0 && (
           <FAB
             style={styles.fab}
@@ -53,6 +53,15 @@ export function AuthContextProvider({ children, selectedStepPage }) {
           />
         )}
       </View>
+      <Image
+        source={require('../../../assets/logoDefault.png')}
+        resizeMode="contain"
+        style={{
+          width: '75%',
+          height: '25%',
+          alignSelf: 'center',
+        }}
+      />
       <View style={{ marginHorizontal: 16, marginVertical: 16, flex: 1 }}>
         {children}
       </View>

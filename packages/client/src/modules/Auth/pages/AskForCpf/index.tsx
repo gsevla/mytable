@@ -16,11 +16,6 @@ export function AskForCpfPage() {
         alignItems: 'center',
       }}
     >
-      <Image
-        source={require('../../../../../assets/logoDefault.png')}
-        resizeMode="contain"
-        style={{ width: '50%', height: '25%' }}
-      />
       <TextInput
         label="CPF"
         value={text}
