@@ -4,14 +4,14 @@ import { Button } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
 export function AskForCpfPage() {
-  const a = useContext(AuthContext);
-  console.log('aa', a);
+  const authContext = useContext(AuthContext);
   return (
     <View>
       <Text>AskForCpf page</Text>
       <Button
+        mode="contained"
         onPress={() => {
-          a.setStep(1);
+          authContext.setStep(1);
         }}
       >
         Avançar

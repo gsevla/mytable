@@ -1,17 +1,23 @@
+import { parseCookies } from 'nookies';
 import React, { useContext } from 'react';
 import { AuthContext, AuthContextProvider } from './context';
 import { AskForCpfPage } from './pages/AskForCpf';
 
-export function AuthModule() {
+export function AuthModule(props) {
+  console.log('cc', props);
+
   function Provider({ children }) {
-    return <AuthContextProvider>{children}</AuthContextProvider>;
+    return (
+      <AuthContextProvider selectedStepPage={props?.selectedStepPage}>
+        {children}
+      </AuthContextProvider>
+    );
   }
 
   function Module() {
-    const a = useContext(AuthContext);
+    const authContext = useContext(AuthContext);
 
-    console.log('aa', a);
-    return a.renderStepPage();
+    return authContext.renderStepPage();
   }
 
   return (

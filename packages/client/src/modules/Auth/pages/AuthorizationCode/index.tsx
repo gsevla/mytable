@@ -3,18 +3,18 @@ import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
-export function IdentificationPage() {
+export function AuthorizationCodePage() {
   const authContext = useContext(AuthContext);
   return (
     <View>
-      <Text>Identification page</Text>
+      <Text>AuthorizationCode page</Text>
       <Button
         mode="contained"
         onPress={() => {
-          authContext.setStep(2);
+          // authContext.setStep(3);
         }}
       >
-        Avançar
+        Confirmar
       </Button>
     </View>
   );
