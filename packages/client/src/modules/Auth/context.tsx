@@ -53,7 +53,9 @@ export function AuthContextProvider({ children, selectedStepPage }) {
           />
         )}
       </View>
-      <View style={{ marginHorizontal: 16 }}>{children}</View>
+      <View style={{ marginHorizontal: 16, marginVertical: 16, flex: 1 }}>
+        {children}
+      </View>
     </AuthContext.Provider>
   );
 }

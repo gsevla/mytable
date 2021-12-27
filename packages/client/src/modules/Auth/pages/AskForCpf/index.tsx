@@ -1,13 +1,31 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, Text, Image } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
 export function AskForCpfPage() {
   const authContext = useContext(AuthContext);
+
+  const [text, setText] = React.useState('');
+
   return (
-    <View>
-      <Text>AskForCpf page</Text>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Image
+        source={require('../../../../../assets/logoDefault.png')}
+        resizeMode="contain"
+        style={{ width: '50%', height: '25%' }}
+      />
+      <TextInput
+        label="CPF"
+        value={text}
+        onChangeText={(text) => setText(text)}
+      />
       <Button
         mode="contained"
         onPress={() => {
