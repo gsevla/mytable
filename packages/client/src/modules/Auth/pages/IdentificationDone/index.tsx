@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
 export function IdentificationDonePage() {
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
 
   const router = useRouter();
 
@@ -29,7 +29,8 @@ export function IdentificationDonePage() {
       <Button
         mode="contained"
         onPress={() => {
-          authContext.setStep(4);
+          // authContext.setStep(4);
+          router.push('/auth/code');
         }}
       >
         Avançar

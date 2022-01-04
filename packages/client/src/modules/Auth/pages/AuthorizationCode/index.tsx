@@ -1,13 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
 export function AuthorizationCodePage() {
   const authContext = useContext(AuthContext);
+
+  const [code, setCode] = useState('');
   return (
-    <View>
-      <Text>AuthorizationCode page</Text>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <TextInput
+          label="Código"
+          value={code}
+          onChangeText={(text) => setCode(text)}
+        />
+      </View>
       <Button
         mode="contained"
         onPress={() => {

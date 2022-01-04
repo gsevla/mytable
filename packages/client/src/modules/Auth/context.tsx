@@ -7,63 +7,75 @@ import { IdentificationPage } from './pages/Identification';
 import { IdentificationDonePage } from './pages/IdentificationDone';
 import { setCookie, parseCookies } from 'nookies';
 import { FAB } from 'react-native-paper';
+import { useRouter } from 'next/router';
 
 export const AuthContext = createContext(
   {} as {
-    step: number;
-    setStep(_step: number): void;
-    renderStepPage(): React.ReactElement;
+    // step: number;
+    // setStep(_step: number): void;
+    // renderStepPage(): React.ReactElement;
   },
 );
 
-export function AuthContextProvider({ children, selectedStepPage }) {
-  const [step, setStep] = useState(selectedStepPage || 0);
+export function AuthContextProvider({ children }) {
+  const router = useRouter();
+  console.log('router', router);
+  // const [step, setStep] = useState(0);
 
-  const renderStepPage = useCallback(() => {
-    const stepPages = {
-      0: <AskForCpfPage />,
-      1: <IdentificationPage />,
-      2: <IdentificationDonePage />,
-      3: <ForgotPasswordPage />,
-      4: <AuthorizationCodePage />,
-    };
+  // const renderStepPage = useCallback(() => {
+  //   const stepPages = {
+  //     0: <AskForCpfPage />,
+  //     1: <IdentificationPage />,
+  //     2: <IdentificationDonePage />,
+  //     3: <ForgotPasswordPage />,
+  //     4: <AuthorizationCodePage />,
+  //   };
 
-    return stepPages[step];
-  }, [step]);
+  //   return stepPages[step];
+  // }, [step]);
 
-  const _setStep = (_step: number) => {
-    setCookie(null, 'AUTH_STEP', _step.toString(), {
-      maxAge: 60 * 60, // 1h,
-      path: '/auth',
-    });
-    setStep(_step);
-  };
+  // const _setStep = (_step: number) => {
+  //   setCookie(null, 'AUTH_STEP', _step.toString(), {
+  //     maxAge: 60 * 60, // 1h,
+  //     path: '/auth',
+  //   });
+  //   setStep(_step);
+  // };
 
   return (
-    <AuthContext.Provider value={{ step, setStep: _setStep, renderStepPage }}>
-      <View style={{ height: 72 }}>
-        {step > 0 && (
-          <FAB
-            style={styles.fab}
-            small
-            icon="arrow-left"
-            onPress={() => {
-              _setStep(step - 1);
-            }}
-          />
-        )}
-      </View>
-      <Image
-        source={require('../../../assets/logoDefault.png')}
-        resizeMode="contain"
-        style={{
-          width: '75%',
-          height: '25%',
-          alignSelf: 'center',
-        }}
-      />
-      <View style={{ marginHorizontal: 16, marginVertical: 16, flex: 1 }}>
-        {children}
+    <AuthContext.Provider value={{}}>
+      <View style={{ flex: 1, backgroundColor: '#eeeeee' }}>
+        <View style={{ height: 72 }}>
+          {router.pathname !== '/auth' && (
+            <FAB
+              style={styles.fab}
+              small
+              icon="arrow-left"
+              onPress={() => {
+                // _setStep(step - 1);
+                router.back();
+              }}
+            />
+          )}
+        </View>
+        <Image
+          source={require('../../../assets/logoDefault.png')}
+          resizeMode="contain"
+          style={{
+            width: '75%',
+            height: '25%',
+            alignSelf: 'center',
+          }}
+        />
+        <View
+          style={{
+            marginHorizontal: 16,
+            marginVertical: 24,
+            flex: 1,
+          }}
+        >
+          {children}
+        </View>
       </View>
     </AuthContext.Provider>
   );

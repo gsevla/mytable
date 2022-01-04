@@ -1,14 +1,17 @@
-import { parseCookies } from 'nookies';
-import { AuthModule } from '../../src/modules/Auth';
+// import { parseCookies } from 'nookies';
+// import { AuthModule } from '../../src/modules/Auth';
 
-export default AuthModule;
+import { AskForCpfPage } from '../../src/modules/Auth/pages/AskForCpf';
+
+export default AskForCpfPage;
 
 export async function getServerSideProps(context) {
-  const cookies = parseCookies(context);
-  console.log('kkoo', cookies);
+  console.log('tá em auth');
+  // const cookies = parseCookies(context);
+  // console.log('kkoo', cookies);
   return {
     props: {
-      selectedStepPage: cookies.AUTH_STEP,
+      // selectedStepPage: cookies.AUTH_STEP,
     },
   };
 }
