@@ -4,7 +4,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../context';
 
 export function AuthorizationCodePage() {
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
 
   const [code, setCode] = useState('');
   return (

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
@@ -7,7 +7,7 @@ import { AuthContext } from '../../context';
 export function IdentificationPage() {
   // const authContext = useContext(AuthContext);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const [name, setName] = React.useState('');
   const [phone, setPhone] = React.useState('');
@@ -48,7 +48,7 @@ export function IdentificationPage() {
         mode="contained"
         onPress={() => {
           // authContext.setStep(2);
-          router.push('/auth/identification/done');
+          // router.push('/auth/identification/done');
         }}
       >
         Avançar

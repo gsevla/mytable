@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../../context';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 export function ForgotPasswordPage() {
   // const authContext = useContext(AuthContext);

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -7,7 +7,7 @@ import { AuthContext } from '../../context';
 export function IdentificationDonePage() {
   // const authContext = useContext(AuthContext);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   // useEffect(() => {
   //   router.replace('/auth', '/auth/forgot-password', { shallow: true });
@@ -20,7 +20,7 @@ export function IdentificationDonePage() {
         mode="text"
         onPress={() => {
           // router.replace('/auth', '/auth/forgot-password');
-          router.push('/auth/forgot-password');
+          // router.push('/auth/forgot-password');
           // authContext.setStep(3);
         }}
       >
@@ -30,7 +30,7 @@ export function IdentificationDonePage() {
         mode="contained"
         onPress={() => {
           // authContext.setStep(4);
-          router.push('/auth/code');
+          // router.push('/auth/code');
         }}
       >
         Avançar
