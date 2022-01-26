@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useRef, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AskForCpfPage } from './pages/AskForCpf';
 import { AuthorizationCodePage } from './pages/AuthorizationCode';
@@ -23,6 +23,9 @@ export function AuthContextProvider({ children }) {
   // console.log('router', router);
   // const [step, setStep] = useState(0);
 
+  const [isBackButtonVisible, setIsBackButtonVisible] = useState(false);
+  const [activeRouteName, setActiveRouteName] = useState();
+
   // const renderStepPage = useCallback(() => {
   //   const stepPages = {
   //     0: <AskForCpfPage />,
@@ -44,7 +47,13 @@ export function AuthContextProvider({ children }) {
   // };
 
   return (
-    <AuthContext.Provider value={{}}>
+    <AuthContext.Provider
+      value={{
+        isBackButtonVisible,
+        setIsBackButtonVisible,
+        setActiveRouteName,
+      }}
+    >
       <View
         style={{
           flex: 1,
@@ -54,17 +63,20 @@ export function AuthContextProvider({ children }) {
         }}
       >
         <View style={{ height: 72 }}>
-          {/* {router.pathname !== '/auth' && (
+          {isBackButtonVisible && (
             <FAB
               style={styles.fab}
               small
               icon="arrow-left"
               onPress={() => {
-                // _setStep(step - 1);
-                router.goBack();
+                // onBackPress();
               }}
+              // onPress={() => {
+              //   // _setStep(step - 1);
+              //   // router.goBack();
+              // }}
             />
-          )} */}
+          )}
         </View>
         <Image
           source={require('../../../assets/logoDefault.png')}

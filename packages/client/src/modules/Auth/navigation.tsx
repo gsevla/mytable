@@ -13,19 +13,19 @@ export default function AuthStack() {
     <AuthStackNavigator.Navigator screenOptions={{ headerShown: false }}>
       <AuthStackNavigator.Screen name="auth" component={AskForCpfPage} />
       <AuthStackNavigator.Screen
-        name="identification"
+        name="auth/identification"
         component={IdentificationPage}
       />
       <AuthStackNavigator.Screen
-        name="ForgotPasswordPage"
+        name="auth/forgot-password"
         component={ForgotPasswordPage}
       />
       <AuthStackNavigator.Screen
-        name="IdentificationDonePage"
+        name="auth/identification/done"
         component={IdentificationDonePage}
       />
       <AuthStackNavigator.Screen
-        name="AuthorizationCodePage"
+        name="auth/code"
         component={AuthorizationCodePage}
       />
     </AuthStackNavigator.Navigator>

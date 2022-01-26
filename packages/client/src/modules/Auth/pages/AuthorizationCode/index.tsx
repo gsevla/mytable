@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { AuthContext } from '../../context';
+import { SizedBox } from '../../../../components/SizedBox';
 
 export function AuthorizationCodePage() {
   // const authContext = useContext(AuthContext);
@@ -15,17 +15,16 @@ export function AuthorizationCodePage() {
         alignItems: 'center',
       }}
     >
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <SizedBox h={32} />
         <TextInput
           label="Código"
-          value={code}
+        style={{ alignSelf: 'stretch' }}
+        value={code}
           onChangeText={(text) => setCode(text)}
         />
-      </View>
       <Button
         mode="contained"
         onPress={() => {
-          // authContext.setStep(3);
         }}
       >
         Confirmar

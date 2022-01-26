@@ -1,17 +1,11 @@
 // import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import { useRouting } from 'expo-next-react-navigation';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
-import { AuthContext } from '../../context';
 
 export function IdentificationDonePage() {
-  // const authContext = useContext(AuthContext);
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   router.replace('/auth', '/auth/forgot-password', { shallow: true });
-  // }, []);
+  const router = useRouting();
 
   return (
     <View>
@@ -19,9 +13,9 @@ export function IdentificationDonePage() {
       <Button
         mode="text"
         onPress={() => {
-          // router.replace('/auth', '/auth/forgot-password');
-          // router.push('/auth/forgot-password');
-          // authContext.setStep(3);
+          router.navigate({
+            routeName: 'auth/forgot-password',
+          });
         }}
       >
         Não possuo mais acesso
@@ -29,8 +23,9 @@ export function IdentificationDonePage() {
       <Button
         mode="contained"
         onPress={() => {
-          // authContext.setStep(4);
-          // router.push('/auth/code');
+          router.navigate({
+            routeName: 'auth/code',
+          });
         }}
       >
         Avançar

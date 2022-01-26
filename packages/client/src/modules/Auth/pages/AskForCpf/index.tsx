@@ -1,26 +1,18 @@
 import React, { useContext } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../context';
 import { useRouting } from 'expo-next-react-navigation';
 import { SizedBox } from '../../../../components/SizedBox';
 
 export function AskForCpfPage() {
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const router = useRouting();
 
   const [text, setText] = React.useState('');
 
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
-      {/* <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'red',
-      }}
-    > */}
       <TextInput
         label="CPF"
         value={text}
@@ -30,13 +22,10 @@ export function AskForCpfPage() {
       <Button
         mode="contained"
         onPress={() => {
-          // router.push('IdentificationPage');
           router.navigate({
-            routeName: 'identification',
-            web: { as: '/auth/identification' },
+            routeName: 'auth/identification',
           });
-          // authContext.setStep(1);
-          // router.push('/auth/identification');
+          // authContext.setIsBackButtonVisible(true);
         }}
       >
         Avançar

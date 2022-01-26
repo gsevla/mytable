@@ -1,58 +1,57 @@
-// import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { useRouting } from 'expo-next-react-navigation';
+import React, { useContext, useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
 
 export function IdentificationPage() {
-  // const authContext = useContext(AuthContext);
-
-  // const router = useRouter();
+  const authContext = useContext(AuthContext);
+  const router = useRouting();
 
   const [name, setName] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [email, setEmail] = React.useState('');
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-around',
-          paddingVertical: 48,
-        }}
-      >
-        <TextInput
-          label="Nome"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-        <TextInput
-          label="Telefone"
-          value={phone}
-          onChangeText={(text) => setPhone(text)}
-        />
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
+      <SizedBox h={32} />
+      <TextInput
+        label="Nome"
+        style={{ alignSelf: 'stretch' }}
+        value={name}
+        onChangeText={(text) => setName(text)}
+      />
+      <SizedBox h={44} />
+      <TextInput
+        label="Telefone"
+        style={{ alignSelf: 'stretch' }}
+        value={phone}
+        onChangeText={(text) => setPhone(text)}
+      />
+      <SizedBox h={44} />
+      <TextInput
+        label="Email"
+        style={{ alignSelf: 'stretch' }}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
+      <SizedBox h={44} />
       <Button
         mode="contained"
         onPress={() => {
-          // authContext.setStep(2);
-          // router.push('/auth/identification/done');
+          router.navigate({
+            routeName: 'auth/identification/done',
+          });
         }}
       >
         Avançar
       </Button>
-    </View>
+      <SizedBox h={32} />
+    </ScrollView>
   );
 }
