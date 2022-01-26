@@ -19,4 +19,4 @@ services:
     working_dir: /mytable/
     ports:
       - 4001:4001
-    command: sh -c "yarn && yarn client:dev"
+    command: sh -c "yarn && yarn client:web:dev"
