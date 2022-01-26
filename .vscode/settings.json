@@ -4,5 +4,8 @@
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,
   "editor.tabSize": 2,
-  "editor.rulers": [80, 120]
+  "editor.rulers": [80, 120],
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }

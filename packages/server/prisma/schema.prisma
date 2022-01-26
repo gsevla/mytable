@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id             Int        @id @default(autoincrement())
+  name           String
+  ownerName      String
+  address        String
+  coverImage     String?
+  primaryColor   String
+  secondaryColor String
+  Employee       Employee[]
+}
+
+enum EmployeeRole {
+  ADMIN
+  ORDINARY
+}
+
+model Employee {
+  id           Int          @id @default(autoincrement())
+  name         String
+  username     String       @unique
+  password     String
+  role         EmployeeRole @default(ORDINARY)
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+}
+
+model Client {
+  id         Int    @id @default(autoincrement())
+  name       String
+  phone      String @unique
+  email      String @unique
+  cpf        String @unique
+  identifier String @unique @default(cuid())
+}
