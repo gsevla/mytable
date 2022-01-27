@@ -1,10 +1,19 @@
-// import { useRouter } from 'next/router';
 import { useRouting } from 'expo-next-react-navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
+import { useContextSelector } from 'use-context-selector';
+import { AuthContext } from '../../context';
 
 export function IdentificationDonePage() {
+  const handleSetActiveStep = useContextSelector(
+    AuthContext,
+    (values) => values.handleSetActiveStep,
+  );
+  useEffect(() => {
+    handleSetActiveStep('IdentificationDonePage');
+  }, []);
+
   const router = useRouting();
 
   return (

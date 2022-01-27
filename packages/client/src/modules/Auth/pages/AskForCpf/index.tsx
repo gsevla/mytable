@@ -1,12 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../context';
-import { useRouting } from 'expo-next-react-navigation';
+import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
 import { SizedBox } from '../../../../components/SizedBox';
+import { useContextSelector } from 'use-context-selector';
 
 export function AskForCpfPage() {
-  const authContext = useContext(AuthContext);
+  const handleSetActiveStep = useContextSelector(
+    AuthContext,
+    (values) => values.handleSetActiveStep,
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      handleSetActiveStep('AskForCpfPage');
+    }, [handleSetActiveStep]),
+  );
+
   const router = useRouting();
 
   const [text, setText] = React.useState('');
@@ -32,7 +43,6 @@ export function AskForCpfPage() {
           router.navigate({
             routeName: 'auth/identification',
           });
-          // authContext.setIsBackButtonVisible(true);
         }}
       >
         Avançar

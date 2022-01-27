@@ -1,12 +1,19 @@
 import { useRouting } from 'expo-next-react-navigation';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
 
 export function IdentificationPage() {
-  const authContext = useContext(AuthContext);
+  const handleSetActiveStep = useContextSelector(
+    AuthContext,
+    (values) => values.handleSetActiveStep,
+  );
+  useEffect(() => {
+    handleSetActiveStep('IdentificationPage');
+  }, []);
   const router = useRouting();
 
   const [name, setName] = React.useState('');
@@ -25,11 +32,8 @@ export function IdentificationPage() {
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          // backgroundColor: '#eeeeee',
-          // paddingHorizontal: 24,
         }}
       >
-        <SizedBox h={32} />
         <TextInput
           label="Nome"
           style={{ alignSelf: 'stretch' }}
@@ -51,7 +55,6 @@ export function IdentificationPage() {
           onChangeText={(text) => setEmail(text)}
         />
       </ScrollView>
-      <SizedBox h={44} />
       <Button
         mode="contained"
         onPress={() => {
@@ -62,7 +65,6 @@ export function IdentificationPage() {
       >
         Avançar
       </Button>
-      {/* <SizedBox h={32} /> */}
     </View>
   );
 }

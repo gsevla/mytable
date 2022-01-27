@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
+import { AuthContext } from '../../context';
 
 export function AuthorizationCodePage() {
-  // const authContext = useContext(AuthContext);
+  const handleSetActiveStep = useContextSelector(
+    AuthContext,
+    (values) => values.handleSetActiveStep,
+  );
+  useEffect(() => {
+    handleSetActiveStep('AuthorizationCodePage');
+  }, []);
 
   const [code, setCode] = useState('');
   return (
