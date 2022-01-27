@@ -13,20 +13,18 @@ export function AuthorizationCodePage() {
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 24,
+        backgroundColor: '#eeeeee',
       }}
     >
       <SizedBox h={32} />
-        <TextInput
-          label="Código"
+      <TextInput
+        label="Código"
         style={{ alignSelf: 'stretch' }}
         value={code}
-          onChangeText={(text) => setCode(text)}
-        />
-      <Button
-        mode="contained"
-        onPress={() => {
-        }}
-      >
+        onChangeText={(text) => setCode(text)}
+      />
+      <Button mode="contained" onPress={() => {}}>
         Confirmar
       </Button>
     </View>

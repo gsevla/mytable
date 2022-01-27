@@ -9,6 +9,7 @@ import { setCookie, parseCookies } from 'nookies';
 import { FAB } from 'react-native-paper';
 // import { useRouter } from 'next/router';
 import { useRouting } from 'expo-next-react-navigation';
+import { SizedBox } from '../../components/SizedBox';
 
 export const AuthContext = createContext(
   {} as {
@@ -87,6 +88,8 @@ export function AuthContextProvider({ children }) {
             alignSelf: 'center',
           }}
         />
+        <SizedBox h={32} />
+
         {/* <View style={{ flex: 1, backgroundColor: '#eeeeee' }}>
         <View style={{ height: 72 }}>
           {router.pathname !== '/auth' && (

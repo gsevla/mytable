@@ -8,7 +8,14 @@ export function IdentificationDonePage() {
   const router = useRouting();
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#eeeeee',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+      }}
+    >
       <Text>IdentificationDone page</Text>
       <Button
         mode="text"

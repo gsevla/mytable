@@ -12,7 +12,14 @@ export function AskForCpfPage() {
   const [text, setText] = React.useState('');
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: '#eeeeee',
+        paddingHorizontal: 24,
+      }}
+    >
       <TextInput
         label="CPF"
         value={text}

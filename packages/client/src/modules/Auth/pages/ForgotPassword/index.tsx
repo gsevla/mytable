@@ -14,7 +14,14 @@ export function ForgotPasswordPage() {
   // }, []);
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#eeeeee',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+      }}
+    >
       <Text>ForgotPassword page</Text>
       <Button
         mode="text"
