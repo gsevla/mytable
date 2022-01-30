@@ -5,11 +5,20 @@ import { AuthContext } from '../../context';
 import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
 import { SizedBox } from '../../../../components/SizedBox';
 import { useContextSelector } from 'use-context-selector';
+import { mask } from 'remask';
 
 export function AskForCpfPage() {
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
+  );
+  const setUserCpf = useContextSelector(
+    AuthContext,
+    (values) => values.setUserCpf,
+  );
+  const userState = useContextSelector(
+    AuthContext,
+    (values) => values.userState,
   );
 
   useFocusEffect(
@@ -20,7 +29,7 @@ export function AskForCpfPage() {
 
   const router = useRouting();
 
-  const [text, setText] = React.useState('');
+  const [cpf, setCpf] = React.useState(mask(userState.cpf, ['999.999.999-99']));
 
   return (
     <View
@@ -33,13 +42,14 @@ export function AskForCpfPage() {
     >
       <TextInput
         label="CPF"
-        value={text}
-        onChangeText={(text) => setText(text)}
+        value={mask(cpf, ['999.999.999-99'])}
+        onChangeText={(text) => setCpf(text)}
       />
       <SizedBox h={48} />
       <Button
         mode="contained"
         onPress={() => {
+          setUserCpf(cpf);
           router.navigate({
             routeName: 'auth/identification',
           });

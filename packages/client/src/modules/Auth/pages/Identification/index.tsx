@@ -5,20 +5,34 @@ import { Button, TextInput } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
+import { mask } from 'remask';
 
 export function IdentificationPage() {
+  const router = useRouting();
+
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
+
+  const setUserPersonalData = useContextSelector(
+    AuthContext,
+    (values) => values.setUserPersonalData,
+  );
+  const userState = useContextSelector(
+    AuthContext,
+    (values) => values.userState,
+  );
+
   useEffect(() => {
     handleSetActiveStep('IdentificationPage');
   }, []);
-  const router = useRouting();
 
-  const [name, setName] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [name, setName] = React.useState(userState.personalData.name);
+  const [phone, setPhone] = React.useState(
+    mask(userState.personalData.phone, ['(99) 99999-9999']),
+  );
+  const [email, setEmail] = React.useState(userState.personalData.email);
 
   return (
     <View
@@ -44,7 +58,7 @@ export function IdentificationPage() {
         <TextInput
           label="Telefone"
           style={{ alignSelf: 'stretch' }}
-          value={phone}
+          value={mask(phone, ['(99) 99999-9999'])}
           onChangeText={(text) => setPhone(text)}
         />
         <SizedBox h={44} />
@@ -58,6 +72,11 @@ export function IdentificationPage() {
       <Button
         mode="contained"
         onPress={() => {
+          setUserPersonalData({
+            name,
+            phone,
+            email,
+          });
           router.navigate({
             routeName: 'auth/identification/done',
           });
