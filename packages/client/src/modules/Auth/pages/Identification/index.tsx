@@ -69,6 +69,7 @@ export function IdentificationPage() {
           onChangeText={(text) => setEmail(text)}
         />
       </ScrollView>
+      <SizedBox h={32} />
       <Button
         mode="contained"
         onPress={() => {
