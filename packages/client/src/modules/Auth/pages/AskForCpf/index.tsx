@@ -36,16 +36,18 @@ export function AskForCpfPage() {
       style={{
         flex: 1,
         justifyContent: 'space-between',
+        alignItems: 'center',
         backgroundColor: '#eeeeee',
         paddingHorizontal: 24,
       }}
     >
+      <SizedBox h={0} />
       <TextInput
         label="CPF"
+        style={{ alignSelf: 'stretch' }}
         value={mask(cpf, ['999.999.999-99'])}
         onChangeText={(text) => setCpf(text)}
       />
-      <SizedBox h={48} />
       <Button
         mode="contained"
         onPress={() => {

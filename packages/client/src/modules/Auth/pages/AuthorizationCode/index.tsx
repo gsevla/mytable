@@ -25,7 +25,7 @@ export function AuthorizationCodePage() {
         backgroundColor: '#eeeeee',
       }}
     >
-      <SizedBox h={32} />
+      <SizedBox h={0} />
       <TextInput
         label="Código"
         style={{ alignSelf: 'stretch' }}
