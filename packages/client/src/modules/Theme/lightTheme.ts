@@ -4,8 +4,10 @@ const lightTheme = {
   ...defaultTheme,
   colors: {
     ...defaultTheme.colors,
-    primary: '#ff0000',
-    accent: '#0000ff',
+    primary: '#128a8a',
+    accent: '#8fc9c9',
+    background: '#eeeeee',
+    surface: '#ffffff',
   },
 };
 
