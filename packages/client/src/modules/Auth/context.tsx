@@ -1,14 +1,22 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
 import { createContext } from 'use-context-selector';
 import { goBackService } from '../../services/navigation';
+import UserReducer from './reducers/user';
 
 export const AuthContext = createContext(
   {} as {
     handleSetActiveStep(_activeStep: keyof typeof AUTHENTICATION_STEPS): void;
+    setUserCpf(cpf: string): void;
+    setUserPersonalData(personalData: {
+      name: string;
+      phone: string;
+      email: string;
+    }): void;
+    userState: typeof UserReducer.initialState;
   },
 );
 
@@ -16,6 +24,18 @@ export function AuthContextProvider({ children }) {
   const [activeStep, setActiveStep] = useState<AUTHENTICATION_STEPS>(
     AUTHENTICATION_STEPS.AskForCpfPage,
   );
+  const [userState, userDispatch] = useReducer<typeof UserReducer.reducer>(
+    UserReducer.reducer,
+    UserReducer.initialState,
+  );
+
+  const setUserCpf = useCallback((cpf) => {
+    userDispatch(UserReducer.actions.setCpf(cpf));
+  }, []);
+
+  const setUserPersonalData = useCallback((personalData) => {
+    userDispatch(UserReducer.actions.setPersonalData(personalData));
+  }, []);
 
   const handleSetActiveStep = useCallback(
     (_activeStep: keyof typeof AUTHENTICATION_STEPS) => {
@@ -28,6 +48,9 @@ export function AuthContextProvider({ children }) {
     <AuthContext.Provider
       value={{
         handleSetActiveStep,
+        setUserCpf,
+        setUserPersonalData,
+        userState,
       }}
     >
       <View
