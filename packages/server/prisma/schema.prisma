@@ -11,14 +11,14 @@ datasource db {
 }
 
 model Restaurant {
-  id             Int        @id @default(autoincrement())
-  name           String
-  ownerName      String
-  address        String
-  coverImage     String?
-  primaryColor   String
-  secondaryColor String
-  Employee       Employee[]
+  id           Int        @id @default(autoincrement())
+  name         String
+  ownerName    String
+  address      String
+  coverImage   String?
+  primaryColor String
+  accentColor  String
+  Employee     Employee[]
 }
 
 enum EmployeeRole {

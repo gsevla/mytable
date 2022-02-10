@@ -11,7 +11,7 @@ async function main() {
       name: 'Nome do seu restaurante',
       ownerName: 'Seu nome',
       primaryColor: '#6200ee',
-      secondaryColor: '#03dac4',
+      accentColor: '#03dac4',
     },
   });
   console.log('restaurant created:\n', restaurant);
