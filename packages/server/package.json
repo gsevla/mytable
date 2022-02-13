@@ -24,12 +24,16 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.6.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^3.5.0",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.0.1",
+    "handlebars": "^4.7.7",
+    "nodemailer": "^6.7.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
