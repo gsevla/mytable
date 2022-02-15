@@ -5,14 +5,18 @@ import { Injectable } from '@nestjs/common';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendTestMail() {
+  async sendClientAuthorizationEmail(
+    email: string,
+    name: string,
+    token: string,
+  ) {
     await this.mailerService.sendMail({
-      to: 'gabrieltots@gmail.com',
-      subject: 'teste testando',
+      to: email,
+      subject: 'MyTable - Autorização de Autenticação',
       template: 'confirmation',
       context: {
-        name: 'Mr. Gabriel',
-        url: 'google.com.br',
+        name,
+        url: `http://localhost:3000/auth/authorization?token=${token}`, // deve ser uma url web/mobile que dispara chama essa outra
       },
     });
   }
