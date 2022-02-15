@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
+import { Headline, Subheading } from 'react-native-paper';
 
 export function AuthorizationCodePage() {
   const handleSetActiveStep = useContextSelector(
@@ -16,25 +17,38 @@ export function AuthorizationCodePage() {
 
   const [code, setCode] = useState('');
   return (
-    <View
-      style={{
-        flex: 1,
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 24,
         backgroundColor: '#eeeeee',
       }}
     >
-      <SizedBox h={0} />
+      <Headline>Código enviado!</Headline>
+      <SizedBox h={16} />
+      <Subheading>
+        Após o recebimento do código, o insira no campo abaixo
+      </Subheading>
+      <SizedBox h={32} />
       <TextInput
         label="Código"
+        placeholder="Digite o código"
         style={{ alignSelf: 'stretch' }}
         value={code}
         onChangeText={(text) => setCode(text)}
       />
-      <Button mode="contained" onPress={() => {}}>
-        Confirmar
-      </Button>
-    </View>
+      <View>
+        <SizedBox h={32} />
+        <Button mode="text" onPress={() => {}}>
+          Reenviar código
+        </Button>
+        <SizedBox h={24} />
+        <Button mode="contained" onPress={() => {}}>
+          Confirmar
+        </Button>
+      </View>
+    </ScrollView>
   );
 }

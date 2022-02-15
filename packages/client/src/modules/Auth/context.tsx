@@ -61,7 +61,7 @@ export function AuthContextProvider({ children }) {
           paddingVertical: 24,
         }}
       >
-        <View style={{ height: 72 }}>
+        <View style={{ height: 72, transform: [{ translateX: -16 }] }}>
           {activeStep !== AUTHENTICATION_STEPS.AskForCpfPage && (
             <FAB
               style={styles.fab}
