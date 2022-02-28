@@ -1,5 +1,5 @@
-import { useRouting } from 'expo-next-react-navigation';
-import React, { useEffect } from 'react';
+import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
+import React, { useCallback, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
@@ -15,18 +15,21 @@ export function IdentificationPage() {
     (values) => values.handleSetActiveStep,
   );
 
-  const setUserPersonalData = useContextSelector(
-    AuthContext,
-    (values) => values.setUserPersonalData,
-  );
+  const setUser = useContextSelector(AuthContext, (values) => values.setUser);
   const userState = useContextSelector(
     AuthContext,
     (values) => values.userState,
   );
 
-  useEffect(() => {
-    handleSetActiveStep('IdentificationPage');
-  }, []);
+  // useEffect(() => {
+  //   handleSetActiveStep('IdentificationPage');
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      handleSetActiveStep('IdentificationPage');
+    }, [handleSetActiveStep]),
+  );
 
   const [name, setName] = React.useState(userState.personalData.name);
   const [phone, setPhone] = React.useState(
@@ -74,13 +77,18 @@ export function IdentificationPage() {
         <Button
           mode="contained"
           onPress={() => {
-            setUserPersonalData({
-              name,
-              phone,
-              email,
+            setUser({
+              personalData: {
+                name,
+                phone,
+                email,
+              },
             });
             router.navigate({
-              routeName: 'auth/identification/done',
+              routeName: 'identification-done',
+              web: {
+                path: 'auth/identification/done',
+              },
             });
           }}
         >

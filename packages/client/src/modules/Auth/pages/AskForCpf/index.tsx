@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, TextInput, HelperText } from 'react-native-paper';
 import { AuthContext } from '../../context';
@@ -8,20 +8,20 @@ import { useContextSelector } from 'use-context-selector';
 import { mask, unMask } from 'remask';
 import { Formik } from 'formik';
 import { yup } from '../../../../utils/yup';
+import { ApiService, StorageService } from '../../../../services';
+import { IUser, transformClientIntoUser } from '../../../../../_dos/user';
 
 const yupValidationSchema = yup.object().shape({
   cpf: yup.string().required().isCPFValid().label('CPF'),
 });
 
 export function AskForCpfPage() {
+  const router = useRouting();
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-  const setUserCpf = useContextSelector(
-    AuthContext,
-    (values) => values.setUserCpf,
-  );
+  const setUser = useContextSelector(AuthContext, (values) => values.setUser);
   const userState = useContextSelector(
     AuthContext,
     (values) => values.userState,
@@ -33,18 +33,42 @@ export function AskForCpfPage() {
     }, [handleSetActiveStep]),
   );
 
-  const router = useRouting();
+  const [loading, setLoading] = useState(false);
 
-  // const [cpf, setCpf] = React.useState(mask(userState.cpf, ['999.999.999-99']));
-
-  function onFormSubmit(values) {
+  async function onFormSubmit(values) {
+    setLoading(true);
     const { cpf } = values;
-    const _cpf = unMask(cpf);
-    console.log(_cpf);
-    setUserCpf(_cpf);
-    router.navigate({
-      routeName: 'auth/identification',
-    });
+    const _cpf: string = unMask(cpf);
+    // setUser({ cpf: _cpf });
+    ApiService.resources.client
+      .getClientByCpf(_cpf)
+      .then((response) => {
+        console.log('res', response);
+        if (response.status === 200) {
+          const user = transformClientIntoUser(response.data);
+          setUser(user);
+          router.replace({
+            routeName: 'identification-done',
+            web: {
+              path: 'auth/identification/done',
+            },
+          });
+        } else {
+          setUser({ cpf: _cpf });
+          router.navigate({
+            routeName: 'identification',
+            web: {
+              path: 'auth/identification',
+            },
+          });
+        }
+      })
+      .catch((_error) => {
+        //
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
@@ -63,6 +87,7 @@ export function AskForCpfPage() {
         onSubmit={onFormSubmit}
         validateOnMount
         validationSchema={yupValidationSchema}
+        enableReinitialize
       >
         {({
           handleChange,
@@ -75,16 +100,12 @@ export function AskForCpfPage() {
         }) => (
           <>
             {(() => {
-              console.log('touched', touched);
               console.log('isValid', isValid);
-              console.log('errors', errors);
-              console.log('teste', !!touched.cpf && errors.cpf);
             })()}
-            <View>
+            <View style={{ alignSelf: 'stretch' }}>
               <TextInput
                 label="CPF"
                 placeholder="Digite seu CPF"
-                style={{ alignSelf: 'stretch' }}
                 value={mask(values.cpf, ['999.999.999-99'])}
                 onChangeText={handleChange('cpf')}
                 onBlur={handleBlur('cpf')}
@@ -96,7 +117,8 @@ export function AskForCpfPage() {
             <View>
               <SizedBox h={32} />
               <Button
-                disabled={!isValid}
+                loading={loading}
+                disabled={loading || !isValid}
                 mode="contained"
                 onPress={handleSubmit}
               >

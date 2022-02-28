@@ -6,7 +6,7 @@ import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
 import { Headline, Subheading } from 'react-native-paper';
 
-export function AuthorizationCodePage() {
+export function AuthorizationCodePage({ navigation, route }) {
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
@@ -14,6 +14,8 @@ export function AuthorizationCodePage() {
   useEffect(() => {
     handleSetActiveStep('AuthorizationCodePage');
   }, []);
+
+  // route.params.token
 
   const [code, setCode] = useState('');
   return (
@@ -27,19 +29,20 @@ export function AuthorizationCodePage() {
       }}
     >
       <Headline>Código enviado!</Headline>
-      <SizedBox h={16} />
+      {/* <SizedBox h={16} /> */}
       <Subheading>
         Após o recebimento do código, o insira no campo abaixo
       </Subheading>
-      <SizedBox h={32} />
+      <SizedBox />
+      {/* <SizedBox h={32} />
       <TextInput
         label="Código"
         placeholder="Digite o código"
         style={{ alignSelf: 'stretch' }}
         value={code}
         onChangeText={(text) => setCode(text)}
-      />
-      <View>
+      /> */}
+      {/* <View>
         <SizedBox h={32} />
         <Button mode="text" onPress={() => {}}>
           Reenviar código
@@ -48,7 +51,7 @@ export function AuthorizationCodePage() {
         <Button mode="contained" onPress={() => {}}>
           Confirmar
         </Button>
-      </View>
+      </View> */}
     </ScrollView>
   );
 }

@@ -5,27 +5,28 @@ import { AuthorizationCodePage } from './pages/AuthorizationCode';
 import { IdentificationPage } from './pages/Identification';
 import { IdentificationDonePage } from './pages/IdentificationDone';
 import { ForgotPasswordPage } from './pages/ForgotPassword';
+import { AuthorizationPage } from './pages/Authorization';
 
 const AuthStackNavigator = createNativeStackNavigator();
 
 export default function AuthStack() {
   return (
     <AuthStackNavigator.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStackNavigator.Screen name="auth" component={AskForCpfPage} />
+      <AuthStackNavigator.Screen name="ask-for-cpf" component={AskForCpfPage} />
       <AuthStackNavigator.Screen
-        name="auth/identification"
+        name="identification"
         component={IdentificationPage}
       />
       <AuthStackNavigator.Screen
-        name="auth/forgot-password"
+        name="forgot-password"
         component={ForgotPasswordPage}
       />
       <AuthStackNavigator.Screen
-        name="auth/identification/done"
+        name="identification-done"
         component={IdentificationDonePage}
       />
       <AuthStackNavigator.Screen
-        name="auth/code"
+        name="authorization"
         component={AuthorizationCodePage}
       />
     </AuthStackNavigator.Navigator>

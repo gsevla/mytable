@@ -20,3 +20,10 @@ export function goBackService() {
     }
   }
 }
+
+export function getNavigationState() {
+  if (navigationRef.isReady()) {
+    // return navigationRef.canGoBack();
+    return navigationRef.getState();
+  }
+}

@@ -1,19 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { AuthContext } from '../../context';
 import { Title, Headline, Subheading, Text } from 'react-native-paper';
 import { SizedBox } from '../../../../components/SizedBox';
+import { useFocusEffect } from 'expo-next-react-navigation';
 
 export function ForgotPasswordPage() {
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-  useEffect(() => {
-    handleSetActiveStep('ForgotPasswordPage');
-  }, []);
+
+  const userState = useContextSelector(
+    AuthContext,
+    (values) => values.userState,
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      handleSetActiveStep('ForgotPasswordPage');
+    }, [handleSetActiveStep]),
+  );
 
   return (
     <ScrollView
@@ -25,7 +34,8 @@ export function ForgotPasswordPage() {
       }}
     >
       <Title>
-        Infelizmente não podemos recuperar o seu acesso por aqui, Fulano de Tal.
+        Infelizmente não podemos recuperar o seu acesso por aqui,{' '}
+        {userState?.personalData?.name}.
       </Title>
       <SizedBox h={16} />
       <Headline>Mas não fique triste!</Headline>

@@ -2,8 +2,10 @@ import Nookies from 'nookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-type ctxType = Parameters<typeof Nookies.set>[0];
-type optionsType = Parameters<typeof Nookies.set>[3];
+const keys = {
+  user: 'user',
+  restaurant: 'restaurant',
+};
 
 async function setData({
   key,
@@ -29,8 +31,8 @@ async function getData({
   options = undefined,
 }: {
   key: string;
-  ctx: Parameters<typeof Nookies.get>[0];
-  options: Parameters<typeof Nookies.get>[1];
+  ctx?: Parameters<typeof Nookies.get>[0];
+  options?: Parameters<typeof Nookies.get>[1];
 }) {
   let data;
   if (Platform.OS === 'web') {
@@ -47,8 +49,8 @@ function destroyData({
   options,
 }: {
   key: string;
-  ctx: Parameters<typeof Nookies.destroy>[0];
-  options: Parameters<typeof Nookies.destroy>[2];
+  ctx?: Parameters<typeof Nookies.destroy>[0];
+  options?: Parameters<typeof Nookies.destroy>[2];
 }) {
   if (Platform.OS === 'web') {
     Nookies.destroy(ctx, key, options);
@@ -58,6 +60,7 @@ function destroyData({
 }
 
 export default {
+  keys,
   setData,
   getData,
   destroyData,

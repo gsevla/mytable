@@ -1,3 +1,5 @@
+import { IUser } from '../../../../_dos/user';
+
 const initialState = {
   cpf: '',
   personalData: {
@@ -5,9 +7,9 @@ const initialState = {
     phone: '',
     email: '',
   },
-};
+} as IUser;
 
-function reducer(state, { type, payload }) {
+function reducer(state: IUser, { type, payload }) {
   switch (type) {
     case 'setCpf':
       return {
@@ -19,6 +21,26 @@ function reducer(state, { type, payload }) {
         ...state,
         personalData: payload.personalData,
       };
+    case 'setUser': {
+      const { user }: { user: IUser } = payload;
+
+      const cpf = user?.cpf ?? state.cpf;
+      const personalData = {
+        name: user?.personalData?.name ?? state.personalData.name,
+        phone: user?.personalData?.phone ?? state.personalData.phone,
+        email: user?.personalData?.email ?? state.personalData.email,
+      };
+      const id = user?.id ?? state?.id;
+      const identifier = user?.id ?? state?.identifier;
+
+      return {
+        ...state,
+        cpf,
+        personalData,
+        id,
+        identifier,
+      };
+    }
     default:
       throw new Error('Unrecognized error on userReducer');
   }
@@ -52,11 +74,21 @@ function setPersonalData({
   };
 }
 
+function setUser(user: Partial<typeof initialState>) {
+  return {
+    type: 'setUser',
+    payload: {
+      user,
+    },
+  };
+}
+
 export default {
   initialState,
   reducer: reducer,
   actions: {
     setCpf,
     setPersonalData,
+    setUser,
   },
 };
