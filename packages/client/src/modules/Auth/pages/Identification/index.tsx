@@ -1,11 +1,21 @@
 import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
-import { mask } from 'remask';
+import { mask, unMask } from 'remask';
+import { yup } from '../../../../utils/yup';
+import { ApiService } from '../../../../services';
+import { Formik } from 'formik';
+import { transformClientIntoUser } from '../../../../../_dos/user';
+
+const yupValidationSchema = yup.object().shape({
+  name: yup.string().required().label('Nome'),
+  phone: yup.string().required().label('Telefone'),
+  email: yup.string().required().email().label('Email'),
+});
 
 export function IdentificationPage() {
   const router = useRouting();
@@ -21,21 +31,47 @@ export function IdentificationPage() {
     (values) => values.userState,
   );
 
-  // useEffect(() => {
-  //   handleSetActiveStep('IdentificationPage');
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('IdentificationPage');
     }, [handleSetActiveStep]),
   );
 
-  const [name, setName] = React.useState(userState.personalData.name);
-  const [phone, setPhone] = React.useState(
-    mask(userState.personalData.phone, ['(99) 99999-9999']),
-  );
-  const [email, setEmail] = React.useState(userState.personalData.email);
+  const [loading, setLoading] = useState(false);
+
+  function onFormSubmit(values) {
+    setLoading(true);
+
+    const { name, phone, email } = values;
+    const _phone = unMask(phone, ['(99) 99999-9999']);
+
+    ApiService.resources.client
+      .createClient({
+        cpf: userState.cpf,
+        name,
+        phone: _phone,
+        email,
+      })
+      .then((response) => {
+        console.log('res', response);
+        if (response.status === 201) {
+          const user = transformClientIntoUser(response.data);
+          setUser(user);
+          router.replace({
+            routeName: 'identification-done',
+            web: {
+              path: 'auth/identification/done',
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        //
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   return (
     <ScrollView
@@ -43,58 +79,95 @@ export function IdentificationPage() {
         flexGrow: 1,
         backgroundColor: '#eeeeee',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 24,
       }}
     >
       <SizedBox h={0} />
-      <View>
-        <TextInput
-          label="Nome"
-          style={{ alignSelf: 'stretch' }}
-          value={name}
-          onChangeText={(text) => setName(text)}
-          placeholder="Digite seu nome"
-        />
-        <SizedBox h={44} />
-        <TextInput
-          label="Telefone"
-          style={{ alignSelf: 'stretch' }}
-          value={mask(phone, ['(99) 99999-9999'])}
-          onChangeText={(text) => setPhone(text)}
-          placeholder="Digite seu telefone"
-        />
-        <SizedBox h={44} />
-        <TextInput
-          label="Email"
-          style={{ alignSelf: 'stretch' }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          placeholder="Digite seu email"
-        />
-      </View>
-      <View>
-        <SizedBox h={32} />
-        <Button
-          mode="contained"
-          onPress={() => {
-            setUser({
-              personalData: {
-                name,
-                phone,
-                email,
-              },
-            });
-            router.navigate({
-              routeName: 'identification-done',
-              web: {
-                path: 'auth/identification/done',
-              },
-            });
-          }}
-        >
-          Avançar
-        </Button>
-      </View>
+      <Formik
+        initialValues={{
+          name: userState.personalData.name,
+          phone: mask(userState.personalData.phone, ['(99) 99999-9999']),
+          email: userState.personalData.email,
+        }}
+        onSubmit={onFormSubmit}
+        validateOnMount
+        validationSchema={yupValidationSchema}
+        enableReinitialize
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+          touched,
+        }) => (
+          <>
+            <View style={{ alignSelf: 'stretch', backgroundColor: '#eeeeee' }}>
+              <>
+                <TextInput
+                  label="Nome"
+                  placeholder="Digite seu nome"
+                  value={values.name}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                />
+                <HelperText
+                  type="error"
+                  visible={!!touched.name && errors.name}
+                >
+                  {errors.name}
+                </HelperText>
+              </>
+              <SizedBox h={32} />
+              <>
+                <TextInput
+                  label="Telefone"
+                  placeholder="Digite seu telefone"
+                  value={mask(values.phone, ['(99) 99999-9999'])}
+                  onChangeText={handleChange('phone')}
+                  onBlur={handleBlur('phone')}
+                />
+                <HelperText
+                  type="error"
+                  visible={!!touched.phone && errors.phone}
+                >
+                  {errors.phone}
+                </HelperText>
+              </>
+              <SizedBox h={32} />
+              <>
+                <TextInput
+                  label="Email"
+                  placeholder="Digite seu email"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                />
+                <HelperText
+                  type="error"
+                  visible={!!touched.email && errors.email}
+                >
+                  {errors.email}
+                </HelperText>
+              </>
+            </View>
+            <View>
+              <SizedBox h={32} />
+              <Button
+                loading={loading}
+                disabled={loading || !isValid}
+                mode="contained"
+                onPress={handleSubmit}
+              >
+                Avançar
+              </Button>
+            </View>
+          </>
+        )}
+      </Formik>
     </ScrollView>
   );
 }

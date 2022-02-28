@@ -8,8 +8,8 @@ import { useContextSelector } from 'use-context-selector';
 import { mask, unMask } from 'remask';
 import { Formik } from 'formik';
 import { yup } from '../../../../utils/yup';
-import { ApiService, StorageService } from '../../../../services';
-import { IUser, transformClientIntoUser } from '../../../../../_dos/user';
+import { ApiService } from '../../../../services';
+import { transformClientIntoUser } from '../../../../../_dos/user';
 
 const yupValidationSchema = yup.object().shape({
   cpf: yup.string().required().isCPFValid().label('CPF'),
@@ -39,7 +39,6 @@ export function AskForCpfPage() {
     setLoading(true);
     const { cpf } = values;
     const _cpf: string = unMask(cpf);
-    // setUser({ cpf: _cpf });
     ApiService.resources.client
       .getClientByCpf(_cpf)
       .then((response) => {
@@ -99,10 +98,7 @@ export function AskForCpfPage() {
           touched,
         }) => (
           <>
-            {(() => {
-              console.log('isValid', isValid);
-            })()}
-            <View style={{ alignSelf: 'stretch' }}>
+            <View style={{ alignSelf: 'stretch', backgroundColor: '#eeeeee' }}>
               <TextInput
                 label="CPF"
                 placeholder="Digite seu CPF"
