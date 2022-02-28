@@ -5,7 +5,7 @@ import { MailModule } from 'src/mail/mail.module';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ClientModule } from 'src/client/client.module';
+import { ClientModule } from 'src/resources/client/client.module';
 
 @Module({
   imports: [

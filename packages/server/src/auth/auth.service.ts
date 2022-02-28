@@ -3,7 +3,7 @@ import { Client } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { ClientService } from 'src/client/client.service';
+import { ClientService } from 'src/resources/client/client.service';
 
 @Injectable()
 export class AuthService {
@@ -49,14 +49,18 @@ export class AuthService {
     return this.clientService.createClient(client);
   }
 
-  signInAuthorization(token: string) {
-    const v = this.jwtService.verify(token);
-    console.log('v', v);
+  signInAuthorization(platform: string, token: string) {
+    const platforms = {
+      mobile: `exp://uf-g2c.gsevla.client.exp.direct:80/--/auth/authorization/?token=${token}`,
+      web: `http://192.168.15.15:4200/auth/authorization?token=${token}`,
+    };
 
-    const decodedToken = this.jwtService.decode(token);
+    const url = platforms[platform];
 
-    console.log('u', decodedToken);
+    if (!url) {
+      // return url for page not found
+    }
 
-    return decodedToken;
+    return url;
   }
 }

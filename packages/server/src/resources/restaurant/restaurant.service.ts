@@ -4,11 +4,13 @@ import { Restaurant, Prisma } from '@prisma/client';
 
 @Injectable()
 export class RestaurantService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async createRestaurant(
-    data: Prisma.RestaurantCreateInput,
-  ): Promise<Restaurant> {
-    return this.prisma.restaurant.create({ data });
+  createRestaurant(data: Prisma.RestaurantCreateInput): Promise<Restaurant> {
+    return this.prismaService.restaurant.create({ data });
+  }
+
+  getRestaurant() {
+    return this.prismaService.restaurant.findUnique({ where: { id: 1 } });
   }
 }
