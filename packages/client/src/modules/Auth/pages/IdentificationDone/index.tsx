@@ -70,10 +70,13 @@ export function IdentificationDonePage() {
         <Button
           mode="contained"
           onPress={() => {
-            router.navigate({
+            router.replace({
               routeName: 'authorization',
               web: {
                 path: 'auth/authorization',
+              },
+              params: {
+                shouldSendCode: true,
               },
             });
           }}
