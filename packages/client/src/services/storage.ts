@@ -5,7 +5,11 @@ import { Platform } from 'react-native';
 const keys = {
   user: 'user',
   restaurant: 'restaurant',
-};
+  codeSentTime: 'codeSentTime',
+  codeResentTime: 'codeResentTime',
+  shouldNotSendCodeAutomatically: 'shouldNotSendCodeAutomatically',
+  token: 'token',
+} as const;
 
 async function setData({
   key,
@@ -13,7 +17,7 @@ async function setData({
   ctx = null,
   options = undefined,
 }: {
-  key: string;
+  key: keyof typeof keys;
   value: string;
   ctx?: Parameters<typeof Nookies.set>[0];
   options?: Parameters<typeof Nookies.set>[3];
@@ -30,7 +34,7 @@ async function getData({
   ctx = null,
   options = undefined,
 }: {
-  key: string;
+  key: keyof typeof keys;
   ctx?: Parameters<typeof Nookies.get>[0];
   options?: Parameters<typeof Nookies.get>[1];
 }) {
@@ -48,7 +52,7 @@ function destroyData({
   ctx,
   options,
 }: {
-  key: string;
+  key: keyof typeof keys;
   ctx?: Parameters<typeof Nookies.destroy>[0];
   options?: Parameters<typeof Nookies.destroy>[2];
 }) {
