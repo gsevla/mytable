@@ -35,7 +35,7 @@ export function AuthContextProvider({
   const [activeStep, setActiveStep] = useState<AUTHENTICATION_STEPS>(
     AUTHENTICATION_STEPS.AskForCpfPage,
   );
-  const [userState, userDispatch] = useReducer<typeof UserReducer.reducer>(
+  const [userState, userDispatch] = useReducer(
     UserReducer.reducer,
     UserReducer.initialState,
   );

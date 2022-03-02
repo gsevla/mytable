@@ -1,28 +1,35 @@
 import { IUser } from '../../../../_dos/user';
 
-const initialState = {
+interface IState extends IUser {}
+
+type TAction =
+  | ReturnType<typeof setCpf>
+  | ReturnType<typeof setPersonalData>
+  | ReturnType<typeof setUser>;
+
+const initialState: IState = {
   cpf: '',
   personalData: {
     name: '',
     phone: '',
     email: '',
   },
-} as IUser;
+};
 
-function reducer(state: IUser, { type, payload }) {
-  switch (type) {
+function reducer(state: IState, action: TAction): IState {
+  switch (action.type) {
     case 'setCpf':
       return {
         ...state,
-        cpf: payload.cpf,
+        cpf: action.payload.cpf,
       };
     case 'setPersonalData':
       return {
         ...state,
-        personalData: payload.personalData,
+        personalData: action.payload.personalData,
       };
     case 'setUser': {
-      const { user }: { user: IUser } = payload;
+      const { user } = action.payload;
 
       const cpf = user?.cpf ?? state.cpf;
       const personalData = {
@@ -31,7 +38,7 @@ function reducer(state: IUser, { type, payload }) {
         email: user?.personalData?.email ?? state.personalData.email,
       };
       const id = user?.id ?? state?.id;
-      const identifier = user?.id ?? state?.identifier;
+      const identifier = user?.identifier ?? state?.identifier;
 
       return {
         ...state,
@@ -50,7 +57,7 @@ function setCpf(cpf: string) {
   return {
     type: 'setCpf',
     payload: { cpf },
-  };
+  } as const;
 }
 
 function setPersonalData({
@@ -71,7 +78,7 @@ function setPersonalData({
         email,
       },
     },
-  };
+  } as const;
 }
 
 function setUser(user: Partial<typeof initialState>) {
@@ -80,7 +87,7 @@ function setUser(user: Partial<typeof initialState>) {
     payload: {
       user,
     },
-  };
+  } as const;
 }
 
 export default {
