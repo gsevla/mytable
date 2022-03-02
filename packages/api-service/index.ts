@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createResourcesEndpoints } from './src/resources';
+import { createAuthEndpoints } from './src/auth';
 
 function createApiService() {
   const axiosInstance = axios.create({
@@ -8,9 +9,11 @@ function createApiService() {
   });
 
   const resources = createResourcesEndpoints(axiosInstance);
+  const auth = createAuthEndpoints(axiosInstance);
 
   return {
     axiosInstance,
+    auth,
     resources,
   };
 }
