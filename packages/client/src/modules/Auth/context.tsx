@@ -1,16 +1,10 @@
-import React, {
-  useCallback,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
 import { createContext } from 'use-context-selector';
-import { getNavigationState, goBackService } from '../../services/navigation';
+import { goBackService } from '../../services/navigation';
 import UserReducer from './reducers/user';
 import { StorageService } from '../../services';
 import { IUser } from '../../../_dos/user';
@@ -22,6 +16,7 @@ export const AuthContext = createContext(
     setUserCpf(cpf: IUser['cpf']): void;
     setUserPersonalData(personalData: IUser['personalData']): void;
     setUser(user: Partial<IUser>): void;
+    persistUserToken(userToken: string): void;
     userState: typeof UserReducer.initialState;
   },
 );
@@ -39,6 +34,13 @@ export function AuthContextProvider({
     UserReducer.reducer,
     UserReducer.initialState,
   );
+
+  const persistUserToken = useCallback(async (userToken) => {
+    await StorageService.setData({
+      key: 'token',
+      value: JSON.stringify(userToken),
+    });
+  }, []);
 
   const setUserCpf = useCallback((cpf) => {
     userDispatch(UserReducer.actions.setCpf(cpf));
@@ -74,10 +76,9 @@ export function AuthContextProvider({
 
   useEffect(() => {
     StorageService.getData({ key: StorageService.keys.user })
-      .then((user) => {
+      .then(async (user) => {
         if (user) {
           const _user = JSON.parse(user) as IUser;
-          // console.log('## user loaded\n', _user);
           userDispatch(UserReducer.actions.setUser(_user));
           if (_user?.cpf) {
             if (
@@ -85,12 +86,24 @@ export function AuthContextProvider({
               _user?.personalData?.phone &&
               _user?.personalData?.email
             ) {
-              router.replace({
-                routeName: 'identification-done',
-                web: {
-                  path: 'auth/identification/done',
-                },
+              const sentTime = await StorageService.getData({
+                key: StorageService.keys.codeSentTime,
               });
+              if (sentTime) {
+                router.replace({
+                  routeName: 'authorization',
+                  web: {
+                    path: 'auth/authorization',
+                  },
+                });
+              } else {
+                router.replace({
+                  routeName: 'identification-done',
+                  web: {
+                    path: 'auth/identification/done',
+                  },
+                });
+              }
               return;
             }
             router.navigate({
@@ -115,6 +128,7 @@ export function AuthContextProvider({
         setUserCpf,
         setUserPersonalData,
         setUser,
+        persistUserToken,
         userState,
       }}
     >
