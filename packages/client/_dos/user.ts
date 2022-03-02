@@ -24,3 +24,13 @@ export function transformClientIntoUser(client: IClient): IUser {
 
   return user;
 }
+
+export function transformUserIntoClient(user: IUser): IClient {
+  const { personalData } = user;
+  const client = {
+    ...user,
+    ...personalData,
+  } as IClient;
+
+  return client;
+}
