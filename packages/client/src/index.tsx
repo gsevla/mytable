@@ -1,17 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
 import { navigationRef } from './services/navigation';
-import { AuthContextProvider } from './modules/Auth/context';
-import AuthStack from './modules/Auth/navigation';
 import RootStack from './navigation';
 import { ThemeProvider } from './modules/Theme';
 import * as Linking from 'expo-linking';
-import { Text, ActivityIndicator, Title } from 'react-native-paper';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthorizationPage } from './modules/Auth/pages/Authorization';
-import { AuthModule } from './modules/Auth';
-// import apiService from '@mytable/api-service';
+import { Text } from 'react-native-paper';
 import { ApiService, StorageService } from './services';
 import { IUser } from '../_dos/user';
 
@@ -28,33 +21,8 @@ const config = {
         authorization: 'auth/authorization',
       },
     },
-    home: 'home',
+    app: 'app',
   },
-};
-
-const StackTest = createNativeStackNavigator();
-
-const HomeScreen = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text>home</Text>
-    </View>
-  );
-};
-
-const LoadingScreen = () => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ActivityIndicator size="large" />
-      <Title>Carregando</Title>
-    </View>
-  );
 };
 
 export const AppRoot = () => {
@@ -65,45 +33,85 @@ export const AppRoot = () => {
 
   const [loading, setLoading] = useState(true);
   const [restaurant, setRestaurant] = useState();
+  const [user, setUser] = useState();
+  const [token, setToken] = useState('');
 
-  useEffect(() => {
-    ApiService.resources.restaurant
+  // always update restaurant
+  async function loadAndPersistRestaurant() {
+    const response = await ApiService.resources.restaurant
       .getRestaurant()
+      .catch((e1) => {
+        console.log('e1 on loadAndPersistRestaurant (load part)', e1);
+        throw e1;
+      });
+
+    if (response.data) {
+      setRestaurant(response.data);
+      await StorageService.setData({
+        key: 'restaurant',
+        value: JSON.stringify(response.data),
+      }).catch((e2) => {
+        console.log('error on loadAndPersistRestaurant (persist part)', e2);
+        throw e2;
+      });
+    }
+  }
+
+  // always update user if it exists on db
+  async function loadAndPersistUser() {
+    let _user = await StorageService.getData({ key: 'user' }).catch((e1) => {
+      console.log('e1 on loadAndPersistUser (load part 1)', e1);
+      throw e1;
+    });
+
+    if (_user) {
+      const parsedUser = JSON.parse(_user) as IUser;
+      const response = await ApiService.resources.client
+        .getClientByCpf(parsedUser?.cpf)
+        .catch((e2) => {
+          console.log('e2 on loadAndPersistUser (load part 2)', e2);
+          throw e2;
+        });
+
+      if (response.data) {
+        setUser(response.data);
+        await StorageService.setData({
+          key: 'user',
+          value: JSON.stringify(response.data),
+        }).catch((e3) => {
+          console.log('error on loadAndPersistUser (persist part)', e3);
+          throw e3;
+        });
+      }
+    }
+  }
+
+  async function loadToken() {
+    const _token = await StorageService.getData({ key: 'token' }).catch(
+      (error) => {
+        console.log('error on load token', error);
+      },
+    );
+
+    if (_token) {
+      setToken(_token);
+    }
+  }
+
+  async function loadAll() {
+    Promise.all([loadAndPersistRestaurant(), loadAndPersistUser(), loadToken()])
       .then((response) => {
-        if (response.data) {
-          setRestaurant(response.data);
-          StorageService.setData({
-            key: StorageService.keys.restaurant,
-            value: JSON.stringify(response.data),
-          }).catch((error) => {
-            console.log('error on get restaurant from storage');
-          });
-        }
+        setLoading(false);
       })
       .catch((error) => {
-        console.log('error on getRestaurant', error);
-      })
-      .finally(() => {
-        setLoading(false);
+        console.log('error on loadAll', error);
+        throw error;
       });
+  }
+
+  useEffect(() => {
+    loadAll();
   }, []);
-
-  // useEffect(() => {
-
-  //   StorageService.getData({key: StorageService.keys.user}).then(user => {
-  //     if(user) {
-  //       const _user = JSON.parse(user) as IUser
-  //       ApiService.resources.client.getClientByCpf(_user.cpf).then((client) => {
-
-  //       }).catch(_error => {
-  //         //
-  //       });
-  //     }
-  //   }).catch(error => {
-  //     //
-  //   })
-
-  // }, []);
 
   return (
     <NavigationContainer
@@ -115,18 +123,7 @@ export const AppRoot = () => {
         primaryColor={restaurant?.primaryColor}
         accentColor={restaurant?.accentColor}
       >
-        {loading ? (
-          <LoadingScreen />
-        ) : (
-          <StackTest.Navigator>
-            <StackTest.Screen
-              name="auth"
-              component={AuthModule}
-              options={{ headerShown: false }}
-            />
-            <StackTest.Screen name="home" component={HomeScreen} />
-          </StackTest.Navigator>
-        )}
+        <RootStack loading={loading} token={token} />
       </ThemeProvider>
     </NavigationContainer>
   );
