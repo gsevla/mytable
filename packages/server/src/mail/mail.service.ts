@@ -16,8 +16,8 @@ export class MailService {
       template: 'confirmation',
       context: {
         name,
-        mobileUrl: `http://192.168.15.15:3000/auth/authorization?platform=mobile&token=${token}`, // deve ser uma url web/mobile que dispara chama essa outra
-        webUrl: `http://192.168.15.15:3000/auth/authorization?platform=web&token=${token}`, // deve ser uma url web/mobile que dispara chama essa outra
+        mobileUrl: `http://192.168.15.15:3000/api/auth/authorization?platform=mobile&token=${token}`, // deve ser uma url web/mobile que dispara chama essa outra
+        webUrl: `http://192.168.15.15:3000/api/auth/authorization?platform=web&token=${token}`, // deve ser uma url web/mobile que dispara chama essa outra
       },
     });
   }
