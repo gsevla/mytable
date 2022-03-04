@@ -39,7 +39,8 @@
     "use-context-selector": "^1.3.9",
     "vanilla-masker": "^1.2.0",
     "yup": "^0.32.11",
-    "@mytable/api-service": "*"
+    "@mytable/api-service": "*",
+    "@mytable/dtos": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

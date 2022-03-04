@@ -8,6 +8,7 @@ import { Headline, Subheading } from 'react-native-paper';
 import { useFocusEffect } from 'expo-next-react-navigation';
 import { ApiService, StorageService } from '../../../../services';
 import { transformUserIntoClient } from '../../../../../_dos/user';
+import { RootContext } from '../../../Root/context';
 
 const resentTimeInM = 5 * 60; // 5 minutes
 const resentTimeInMs = 60 * 5 * 1000; // 5 minutes in ms
@@ -32,6 +33,8 @@ export function AuthorizationCodePage({ navigation, route }) {
     (values) => values.persistUserToken,
   );
 
+  const setToken = useContextSelector(RootContext, (values) => values.setToken);
+
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('AuthorizationCodePage');
@@ -41,7 +44,8 @@ export function AuthorizationCodePage({ navigation, route }) {
   useEffect(() => {
     console.log('token', params?.token);
     if (params?.token) {
-      persistUserToken(params.token);
+      // persistUserToken(params.token);
+      setToken(params.token);
     }
   }, [params?.token]);
 

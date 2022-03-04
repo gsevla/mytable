@@ -1,10 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AuthStack from './modules/Auth/navigation';
 import LoadingScreen from './pages/Loading';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { AuthModule } from './modules/Auth';
+import { useContextSelector } from 'use-context-selector';
+import { RootContext } from './modules/Root/context';
 
 const RootStackNavigator = createNativeStackNavigator();
 
@@ -21,8 +22,12 @@ interface IRootStackProps {
   token: string;
 }
 
-export default function RootStack({ loading, token }: IRootStackProps) {
-  if (loading) {
+export default function RootStack() {
+  const loaded = useContextSelector(RootContext, (values) => values.loaded);
+
+  const token = '';
+
+  if (!loaded) {
     return <LoadingScreen />;
   }
 

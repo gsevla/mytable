@@ -43,7 +43,8 @@ export function AskForCpfPage() {
       .getClientByCpf(_cpf)
       .then((response) => {
         console.log('res', response);
-        if (response.status === 200) {
+        if (response) {
+          console.log('aa');
           const user = transformClientIntoUser(response.data);
           setUser(user);
           router.replace({
