@@ -8,25 +8,28 @@ export function createRestaurantEndpoints(axiosInstance: AxiosInstance) {
       console.log('error on createClient', error.request);
     });
 
-    const responseObject = {
-      message: '',
-      error: '',
-    } as {
-      message: string;
-      error: string;
-      data?: any;
-      status: number;
-    };
-
     if (response) {
-      responseObject['data'] = response.data;
-      responseObject['status'] = response.status;
-      responseObject['message'] = 'Restaurante recuperado com sucesso!';
-    } else {
-      responseObject['error'] = 'Erro ao tentar recuperar o restaurante';
+      return response.data;
     }
 
-    return responseObject;
+    // const responseObject = {
+    //   message: '',
+    //   error: '',
+    // } as {
+    //   message: string;
+    //   error: string;
+    //   data?: any;
+    //   status: number;
+    // };
+
+    // if (response) {
+    //   responseObject['data'] = response.data;
+    //   responseObject['status'] = response.status;
+    //   responseObject['message'] = 'Restaurante recuperado com sucesso!';
+    // } else {
+    //   responseObject['error'] = 'Erro ao tentar recuperar o restaurante';
+    // }
+    return null;
   }
 
   return {

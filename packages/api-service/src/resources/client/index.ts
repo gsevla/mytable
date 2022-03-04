@@ -56,31 +56,32 @@ export function createClientEndpoints(axiosInstance: AxiosInstance) {
   }
 
   async function getClientByCpf(cpf: string) {
-    const response = await axiosInstance
-      .get(`${url}/cpf/${cpf}`)
-      .catch((error) => {
-        console.log('error on createClient', error);
-      });
+    const response = await axiosInstance.get(`${url}/cpf/${cpf}`);
+    // .catch((error) => {
+    //   console.log('error on getClientByCpf', error);
+    // });
 
-    const responseObject = {
-      message: '',
-      error: '',
-    } as {
-      message: string;
-      error: string;
-      data?: any;
-      status: number;
-    };
+    // const responseObject = {
+    //   message: '',
+    //   error: '',
+    // } as {
+    //   message: string;
+    //   error: string;
+    //   data?: any;
+    //   status: number;
+    // };
 
-    if (response) {
-      responseObject['data'] = response.data;
-      responseObject['status'] = response.status;
-      responseObject['message'] = 'Cliente recuperado com sucesso!';
-    } else {
-      responseObject['error'] = 'Erro ao tentar recuperar o cliente!';
-    }
+    return response.data;
 
-    return responseObject;
+    // if (response) {
+    //   responseObject['data'] = response.data;
+    //   responseObject['status'] = response.status;
+    //   responseObject['message'] = 'Cliente recuperado com sucesso!';
+    // } else {
+    //   responseObject['error'] = 'Erro ao tentar recuperar o cliente!';
+    // }
+
+    // return responseObject;
   }
 
   return {

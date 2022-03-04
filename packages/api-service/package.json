@@ -4,7 +4,21 @@
   "main": "index.ts",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --watch"
+  },
   "dependencies": {
-    "axios": "^0.26.0"
+    "axios": "^0.26.0",
+    "react-query": "^3.34.16"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.2.7",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "17.0.1"
   }
 }

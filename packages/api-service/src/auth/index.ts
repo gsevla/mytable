@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 export function createAuthEndpoints(axiosInstance: AxiosInstance) {
   const url = '/auth';
 
-  async function signInClient(client) {
+  async function signInClient(client: any) {
     const response = await axiosInstance
       .post(`${url}/sign-in`, client)
       .catch((error) => {
