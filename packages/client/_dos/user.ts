@@ -1,4 +1,4 @@
-import { IClient } from '../_dtos/client';
+import { ClientDto } from '@mytable/dtos';
 
 export interface IUser {
   id?: number;
@@ -11,7 +11,7 @@ export interface IUser {
   };
 }
 
-export function transformClientIntoUser(client: IClient): IUser {
+export function transformClientIntoUser(client: ClientDto.IClient): IUser {
   const { id, cpf, identifier } = client;
   const user = {
     id,
@@ -25,12 +25,12 @@ export function transformClientIntoUser(client: IClient): IUser {
   return user;
 }
 
-export function transformUserIntoClient(user: IUser): IClient {
+export function transformUserIntoClient(user: IUser): ClientDto.IClient {
   const { personalData } = user;
   const client = {
     ...user,
     ...personalData,
-  } as IClient;
+  } as ClientDto.IClient;
 
   return client;
 }
