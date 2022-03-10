@@ -6,6 +6,7 @@ export interface IUser {
   cpf: string;
   personalData: {
     name: string;
+    surname: string;
     phone: string;
     email: string;
   };
