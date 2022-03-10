@@ -1,6 +1,10 @@
+import { IClient } from '@mytable/dtos/client';
 import React, { useEffect, useMemo, useState } from 'react';
+import { StatusBar } from 'react-native';
+import { Snackbar } from 'react-native-paper';
 import { createContext } from 'use-context-selector';
-import { ApiService } from '../../services';
+import { IUser, transformUserIntoClient } from '../../../_dos/user';
+import { ApiService, StorageService } from '../../services';
 import { ThemeProvider } from '../Theme';
 
 interface IRootContextProvider {
@@ -10,8 +14,10 @@ interface IRootContextProvider {
 interface IRootContextValues {
   loading: boolean;
   loaded: boolean;
+  client: IClient | null;
   token: string | null;
   setToken(token: string): void;
+  showSnackBar(message: string): void;
 }
 
 export const RootContext = createContext({} as IRootContextValues);
@@ -19,16 +25,57 @@ export const RootContext = createContext({} as IRootContextValues);
 function RootContextProvider({ children }: IRootContextProvider) {
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [client, setClient] = useState<IClient | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isSnackBarVisible, setIsSnackBarVisible] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
+
+  useEffect(() => {
+    if (loading) {
+      StatusBar.setHidden(true);
+    }
+
+    if (loaded) {
+      StatusBar.setHidden(false);
+    }
+  }, [loading, loaded]);
+
+  function onSnackBarDismiss() {
+    setIsSnackBarVisible(false);
+    setSnackBarMessage('');
+  }
+
+  function showSnackBar(message: string) {
+    setSnackBarMessage(message);
+    setIsSnackBarVisible(true);
+  }
 
   const { data: restaurantData, isLoading: isRestaurantLoading } =
     ApiService.queries.useRestaurant();
 
-  // const {
-  //   data: clientData,
-  //   isLoading: isClientLoading,
-  //   error: clientError,
-  // } = ApiService.queries.useClient();
+  async function loadToken() {
+    const _token = await StorageService.getData({ key: 'token' });
+    if (_token) {
+      setToken(_token);
+    }
+  }
+
+  async function loadClient() {
+    const _user = await StorageService.getData({ key: 'user' });
+    if (_user) {
+      const _parsedUser = JSON.parse(_user) as IUser;
+      const _client = transformUserIntoClient(_parsedUser);
+      setClient(_client);
+    }
+  }
+
+  async function loadAll() {
+    await Promise.all([loadToken(), loadClient()]);
+  }
+
+  useEffect(() => {
+    loadAll();
+  }, []);
 
   useEffect(() => {
     if (!isRestaurantLoading) {
@@ -38,12 +85,22 @@ function RootContextProvider({ children }: IRootContextProvider) {
   }, [isRestaurantLoading]);
 
   return (
-    <RootContext.Provider value={{ loading, loaded, token, setToken }}>
+    <RootContext.Provider
+      value={{ loading, loaded, token, client, setToken, showSnackBar }}
+    >
       <ThemeProvider
         primaryColor={restaurantData?.primaryColor}
         accentColor={restaurantData?.accentColor}
       >
         {children}
+        <Snackbar
+          visible={isSnackBarVisible}
+          onDismiss={onSnackBarDismiss}
+          duration={4000}
+          action={{ label: 'Fechar', onPress: onSnackBarDismiss }}
+        >
+          {snackBarMessage}
+        </Snackbar>
       </ThemeProvider>
     </RootContext.Provider>
   );
