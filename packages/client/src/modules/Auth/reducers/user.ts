@@ -11,6 +11,7 @@ const initialState: IState = {
   cpf: '',
   personalData: {
     name: '',
+    surname: '',
     phone: '',
     email: '',
   },
@@ -34,6 +35,7 @@ function reducer(state: IState, action: TAction): IState {
       const cpf = user?.cpf ?? state.cpf;
       const personalData = {
         name: user?.personalData?.name ?? state.personalData.name,
+        surname: user?.personalData?.surname ?? state.personalData.surname,
         phone: user?.personalData?.phone ?? state.personalData.phone,
         email: user?.personalData?.email ?? state.personalData.email,
       };
@@ -62,10 +64,12 @@ function setCpf(cpf: string) {
 
 function setPersonalData({
   name,
+  surname,
   phone,
   email,
 }: {
   name: string;
+  surname: string;
   phone: string;
   email: string;
 }) {
@@ -74,6 +78,7 @@ function setPersonalData({
     payload: {
       personalData: {
         name,
+        surname,
         phone,
         email,
       },
