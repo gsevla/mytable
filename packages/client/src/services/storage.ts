@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
 const keys = {
-  user: 'user',
+  user: 'user', // used before authentication
+  client: 'client', // used after authentication
   restaurant: 'restaurant',
   codeSentTime: 'codeSentTime',
   codeResentTime: 'codeResentTime',
