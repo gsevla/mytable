@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Response } from '@nestjs/common';
 import { Client } from '@prisma/client';
 import { ClientService } from './client.service';
 
@@ -17,7 +17,7 @@ export class ClientController {
   }
 
   @Get('cpf/:cpf')
-  getClientByCpf(@Param('cpf') cpf: string) {
+  getClientByCpf(@Param('cpf') cpf: string, response: Response) {
     return this.clientService.getClientByCpf(cpf);
   }
 }

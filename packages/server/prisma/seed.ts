@@ -20,7 +20,8 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      name: 'Administrador',
+      name: 'Gabriel',
+      surname: 'Adm',
       username: 'admin',
       password: await encryptPassword('admin'),
       role: 'ADMIN',

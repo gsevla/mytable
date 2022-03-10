@@ -6,6 +6,7 @@ export enum EmployeeRoleEnum {
 export interface IEmployee {
   id: number;
   name: string;
+  surname: string;
   username: string;
   password: string;
   role: EmployeeRoleEnum;
