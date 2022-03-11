@@ -1,3 +1,4 @@
+import { ClientDto } from '@mytable/dtos';
 import { IClient } from '@mytable/dtos/client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { StatusBar } from 'react-native';
@@ -15,6 +16,7 @@ interface IRootContextValues {
   loading: boolean;
   loaded: boolean;
   client: IClient | null;
+  setClient(client: ClientDto.IClient): void;
   token: string | null;
   setToken(token: string): void;
   showSnackBar(message: string): void;
@@ -51,7 +53,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
   }
 
   const { data: restaurantData, isLoading: isRestaurantLoading } =
-    ApiService.queries.useRestaurant();
+    ApiService.resources.restaurant.restaurantQueries.useQueryRestaurant();
 
   async function loadToken() {
     const _token = await StorageService.getData({ key: 'token' });
@@ -86,7 +88,15 @@ function RootContextProvider({ children }: IRootContextProvider) {
 
   return (
     <RootContext.Provider
-      value={{ loading, loaded, token, client, setToken, showSnackBar }}
+      value={{
+        loading,
+        loaded,
+        token,
+        client,
+        setClient,
+        setToken,
+        showSnackBar,
+      }}
     >
       <ThemeProvider
         primaryColor={restaurantData?.primaryColor}
