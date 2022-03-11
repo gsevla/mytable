@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button, HelperText, TextInput } from 'react-native-paper';
+import { Button, HelperText } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
 import { Headline, Subheading } from 'react-native-paper';
 import { useFocusEffect } from 'expo-next-react-navigation';
 import { ApiService, StorageService } from '../../../../services';
-import { transformUserIntoClient } from '../../../../../_dos/user';
 import { RootContext } from '../../../Root/context';
 
 const resentTimeInM = 5 * 60; // 5 minutes
@@ -17,35 +16,28 @@ const timeUpdateInterval = 1000; // 1 second in ms
 // WIP: atualizar o resent time de acordo com o app state
 export function AuthorizationCodePage({ navigation, route }) {
   const { params } = route;
+
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-
-  const userState = useContextSelector(
-    AuthContext,
-    (values) => values.userState,
-  );
-  const client = transformUserIntoClient(userState);
-
-  const persistUserToken = useContextSelector(
-    AuthContext,
-    (values) => values.persistUserToken,
-  );
-
-  const setToken = useContextSelector(RootContext, (values) => values.setToken);
-
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('AuthorizationCodePage');
     }, [handleSetActiveStep]),
   );
 
+  const client = useContextSelector(RootContext, (values) => values.client);
+
+  const persistToken = useContextSelector(
+    AuthContext,
+    (values) => values.persistToken,
+  );
+
   useEffect(() => {
     console.log('token', params?.token);
     if (params?.token) {
-      // persistUserToken(params.token);
-      setToken(params.token);
+      persistToken(params.token);
     }
   }, [params?.token]);
 
