@@ -6,23 +6,20 @@ import { AuthContext } from '../../context';
 import { Title, Headline, Subheading, Text } from 'react-native-paper';
 import { SizedBox } from '../../../../components/SizedBox';
 import { useFocusEffect } from 'expo-next-react-navigation';
+import { RootContext } from '../../../Root/context';
 
 export function ForgotPasswordPage() {
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-
-  const userState = useContextSelector(
-    AuthContext,
-    (values) => values.userState,
-  );
-
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('ForgotPasswordPage');
     }, [handleSetActiveStep]),
   );
+
+  const client = useContextSelector(RootContext, (values) => values.client);
 
   return (
     <ScrollView
@@ -34,8 +31,8 @@ export function ForgotPasswordPage() {
       }}
     >
       <Title>
-        Infelizmente não podemos recuperar o seu acesso por aqui,{' '}
-        {userState?.personalData?.name}.
+        {client?.name}, infelizmente não podemos recuperar o seu acesso por
+        aqui.
       </Title>
       <SizedBox h={16} />
       <Headline>Mas não fique triste!</Headline>

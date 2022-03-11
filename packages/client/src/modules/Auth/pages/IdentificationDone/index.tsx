@@ -7,25 +7,23 @@ import { AuthContext } from '../../context';
 import { Headline, Subheading, Text } from 'react-native-paper';
 import { SizedBox } from '../../../../components/SizedBox';
 import { mask } from 'remask';
+import { RootContext } from '../../../Root/context';
 
 export function IdentificationDonePage() {
+  const router = useRouting();
+
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-
-  const userState = useContextSelector(
-    AuthContext,
-    (values) => values.userState,
-  );
-
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('IdentificationDonePage');
     }, [handleSetActiveStep]),
   );
 
-  const router = useRouting();
+  const client = useContextSelector(RootContext, (values) => values.client);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -37,19 +35,19 @@ export function IdentificationDonePage() {
     >
       <Headline style={{ textAlign: 'center' }}>
         Olá,{'\n'}
-        <Headline>{userState?.personalData?.name}</Headline>
+        <Headline>{client?.name}</Headline>
       </Headline>
       <SizedBox h={16} />
       <Headline style={{ textAlign: 'center' }}>Verificamos que</Headline>
       <SizedBox h={16} />
       <Subheading style={{ textAlign: 'center' }}>
         Seu telefone é:{'\n'}
-        <Text>{mask(userState?.personalData?.phone, ['(99) 99999-9999'])}</Text>
+        <Text>{mask(client?.phone, ['(99) 99999-9999'])}</Text>
       </Subheading>
       <SizedBox h={8} />
       <Subheading style={{ textAlign: 'center' }}>
         Seu email é:{'\n'}
-        <Text>{userState?.personalData?.email}</Text>
+        <Text>{client?.email}</Text>
       </Subheading>
       <View>
         <SizedBox h={32} />
