@@ -4,8 +4,8 @@ import { lightTheme } from './lightTheme';
 
 interface IThemeProvider {
   children: React.ReactNode;
-  primaryColor: string;
-  accentColor: string;
+  primaryColor?: string;
+  accentColor?: string;
 }
 
 export function ThemeProvider({
