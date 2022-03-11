@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, TextInput, HelperText } from 'react-native-paper';
 import { AuthContext } from '../../context';
@@ -6,73 +6,72 @@ import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
 import { SizedBox } from '../../../../components/SizedBox';
 import { useContextSelector } from 'use-context-selector';
 import { mask, unMask } from 'remask';
-import { Formik } from 'formik';
-import { yup } from '../../../../utils/yup';
-import { ApiService } from '../../../../services';
-import { transformClientIntoUser } from '../../../../../_dos/user';
-
-const yupValidationSchema = yup.object().shape({
-  cpf: yup.string().required().isCPFValid().label('CPF'),
-});
+import { ApiService, StorageService } from '../../../../services';
+import { RootContext } from '../../../Root/context';
+import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
 
 export function AskForCpfPage() {
   const router = useRouting();
+  const showSnackBar = useShowSnackBar();
+
   const handleSetActiveStep = useContextSelector(
     AuthContext,
     (values) => values.handleSetActiveStep,
   );
-  const setUser = useContextSelector(AuthContext, (values) => values.setUser);
-  const userState = useContextSelector(
-    AuthContext,
-    (values) => values.userState,
-  );
-
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('AskForCpfPage');
     }, [handleSetActiveStep]),
   );
 
-  const [loading, setLoading] = useState(false);
+  const formik = useContextSelector(AuthContext, (values) => values.formik);
+  const setClient = useContextSelector(
+    RootContext,
+    (values) => values.setClient,
+  );
 
-  async function onFormSubmit(values) {
-    setLoading(true);
-    const { cpf } = values;
-    const _cpf: string = unMask(cpf);
-    ApiService.resources.client
-      .getClientByCpf(_cpf)
-      .then((response) => {
-        console.log('res', response);
-        if (response) {
-          console.log('aa');
-          const user = transformClientIntoUser(response.data);
-          setUser(user);
+  const scrollRef = useRef<ScrollView>(null);
+
+  const { refetch, isLoading, isRefetching } =
+    ApiService.resources.client.clientQueries.useQueryClientByCpf(
+      unMask(formik.values.cpf),
+      {
+        enabled: false,
+        retry: false,
+        onSuccess: async (data) => {
+          setClient(data);
+          await StorageService.setData({
+            key: 'client',
+            value: JSON.stringify(data),
+          });
           router.replace({
             routeName: 'identification-done',
             web: {
               path: 'auth/identification/done',
             },
           });
-        } else {
-          setUser({ cpf: _cpf });
-          router.navigate({
-            routeName: 'identification',
-            web: {
-              path: 'auth/identification',
-            },
-          });
-        }
-      })
-      .catch((_error) => {
-        //
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
+        },
+        onError: async (error) => {
+          if (error.response?.status === 404) {
+            router.navigate({
+              routeName: 'identification',
+              web: {
+                path: 'auth/identification',
+              },
+            });
+          } else {
+            showSnackBar(
+              error.response?.data?.message ??
+                'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
+            );
+          }
+        },
+      },
+    );
 
   return (
     <ScrollView
+      ref={scrollRef}
       contentContainerStyle={{
         flexGrow: 1,
         justifyContent: 'space-between',
@@ -82,49 +81,39 @@ export function AskForCpfPage() {
       }}
     >
       <SizedBox h={0} />
-      <Formik
-        initialValues={{ cpf: mask(userState.cpf, ['999.999.999-99']) }}
-        onSubmit={onFormSubmit}
-        validateOnMount
-        validationSchema={yupValidationSchema}
-        enableReinitialize
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          isValid,
-          touched,
-        }) => (
-          <>
-            <View style={{ alignSelf: 'stretch', backgroundColor: '#eeeeee' }}>
-              <TextInput
-                label="CPF"
-                placeholder="Digite seu CPF"
-                value={mask(values.cpf, ['999.999.999-99'])}
-                onChangeText={handleChange('cpf')}
-                onBlur={handleBlur('cpf')}
-              />
-              <HelperText type="error" visible={!!touched.cpf && errors.cpf}>
-                {errors.cpf}
-              </HelperText>
-            </View>
-            <View>
-              <SizedBox h={32} />
-              <Button
-                loading={loading}
-                disabled={loading || !isValid}
-                mode="contained"
-                onPress={handleSubmit}
-              >
-                Avançar
-              </Button>
-            </View>
-          </>
-        )}
-      </Formik>
+      <>
+        <View style={{ alignSelf: 'stretch', backgroundColor: '#eeeeee' }}>
+          <TextInput
+            label="CPF"
+            placeholder="Digite seu CPF"
+            keyboardType="numeric"
+            // value={formik.values.cpf}
+            value={mask(formik.values.cpf, ['999.999.999-99'])}
+            onChangeText={formik.handleChange('cpf')}
+            onBlur={formik.handleBlur('cpf')}
+            onSubmitEditing={() => {
+              scrollRef.current?.scrollToEnd();
+            }}
+          />
+          <HelperText
+            type="error"
+            visible={!!formik.touched.cpf && !!formik.errors.cpf}
+          >
+            {formik.errors.cpf}
+          </HelperText>
+        </View>
+        <View>
+          <SizedBox h={32} />
+          <Button
+            loading={isLoading || isRefetching}
+            disabled={isLoading || isRefetching || !formik.values.cpf}
+            mode="contained"
+            onPress={refetch}
+          >
+            Avançar
+          </Button>
+        </View>
+      </>
     </ScrollView>
   );
 }
