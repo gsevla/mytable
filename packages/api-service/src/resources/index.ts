@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
-import { createClientEndpoints } from './client';
-import { createRestaurantEndpoints } from './restaurant';
+import { createClientResource } from './client';
+import { createRestaurantResource } from './restaurant';
 
-export function createResourcesEndpoints(axiosInstance: AxiosInstance) {
+export function createResources(axiosInstance: AxiosInstance) {
   const resources = {
-    client: createClientEndpoints(axiosInstance),
-    restaurant: createRestaurantEndpoints(axiosInstance),
+    client: createClientResource(axiosInstance),
+    restaurant: createRestaurantResource(axiosInstance),
   };
 
   return resources;
