@@ -1,10 +1,9 @@
 import { ClientDto } from '@mytable/dtos';
 import { IClient } from '@mytable/dtos/client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { createContext } from 'use-context-selector';
-import { IUser, transformUserIntoClient } from '../../../_dos/user';
 import { ApiService, StorageService } from '../../services';
 import { ThemeProvider } from '../Theme';
 
@@ -63,11 +62,10 @@ function RootContextProvider({ children }: IRootContextProvider) {
   }
 
   async function loadClient() {
-    const _user = await StorageService.getData({ key: 'user' });
-    if (_user) {
-      const _parsedUser = JSON.parse(_user) as IUser;
-      const _client = transformUserIntoClient(_parsedUser);
-      setClient(_client);
+    const _client = await StorageService.getData({ key: 'client' });
+    if (_client) {
+      const _parsedClient = JSON.parse(_client) as ClientDto.IClient;
+      setClient(_parsedClient);
     }
   }
 
