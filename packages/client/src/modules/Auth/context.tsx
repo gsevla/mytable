@@ -17,7 +17,8 @@ import { unMask } from 'remask';
 export const AuthContext = createContext(
   {} as {
     handleSetActiveStep(_activeStep: keyof typeof AUTHENTICATION_STEPS): void;
-    persistUserToken(userToken: string): void;
+    persistToken(data: string): void;
+    persistClient(data: ClientDto.IClient): void;
     formik: FormikContextType<ClientDto.ICreateClient>;
   },
 );
@@ -35,31 +36,46 @@ export function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouting();
   const showSnackBar = useShowSnackBar();
+
   const setToken = useContextSelector(RootContext, (values) => values.setToken);
   const setClient = useContextSelector(
     RootContext,
     (values) => values.setClient,
   );
-  const router = useRouting();
+
   const [activeStep, setActiveStep] = useState<AUTHENTICATION_STEPS>(
     AUTHENTICATION_STEPS.AskForCpfPage,
   );
-
-  const persistUserToken = useCallback(async (userToken) => {
-    await StorageService.setData({
-      key: 'token',
-      value: JSON.stringify(userToken),
-    });
-    setToken(userToken);
-  }, []);
-
   const handleSetActiveStep = useCallback(
     (_activeStep: keyof typeof AUTHENTICATION_STEPS) => {
       setActiveStep(AUTHENTICATION_STEPS[_activeStep]);
     },
     [],
   );
+
+  const persistToken = useCallback(async (data: string) => {
+    await StorageService.setData({
+      key: 'token',
+      value: data,
+    });
+    setToken(data);
+  }, []);
+
+  const persistClient = useCallback(async (data: ClientDto.IClient) => {
+    await StorageService.setData({
+      key: 'client',
+      value: JSON.stringify(data),
+    });
+    setClient(data);
+    router.replace({
+      routeName: 'identification-done',
+      web: {
+        path: 'auth/identification/done',
+      },
+    });
+  }, []);
 
   const { mutate } =
     ApiService.resources.client.clientMutations.useCreateClientMutation();
@@ -72,19 +88,7 @@ export function AuthContextProvider({
       phone: unMask(_phone, ['(99) 99999-9999']) as string,
     };
     mutate(unMaskedValues, {
-      onSuccess: async (data) => {
-        setClient(data);
-        await StorageService.setData({
-          key: 'client',
-          value: JSON.stringify(data),
-        });
-        router.replace({
-          routeName: 'identification-done',
-          web: {
-            path: 'auth/identification/done',
-          },
-        });
-      },
+      onSuccess: persistClient,
       onError: (error) => {
         if (error.response?.status === 409) {
           showSnackBar(
@@ -119,7 +123,8 @@ export function AuthContextProvider({
     <AuthContext.Provider
       value={{
         handleSetActiveStep,
-        persistUserToken,
+        persistToken,
+        persistClient,
         formik,
       }}
     >
