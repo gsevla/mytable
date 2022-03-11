@@ -8,8 +8,3 @@ export default {
   ...ApiService,
   QueryClientProvider,
 };
-
-// export default {
-//   ...ApiService,
-//   // QueryClientProvider,
-// };
