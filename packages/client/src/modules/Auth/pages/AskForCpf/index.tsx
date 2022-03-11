@@ -6,8 +6,7 @@ import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
 import { SizedBox } from '../../../../components/SizedBox';
 import { useContextSelector } from 'use-context-selector';
 import { mask, unMask } from 'remask';
-import { ApiService, StorageService } from '../../../../services';
-import { RootContext } from '../../../Root/context';
+import { ApiService } from '../../../../services';
 import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
 
 export function AskForCpfPage() {
@@ -25,9 +24,9 @@ export function AskForCpfPage() {
   );
 
   const formik = useContextSelector(AuthContext, (values) => values.formik);
-  const setClient = useContextSelector(
-    RootContext,
-    (values) => values.setClient,
+  const persistClient = useContextSelector(
+    AuthContext,
+    (values) => values.persistClient,
   );
 
   const scrollRef = useRef<ScrollView>(null);
@@ -38,19 +37,7 @@ export function AskForCpfPage() {
       {
         enabled: false,
         retry: false,
-        onSuccess: async (data) => {
-          setClient(data);
-          await StorageService.setData({
-            key: 'client',
-            value: JSON.stringify(data),
-          });
-          router.replace({
-            routeName: 'identification-done',
-            web: {
-              path: 'auth/identification/done',
-            },
-          });
-        },
+        onSuccess: persistClient,
         onError: async (error) => {
           if (error.response?.status === 404) {
             router.navigate({
@@ -87,7 +74,6 @@ export function AskForCpfPage() {
             label="CPF"
             placeholder="Digite seu CPF"
             keyboardType="numeric"
-            // value={formik.values.cpf}
             value={mask(formik.values.cpf, ['999.999.999-99'])}
             onChangeText={formik.handleChange('cpf')}
             onBlur={formik.handleBlur('cpf')}
