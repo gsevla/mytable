@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Client } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -21,14 +21,20 @@ export class AuthService {
       },
     });
 
+    if (!dbClient) {
+      throw new UnauthorizedException(
+        'Verifique seus dados e tente novamente.',
+        'Acesso não autorizado!',
+      );
+    }
+
     return dbClient;
   }
 
-  async signInClient(client: Client) {
-    let dbClient = await this.validateClient(client.cpf);
-    if (!dbClient) {
-      dbClient = await this.signUpClient(client);
-    }
+  async signInClient(cpf: string) {
+    cpf = cpf.split('.').join('').split('-').join('');
+
+    let dbClient = await this.validateClient(cpf);
 
     const payload = {
       clientId: dbClient.id,
@@ -38,11 +44,11 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
 
     await this.mailService.sendClientAuthorizationEmail(
-      client.email,
-      client.name,
+      dbClient.email,
+      dbClient.name,
       accessToken,
     );
-    return true;
+    return dbClient;
   }
 
   async signUpClient(client: Client) {
