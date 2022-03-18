@@ -1,9 +1,14 @@
 import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
 import { AuthContext } from '../../context';
-import { Title, Headline, Subheading, Text } from 'react-native-paper';
+import {
+  Button,
+  Caption,
+  Title,
+  Headline,
+  Subheading,
+} from 'react-native-paper';
 import { SizedBox } from '../../../../components/SizedBox';
 import { useFocusEffect } from 'expo-next-react-navigation';
 import { RootContext } from '../../../Root/context';
@@ -49,9 +54,9 @@ export function ForgotPasswordPage() {
         </Subheading>
       </Subheading>
       <SizedBox h={16} />
-      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+      <Caption style={{ fontWeight: 'bold', textAlign: 'center' }}>
         Observação: é provável que nós solicitemos algumas informações pessoais.
-      </Text>
+      </Caption>
       <View>
         <SizedBox h={32} />
         <Button mode="text" onPress={() => {}}>
