@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { createAuth } from './src/auth';
 import { createResources } from './src/resources';
-import { createAuthEndpoints } from './src/auth';
 import { queryClient, createQueryClientProvider } from './src/queryClient';
 
 function createApiService() {
@@ -9,7 +9,7 @@ function createApiService() {
     timeout: 15000,
   });
 
-  const auth = createAuthEndpoints(axiosInstance);
+  const auth = createAuth(axiosInstance);
 
   const resources = createResources(axiosInstance);
 
