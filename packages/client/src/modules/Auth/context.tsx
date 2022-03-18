@@ -77,8 +77,8 @@ export function AuthContextProvider({
     });
   }, []);
 
-  const { mutate } =
-    ApiService.resources.client.clientMutations.useCreateClientMutation();
+  const { mutate: signUpClient } =
+    ApiService.auth.authMutations.useQuerySignUpClient();
 
   function onFormSubmit(values: ClientDto.ICreateClient) {
     const { cpf: _cpf, phone: _phone, ...restValues } = values;
@@ -87,7 +87,7 @@ export function AuthContextProvider({
       cpf: unMask(_cpf, ['999.999.999-99']) as string,
       phone: unMask(_phone, ['(99) 99999-9999']) as string,
     };
-    mutate(unMaskedValues, {
+    signUpClient(unMaskedValues, {
       onSuccess: persistClient,
       onError: (error) => {
         if (error.response?.status === 409) {
