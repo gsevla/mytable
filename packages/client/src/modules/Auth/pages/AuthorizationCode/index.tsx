@@ -1,21 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { Button, HelperText } from 'react-native-paper';
+import React, { useCallback, useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { useContextSelector } from 'use-context-selector';
-import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
-import { Headline, Subheading } from 'react-native-paper';
-import { useFocusEffect } from 'expo-next-react-navigation';
-import { ApiService, StorageService } from '../../../../services';
+import { Caption, Headline, Subheading } from 'react-native-paper';
+import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
+import { ApiService } from '../../../../services';
 import { RootContext } from '../../../Root/context';
+import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
 
-const resentTimeInM = 5 * 60; // 5 minutes
-const resentTimeInMs = 60 * 5 * 1000; // 5 minutes in ms
-const timeUpdateInterval = 1000; // 1 second in ms
-
-// WIP: atualizar o resent time de acordo com o app state
-export function AuthorizationCodePage({ navigation, route }) {
+export function AuthorizationCodePage({ route }) {
   const { params } = route;
+  const router = useRouting();
+  const showSnackBar = useShowSnackBar();
 
   const handleSetActiveStep = useContextSelector(
     AuthContext,
@@ -35,85 +31,37 @@ export function AuthorizationCodePage({ navigation, route }) {
   );
 
   useEffect(() => {
-    console.log('token', params?.token);
     if (params?.token) {
       persistToken(params.token);
     }
   }, [params?.token]);
 
-  const [sentTime, setSentTime] = useState<number>();
-  const [remainingTime, setRemainingTime] = useState(0);
-  const [_interval, _setInterval] = useState<NodeJS.Timer>();
-
-  async function handleSent() {
-    const _codeSentTime = Date.now();
-    setSentTime(_codeSentTime);
-    const codeResentTime = _codeSentTime + resentTimeInMs;
-    setRemainingTime(resentTimeInM);
-    const interval = setInterval(async () => {
-      setRemainingTime((old) => old - 1);
-      if (Date.now() > codeResentTime) {
-        await StorageService.setData({
-          key: 'shouldNotSendCodeAutomatically',
-          value: 'true',
-        });
-        setRemainingTime(0);
-        clearInterval(interval);
-      }
-    }, timeUpdateInterval);
-    _setInterval(interval);
-    await ApiService.auth.signInClient(client);
-    await StorageService.setData({
-      key: StorageService.keys.codeSentTime,
-      value: JSON.stringify(_codeSentTime),
-    });
-    await StorageService.setData({
-      key: StorageService.keys.codeResentTime,
-      value: JSON.stringify(codeResentTime),
-    });
-  }
-
-  async function handleResent() {
-    const codeSentTime = parseInt(
-      (await StorageService.getData({
-        key: StorageService.keys.codeSentTime,
-      })) as string,
-      10,
-    );
-    setSentTime(codeSentTime);
-    const codeResentTime = parseInt(
-      (await StorageService.getData({
-        key: StorageService.keys.codeResentTime,
-      })) as string,
-      10,
-    );
-    if (Date.now() < codeResentTime) {
-      const _remainingTime = Math.trunc((codeResentTime - Date.now()) / 1000);
-      setRemainingTime(_remainingTime);
-      const interval = setInterval(async () => {
-        setRemainingTime((old) => old - 1);
-        if (Date.now() > codeResentTime) {
-          await StorageService.setData({
-            key: 'shouldNotSendCodeAutomatically',
-            value: 'true',
-          });
-          setRemainingTime(0);
-          clearInterval(interval);
-        }
-      }, timeUpdateInterval);
-      _setInterval(interval);
-    }
-  }
+  const { mutate: signInClient } =
+    ApiService.auth.authMutations.useQuerySignInClient();
 
   useEffect(() => {
-    if (params?.shouldSendCode) {
-      handleSent();
-    } else {
-      handleResent();
+    if (client) {
+      signInClient(client.cpf, {
+        onError: (error) => {
+          if (error.response?.status === 401) {
+            showSnackBar(
+              error.response?.data?.message ??
+                'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
+            );
+          } else {
+            showSnackBar(
+              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
+            );
+          }
+          router.replace({
+            routeName: 'identification-done',
+            web: {
+              path: 'auth/identification/done',
+            },
+          });
+        },
+      });
     }
-    return () => {
-      clearInterval(_interval);
-    };
   }, []);
 
   return (
@@ -130,25 +78,10 @@ export function AuthorizationCodePage({ navigation, route }) {
       <Subheading>
         Verifique sua caixa de entrada para prosseguir com a autenticação.
       </Subheading>
-      <View>
-        <SizedBox h={32} />
-        <Button
-          mode="text"
-          disabled={!!sentTime && remainingTime > 0}
-          onPress={async () => {
-            await handleSent();
-          }}
-        >
-          Reenviar código
-        </Button>
-        <HelperText
-          type="info"
-          style={{ textAlign: 'center' }}
-          visible={!!sentTime && remainingTime > 0}
-        >
-          {remainingTime} segundos
-        </HelperText>
-      </View>
+      <Caption style={{ fontWeight: 'bold', textAlign: 'center' }}>
+        Observação: caso o email não chegue, apenas reinicie a aplicação e
+        avance novamente.
+      </Caption>
     </ScrollView>
   );
 }
