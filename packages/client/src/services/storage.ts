@@ -40,7 +40,7 @@ async function getData({
 }) {
   let data;
   if (Platform.OS === 'web') {
-    data = Nookies.get(ctx, options)[key];
+    data = Nookies.get(ctx, options)?.[key];
   } else {
     data = await AsyncStorage.getItem(key);
   }
