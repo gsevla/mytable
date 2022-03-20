@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
@@ -58,9 +58,20 @@ export function AuthContextProvider({
   const persistToken = useCallback(async (data: string) => {
     await StorageService.setData({
       key: 'token',
-      value: data,
+      value: JSON.stringify(data),
+      options: {
+        path: '/',
+      },
     });
     setToken(data);
+    if (Platform.OS === 'web') {
+      router.replace({
+        routeName: 'app',
+        web: {
+          path: 'app',
+        },
+      });
+    }
   }, []);
 
   const persistClient = useCallback(async (data: ClientDto.IClient) => {
@@ -118,6 +129,10 @@ export function AuthContextProvider({
     validateOnChange: false,
     validateOnBlur: true,
   });
+
+  if (router.pathname === '/' || router.pathname === '/app') {
+    return children;
+  }
 
   return (
     <AuthContext.Provider
