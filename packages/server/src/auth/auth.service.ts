@@ -58,7 +58,7 @@ export class AuthService {
   signInAuthorization(platform: string, token: string) {
     const platforms = {
       mobile: `exp://192.168.15.15:19000/--/auth/authorization/?token=${token}`,
-      web: `http://192.168.15.15:4200/auth/authorization?token=${token}`,
+      web: `http://192.168.15.15:4001/auth/authorization?token=${token}`,
     };
 
     const url = platforms[platform];
