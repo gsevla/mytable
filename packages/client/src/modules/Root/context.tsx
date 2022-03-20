@@ -1,11 +1,11 @@
 import { ClientDto } from '@mytable/dtos';
-import { IClient } from '@mytable/dtos/client';
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
-import { Snackbar } from 'react-native-paper';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createContext } from 'use-context-selector';
 import { ApiService, StorageService } from '../../services';
 import { ThemeProvider } from '../Theme';
+import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
+import { Snackbar } from 'react-native-paper';
+import { Platform } from 'react-native';
 
 interface IRootContextProvider {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface IRootContextProvider {
 interface IRootContextValues {
   loading: boolean;
   loaded: boolean;
-  client: IClient | null;
+  client: ClientDto.IClient | null;
   setClient(client: ClientDto.IClient): void;
   token: string | null;
   setToken(token: string): void;
@@ -24,22 +24,25 @@ interface IRootContextValues {
 export const RootContext = createContext({} as IRootContextValues);
 
 function RootContextProvider({ children }: IRootContextProvider) {
+  const isMounted = useRef(false); // to avoid actions on prepare
+  const router = useRouting();
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const [client, setClient] = useState<IClient | null>(null);
+  const [client, setClient] = useState<ClientDto.IClient | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isSnackBarDefined, setIsSnackBarDefined] = useState(false);
   const [isSnackBarVisible, setIsSnackBarVisible] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState('');
 
-  useEffect(() => {
-    if (loading) {
-      StatusBar.setHidden(true);
-    }
+  const { data: restaurantData, isLoading: isRestaurantLoading } =
+    ApiService.resources.restaurant.restaurantQueries.useQueryRestaurant();
 
-    if (loaded) {
-      StatusBar.setHidden(false);
-    }
-  }, [loading, loaded]);
+  // lazy load effect to avoid next js warn about useLayout
+  useFocusEffect(
+    useCallback(() => {
+      setIsSnackBarDefined(true);
+    }, []),
+  );
 
   function onSnackBarDismiss() {
     setIsSnackBarVisible(false);
@@ -51,9 +54,6 @@ function RootContextProvider({ children }: IRootContextProvider) {
     setIsSnackBarVisible(true);
   }
 
-  const { data: restaurantData, isLoading: isRestaurantLoading } =
-    ApiService.resources.restaurant.restaurantQueries.useQueryRestaurant();
-
   async function loadToken() {
     const _token = await StorageService.getData({ key: 'token' });
     if (_token) {
@@ -64,18 +64,50 @@ function RootContextProvider({ children }: IRootContextProvider) {
   async function loadClient() {
     const _client = await StorageService.getData({ key: 'client' });
     if (_client) {
-      const _parsedClient = JSON.parse(_client) as ClientDto.IClient;
-      setClient(_parsedClient);
+      const parsedClient = JSON.parse(_client) as ClientDto.IClient;
+      setClient(parsedClient);
     }
   }
 
-  async function loadAll() {
-    await Promise.all([loadToken(), loadClient()]);
-  }
-
   useEffect(() => {
-    loadAll();
+    loadToken();
+    loadClient();
   }, []);
+
+  // navigate for correct path on web
+  // WIP: do it at config level by redirect
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+    } else {
+      if (Platform.OS === 'web') {
+        if (token) {
+          router.replace({
+            routeName: 'app',
+            web: {
+              path: 'app',
+            },
+          });
+        } else {
+          if (!client) {
+            router.replace({
+              routeName: 'auth',
+              web: {
+                path: 'auth',
+              },
+            });
+          } else {
+            router.replace({
+              routeName: 'identification-done',
+              web: {
+                path: 'auth/identification/done',
+              },
+            });
+          }
+        }
+      }
+    }
+  }, [token, client]);
 
   useEffect(() => {
     if (!isRestaurantLoading) {
@@ -101,14 +133,16 @@ function RootContextProvider({ children }: IRootContextProvider) {
         accentColor={restaurantData?.accentColor}
       >
         {children}
-        <Snackbar
-          visible={isSnackBarVisible}
-          onDismiss={onSnackBarDismiss}
-          duration={4000}
-          action={{ label: 'Fechar', onPress: onSnackBarDismiss }}
-        >
-          {snackBarMessage}
-        </Snackbar>
+        {isSnackBarDefined && (
+          <Snackbar
+            visible={isSnackBarVisible}
+            onDismiss={onSnackBarDismiss}
+            duration={4000}
+            action={{ label: 'Fechar', onPress: onSnackBarDismiss }}
+          >
+            {snackBarMessage}
+          </Snackbar>
+        )}
       </ThemeProvider>
     </RootContext.Provider>
   );
