@@ -8,10 +8,14 @@ import { ApiService } from '../../../../services';
 import { RootContext } from '../../../Root/context';
 import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
 
-export function AuthorizationCodePage({ route }) {
-  const { params } = route;
+export function AuthorizationCodePage() {
   const router = useRouting();
   const showSnackBar = useShowSnackBar();
+
+  const shouldSendCode = router.getParam('shouldSendCode') as
+    | string
+    | undefined;
+  const token = router.getParam('token') as string | undefined;
 
   const handleSetActiveStep = useContextSelector(
     AuthContext,
@@ -31,16 +35,16 @@ export function AuthorizationCodePage({ route }) {
   );
 
   useEffect(() => {
-    if (params?.token) {
-      persistToken(params.token);
+    if (token) {
+      persistToken(token);
     }
-  }, [params?.token]);
+  }, [token]);
 
   const { mutate: signInClient } =
     ApiService.auth.authMutations.useQuerySignInClient();
 
   useEffect(() => {
-    if (client) {
+    if (client && shouldSendCode === 'true') {
       signInClient(client.cpf, {
         onError: (error) => {
           if (error.response?.status === 401) {
