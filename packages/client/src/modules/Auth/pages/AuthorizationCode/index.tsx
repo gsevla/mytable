@@ -14,6 +14,7 @@ export function AuthorizationCodePage() {
 
   const shouldSendCode = router.getParam('shouldSendCode') as
     | string
+    | boolean
     | undefined;
   const token = router.getParam('token') as string | undefined;
 
@@ -44,7 +45,7 @@ export function AuthorizationCodePage() {
     ApiService.auth.authMutations.useQuerySignInClient();
 
   useEffect(() => {
-    if (client && shouldSendCode === 'true') {
+    if (client && (shouldSendCode === 'true' || shouldSendCode === true)) {
       signInClient(client.cpf, {
         onError: (error) => {
           if (error.response?.status === 401) {

@@ -1,11 +1,12 @@
 import { ClientDto } from '@mytable/dtos';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
 import { ApiService, StorageService } from '../../services';
 import { ThemeProvider } from '../Theme';
-import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
+import { useFocusEffect } from 'expo-next-react-navigation';
 import { Snackbar } from 'react-native-paper';
 import { Platform } from 'react-native';
+import router from 'next/router';
 
 interface IRootContextProvider {
   children: React.ReactNode;
@@ -24,12 +25,12 @@ interface IRootContextValues {
 export const RootContext = createContext({} as IRootContextValues);
 
 function RootContextProvider({ children }: IRootContextProvider) {
-  const isMounted = useRef(false); // to avoid actions on prepare
-  const router = useRouting();
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState<ClientDto.IClient | null>(null);
+  const [clientLoaded, setClientLoaded] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [tokenLoaded, setTokenLoaded] = useState(false);
   const [isSnackBarDefined, setIsSnackBarDefined] = useState(false);
   const [isSnackBarVisible, setIsSnackBarVisible] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState('');
@@ -59,6 +60,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
     if (_token) {
       setToken(_token);
     }
+    setTokenLoaded(true);
   }
 
   async function loadClient() {
@@ -67,6 +69,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
       const parsedClient = JSON.parse(_client) as ClientDto.IClient;
       setClient(parsedClient);
     }
+    setClientLoaded(true);
   }
 
   useEffect(() => {
@@ -75,39 +78,22 @@ function RootContextProvider({ children }: IRootContextProvider) {
   }, []);
 
   // navigate for correct path on web
-  // WIP: do it at config level by redirect
+  // WIP: do it at config level by redirect if possible
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-    } else {
-      if (Platform.OS === 'web') {
+    if (Platform.OS === 'web') {
+      if (tokenLoaded && clientLoaded) {
         if (token) {
-          router.replace({
-            routeName: 'app',
-            web: {
-              path: 'app',
-            },
-          });
+          router.replace('app');
         } else {
           if (!client) {
-            router.replace({
-              routeName: 'auth',
-              web: {
-                path: 'auth',
-              },
-            });
+            router.replace('auth');
           } else {
-            router.replace({
-              routeName: 'identification-done',
-              web: {
-                path: 'auth/identification/done',
-              },
-            });
+            router.replace('auth/identification/done');
           }
         }
       }
     }
-  }, [token, client]);
+  }, [token, tokenLoaded, client, clientLoaded]);
 
   useEffect(() => {
     if (!isRestaurantLoading) {
