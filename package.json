@@ -17,8 +17,11 @@
   "scripts": {
     "postinstall": "cd ./packages/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
     "client:web:dev": "yarn workspace @mytable/client next:dev",
-    "client:expo:dev": "yarn workspace @mytable/client start",
-    "restaurant:dev": "yarn workspace @mytable/restaurant next:dev",
+    "client:android:dev": "yarn workspace @mytable/client android",
+    "client:ios:dev": "yarn workspace @mytable/client ios",
+    "restaurant:web:dev": "yarn workspace @mytable/restaurant next:dev",
+    "restaurant:android:dev": "yarn workspace @mytable/restaurant android",
+    "restaurant:ios:dev": "yarn workspace @mytable/restaurant ios",
     "server:dev": "yarn workspace @mytable/server start:dev"
   }
 }
