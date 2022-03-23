@@ -5,7 +5,7 @@ import { queryClient, createQueryClientProvider } from './src/queryClient';
 
 function createApiService() {
   const axiosInstance = axios.create({
-    baseURL: 'http://192.168.15.15:3000/api',
+    baseURL: `${process.env.SERVER_HOST}/api`,
     timeout: 15000,
   });
 
