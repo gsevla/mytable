@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@expo/next-adapter": "^3.1.0",
+    "@mytable/api-service": "*",
+    "@mytable/dtos": "*",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
@@ -38,15 +40,13 @@
     "scheduler": "^0.20.2",
     "use-context-selector": "^1.3.9",
     "vanilla-masker": "^1.2.0",
-    "yup": "^0.32.11",
-    "@mytable/api-service": "*",
-    "@mytable/dtos": "*"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
-    "expo-yarn-workspaces": "^1.5.2"
+    "expo-yarn-workspaces": "^1.7.0"
   },
   "private": true
 }

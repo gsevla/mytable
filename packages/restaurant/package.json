@@ -30,7 +30,7 @@
     "@babel/core": "^7.12.9",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
-    "expo-yarn-workspaces": "^1.5.2"
+    "expo-yarn-workspaces": "^1.7.0"
   },
   "private": true
 }
