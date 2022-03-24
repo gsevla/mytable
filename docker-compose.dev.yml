@@ -11,7 +11,7 @@ services:
       - 3000:3000
     command: sh -c "yarn && yarn server:dev"
     env_file:
-      - ./packages/server/.env
+      - .env
 
   restaurant-web:
     container_name: restaurant-web
@@ -25,7 +25,7 @@ services:
     depends_on:
       - server
     env_file:
-      - ./.env
+      - .env
 
   client-web:
     container_name: client-web
@@ -39,4 +39,4 @@ services:
     depends_on:
       - server
     env_file:
-      - ./.env
+      - .env
