@@ -1,10 +1,13 @@
-import ApiService from '@mytable/api-service';
+import Constants from 'expo-constants';
+import { createApiService } from '@mytable/api-service';
+
+const _apiService = createApiService(Constants?.manifest?.extra?.API_URL);
 
 function QueryClientProvider({ children }: { children: React.ReactNode }) {
-  return ApiService.createQueryClientProvider({ children });
+  return _apiService.createQueryClientProvider({ children });
 }
 
 export default {
-  ...ApiService,
+  ..._apiService,
   QueryClientProvider,
 };

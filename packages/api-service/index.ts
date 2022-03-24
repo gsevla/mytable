@@ -3,9 +3,9 @@ import { createAuth } from './src/auth';
 import { createResources } from './src/resources';
 import { queryClient, createQueryClientProvider } from './src/queryClient';
 
-function createApiService() {
+export function createApiService(baseURL: string) {
   const axiosInstance = axios.create({
-    baseURL: `${process.env.SERVER_HOST}/api`,
+    baseURL,
     timeout: 15000,
   });
 
@@ -21,5 +21,3 @@ function createApiService() {
     resources,
   };
 }
-
-export default createApiService();
