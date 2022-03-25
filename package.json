@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@mytable/eslint-config": "*",
+    "@mytable/prettier-config": "*",
     "typescript": "^4.4.2"
   },
   "scripts": {
