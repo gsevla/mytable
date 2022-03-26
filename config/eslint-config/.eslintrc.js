@@ -10,11 +10,14 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: 'tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
     ecmaFeatures: {
       jsx: true,
     },
     ecmaVersion: 2018,
     sourceType: 'module',
+    warnOnUnsupportedTypeScriptVersion: false,
   },
   extends: [
     'eslint:recommended',
