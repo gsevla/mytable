@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "react-query": "^3.34.16",
-    "@mytable/dtos": "*"
+    "@mytable/dtos": "link:../../packages/dtos"
   },
   "devDependencies": {
     "ts-loader": "^9.2.7",

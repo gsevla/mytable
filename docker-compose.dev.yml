@@ -1,42 +1,113 @@
 version: '3.6'
 
 services:
+  db:
+    container_name: pg
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+
   server:
     container_name: server
-    image: node:14-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
     volumes:
-      - ./:/mytable
-    working_dir: /mytable/
+      - .:/usr/src/mytable
+      - /usr/src/mytable/node_modules
+      - /usr/src/mytable/apps/server/node_modules
     ports:
-      - 3000:3000
-    command: sh -c "yarn && yarn server:dev"
+      - 3000:3000 # nestjs
+      - 5555:5555 # prisma studio
+    working_dir: '/usr/src/mytable/apps/server'
+    command: sh -c 'yarn prisma migrate dev && yarn start:dev'
     env_file:
       - .env
-
-  restaurant-web:
-    container_name: restaurant-web
-    image: node:14-alpine
-    volumes:
-      - ./:/mytable
-    working_dir: /mytable/
-    ports:
-      - 4000:4000
-    command: sh -c "yarn && yarn restaurant:web:dev"
     depends_on:
-      - server
-    env_file:
-      - .env
+      - db
 
-  client-web:
-    container_name: client-web
-    image: node:14-alpine
+  client-next:
+    container_name: client-next
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
     volumes:
-      - ./:/mytable
-    working_dir: /mytable/
+      - ./:/usr/src/mytable
+      - /usr/src/mytable/node_modules
+      - /usr/src/mytable/apps/client/node_modules
     ports:
       - 4001:4001
-    command: sh -c "yarn && yarn client:web:dev"
+    command: yarn client:web:dev
     depends_on:
       - server
     env_file:
       - .env
+
+  # client-expo:
+  #   container_name: client-expo
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: deps
+  #   volumes:
+  #     - ./:/usr/src/mytable
+  #     - /usr/src/mytable/node_modules
+  #     - /usr/src/mytable/apps/client/node_modules
+  #   ports:
+  #     - 19001:19001
+  #     - 19002:19002
+  #   command: yarn client:expo:dev
+  #   depends_on:
+  #     - server
+  #   env_file:
+  #     - .env
+
+  restaurant-next:
+    container_name: restaurant-next
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    volumes:
+      - ./:/usr/src/mytable
+      - /usr/src/mytable/node_modules
+      - /usr/src/mytable/apps/restaurant/node_modules
+    ports:
+      - 4000:4000
+    command: sh -c "yarn restaurant:web:dev"
+    depends_on:
+      - server
+    env_file:
+      - .env
+
+  # restaurant-expo:
+  #   container_name: restaurant-expo
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: deps
+  #   volumes:
+  #     - ./:/usr/src/mytable
+  #     - /usr/src/mytable/node_modules
+  #     - /usr/src/mytable/apps/restaurant/node_modules
+  #   ports:
+  #     - 19000:19000
+  #     - 19003:19003
+  #   command: yarn restaurant:expo:dev
+  #   depends_on:
+  #     - server
+  #   env_file:
+  #     - .env
+
+  dba:
+    container_name: pga4
+    image: dpage/pgadmin4
+    ports:
+      - 54321:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: mytable@email.com
+      PGADMIN_DEFAULT_PASSWORD: password

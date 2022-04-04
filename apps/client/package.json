@@ -3,7 +3,8 @@
   "name": "@mytable/client",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "postinstall": "expo-yarn-workspaces postinstall",
+    "start": "expo start --port 19001",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -14,7 +15,7 @@
   "dependencies": {
     "@expo/next-adapter": "^3.1.0",
     "@mytable/api-service": "*",
-    "@mytable/dtos": "*",
+    "@mytable/dtos": "link:../../packages/dtos",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",

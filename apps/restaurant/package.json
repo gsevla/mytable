@@ -3,7 +3,8 @@
   "name": "@mytable/restaurant",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "postinstall": "expo-yarn-workspaces postinstall",
+    "start": "expo start --port 19000",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

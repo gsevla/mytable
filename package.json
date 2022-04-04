@@ -19,13 +19,15 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
     "client:web:dev": "yarn workspace @mytable/client next:dev",
     "client:android:dev": "yarn workspace @mytable/client android",
     "client:ios:dev": "yarn workspace @mytable/client ios",
+    "client:expo:dev": "yarn workspace @mytable/client start",
     "restaurant:web:dev": "yarn workspace @mytable/restaurant next:dev",
     "restaurant:android:dev": "yarn workspace @mytable/restaurant android",
     "restaurant:ios:dev": "yarn workspace @mytable/restaurant ios",
-    "server:dev": "yarn workspace @mytable/server start:dev"
+    "restaurant:expo:dev": "yarn workspace @mytable/restaurant start",
+    "server:dev": "yarn workspace @mytable/server start:dev",
+    "server:build": "yarn workspace @mytable/server build"
   }
 }
