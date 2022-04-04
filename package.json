@@ -9,7 +9,8 @@
     "packages": [
       "apps/*",
       "packages/*",
-      "config/*"
+      "config/*",
+      "lib/*"
     ]
   },
   "devDependencies": {
