@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '../../../components/Icon';
 import { Restaurant } from '../modules/Restaurant';
@@ -97,6 +96,13 @@ export function AppBottomTab() {
               size={size}
             />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            // TODO
+            // call signOut function (with a confirmation modal)
+          },
         }}
       />
     </AppBottomTabNavigator.Navigator>
