@@ -8,12 +8,18 @@ interface IconProps {
   color?: string;
 }
 
-export function Icon({ type = 'MCI', name, size = 32 }: IconProps) {
+export function Icon({
+  type = 'MCI',
+  name,
+  size = 32,
+  color = '#aaa',
+}: IconProps) {
   const literals = {
     MCI: (
       <MaterialCommunityIcons
         name={name}
         size={size}
+        color={color}
       />
     ),
   };
