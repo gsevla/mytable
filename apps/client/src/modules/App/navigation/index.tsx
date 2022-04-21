@@ -3,42 +3,14 @@ import { View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '../../../components/Icon';
+import { Restaurant } from '../modules/Restaurant';
+import { Reservation } from '../modules/Reservation';
+import { WaitingLine } from '../modules/WaitingLine';
+import { Identification } from '../modules/Identification';
 
 const AppBottomTabNavigator = createBottomTabNavigator();
 
-function Restaurant() {
-  return (
-    <View>
-      <Text>this is restaurant</Text>
-    </View>
-  );
-}
-
-function Reservation() {
-  return (
-    <View>
-      <Text>this is reservation</Text>
-    </View>
-  );
-}
-
-function WaitingLine() {
-  return (
-    <View>
-      <Text>this is waiting line</Text>
-    </View>
-  );
-}
-
-function Identification() {
-  return (
-    <View>
-      <Text>this is identification</Text>
-    </View>
-  );
-}
-
-function SignOut() {
+function SignOutPage() {
   return null;
 }
 
@@ -73,6 +45,7 @@ export function AppBottomTab() {
       />
       <AppBottomTabNavigator.Screen
         name='Reservation'
+        component={Reservation}
         options={{
           tabBarLabel: 'Reservas',
           tabBarIcon: ({ color, size }) => (
@@ -83,7 +56,6 @@ export function AppBottomTab() {
             />
           ),
         }}
-        component={Reservation}
       />
       <AppBottomTabNavigator.Screen
         name='WaitingLine'
@@ -115,7 +87,7 @@ export function AppBottomTab() {
       />
       <AppBottomTabNavigator.Screen
         name='SignOut'
-        component={SignOut}
+        component={SignOutPage}
         options={{
           tabBarLabel: 'Sair',
           tabBarIcon: ({ color, size }) => (
