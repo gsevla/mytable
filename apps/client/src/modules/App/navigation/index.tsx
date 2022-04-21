@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '../../../components/Icon';
 
@@ -43,10 +43,18 @@ function SignOut() {
 }
 
 export function AppBottomTab() {
+  const theme = useTheme();
+
   return (
     <AppBottomTabNavigator.Navigator
-      defaultScreenOptions={{
+      screenOptions={{
         headerTitle: '',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarActiveTintColor: theme.colors.accent,
+        tabBarInactiveTintColor: '#aaa',
+        tabBarAllowFontScaling: true,
       }}
     >
       <AppBottomTabNavigator.Screen
