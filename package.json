@@ -19,6 +19,7 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
+    "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
     "client:web:dev": "yarn workspace @mytable/client next:dev",
     "client:android:dev": "yarn workspace @mytable/client android",
     "client:ios:dev": "yarn workspace @mytable/client ios",
