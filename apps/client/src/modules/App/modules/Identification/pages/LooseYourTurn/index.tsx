@@ -5,15 +5,17 @@ import { Button, Headline } from 'react-native-paper';
 export function AppIdentificationLooseYourTurnPage() {
   return (
     <View style={styles.container}>
-      <Headline>Ops! Parece que {'\n'}você perdeu a vez.</Headline>
+      <Headline style={styles.headline}>
+        Ops! Parece que {'\n'}você perdeu a vez.
+      </Headline>
 
       {/* TODO */}
       {/* Componente de sinto muito */}
       <View style={styles.imageSimulation} />
 
       <View>
-        <Headline>Sentimos muito!</Headline>
-        <Headline>
+        <Headline style={styles.headline}>Sentimos muito!</Headline>
+        <Headline style={styles.headline}>
           Você pode entrar {'\n'}novamente na {'\n'}fila caso deseje.
         </Headline>
       </View>
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 24,
+  },
+  headline: {
+    textAlign: 'center',
   },
   imageSimulation: {
     width: 200,

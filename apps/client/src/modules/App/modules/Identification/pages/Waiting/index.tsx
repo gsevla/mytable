@@ -7,12 +7,12 @@ export function AppIdentificationWaitingPage() {
   return (
     <View style={styles.container}>
       <View>
-        <Headline>
+        <Headline style={styles.headline}>
           Fulano, você está {'\n'}na{' '}
           <Headline style={styles.headlineBold}>X</Headline> posição
         </Headline>
         <SizedBox />
-        <Headline>
+        <Headline style={styles.headline}>
           <Headline style={styles.headlineBold}>Y</Headline> pessoas {'\n'}estão
           na sua frente
         </Headline>
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 24,
+  },
+  headline: {
+    textAlign: 'center',
   },
   headlineBold: {
     fontWeight: 'bold',

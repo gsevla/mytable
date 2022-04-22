@@ -5,7 +5,7 @@ import { Button, Headline } from 'react-native-paper';
 export function AppIdentificationYourTurnPage() {
   return (
     <View style={styles.container}>
-      <Headline style={styles.headlingCentered}>
+      <Headline style={styles.headline}>
         Sua vez chegou, {'\n'}dirija-se à recepção!
       </Headline>
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: '#aaa',
   },
-  headlingCentered: {
+  headline: {
     textAlign: 'center',
   },
 });

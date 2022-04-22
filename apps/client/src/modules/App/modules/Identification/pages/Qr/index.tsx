@@ -18,7 +18,7 @@ export function AppIdentificationQrPage() {
 
       <View style={styles.qrImageContainer}>
         <View style={styles.imageSimulation} />
-        <Caption>Código</Caption>
+        <Caption>ID</Caption>
         <Caption style={styles.captionBold}>XXXXXXXXX</Caption>
       </View>
 
