@@ -1,14 +1,14 @@
 export type IdentificationStackParamList = {
-  Qr: {
+  qr: {
     forceNavigate: boolean;
   };
-  Waiting: {
+  waiting: {
     forceNavigate: boolean;
   };
-  YourTurn: {
+  'your-turn': {
     forceNavigate: boolean;
   };
-  LooseYourTurn: {
+  'loose-your-turn': {
     forceNavigate: boolean;
   };
 };

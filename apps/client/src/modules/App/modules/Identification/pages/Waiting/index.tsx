@@ -21,7 +21,7 @@ export function AppIdentificationWaitingPage({ navigation }: Props) {
 
   function onConfirmCancelDialog() {
     setIsCancelDialogOpened(false);
-    navigation.navigate('Qr', { forceNavigate: true });
+    navigation.navigate('qr', { forceNavigate: true });
   }
 
   return (
@@ -35,7 +35,7 @@ export function AppIdentificationWaitingPage({ navigation }: Props) {
           <SizedBox />
           <Headline
             onPress={() => {
-              navigation.navigate('YourTurn', { forceNavigate: true });
+              navigation.navigate('your-turn', { forceNavigate: true });
             }}
             style={styles.headline}
           >

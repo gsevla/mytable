@@ -25,7 +25,7 @@ export function AppIdentificationQrPage(props: Props) {
         <Caption>ID</Caption>
         <Caption
           onPress={() => {
-            props.navigation.navigate('Waiting', { forceNavigate: true });
+            props.navigation.navigate('waiting', { forceNavigate: true });
           }}
           style={styles.captionBold}
         >

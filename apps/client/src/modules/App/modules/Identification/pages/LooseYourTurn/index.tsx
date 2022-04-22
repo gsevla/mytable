@@ -30,7 +30,7 @@ export function AppIdentificationLooseYourTurnPage({ navigation }: Props) {
       <Button
         mode='contained'
         onPress={() => {
-          navigation.navigate('Qr', { forceNavigate: true });
+          navigation.navigate('qr', { forceNavigate: true });
         }}
       >
         Confirmar

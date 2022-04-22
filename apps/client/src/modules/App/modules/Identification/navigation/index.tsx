@@ -23,19 +23,19 @@ export function AppIdentificationStack() {
       }}
     >
       <IdentificationStack.Screen
-        name='Qr'
+        name='qr'
         component={AppIdentificationQrPage}
       />
       <IdentificationStack.Screen
-        name='Waiting'
+        name='waiting'
         component={AppIdentificationWaitingPage}
       />
       <IdentificationStack.Screen
-        name='YourTurn'
+        name='your-turn'
         component={AppIdentificationYourTurnPage}
       />
       <IdentificationStack.Screen
-        name='LooseYourTurn'
+        name='loose-your-turn'
         component={AppIdentificationLooseYourTurnPage}
       />
     </IdentificationStack.Navigator>

@@ -11,7 +11,7 @@ export function AppIdentificationYourTurnPage({ navigation }: Props) {
     <View style={styles.container}>
       <Headline
         onPress={() => {
-          navigation.navigate('LooseYourTurn', { forceNavigate: true });
+          navigation.navigate('loose-your-turn', { forceNavigate: true });
         }}
         style={styles.headline}
       >
@@ -25,7 +25,7 @@ export function AppIdentificationYourTurnPage({ navigation }: Props) {
       <Button
         mode='contained'
         onPress={() => {
-          navigation.navigate('Qr', { forceNavigate: true });
+          navigation.navigate('qr', { forceNavigate: true });
         }}
       >
         Confirmar

@@ -29,7 +29,7 @@ export function AppBottomTab() {
       }}
     >
       <AppBottomTabNavigator.Screen
-        name='Restaurant'
+        name='restaurant'
         options={{
           tabBarLabel: 'Restaurante',
           tabBarIcon: ({ color, size }) => (
@@ -43,7 +43,7 @@ export function AppBottomTab() {
         component={Restaurant}
       />
       <AppBottomTabNavigator.Screen
-        name='Reservation'
+        name='reservation'
         component={Reservation}
         options={{
           tabBarLabel: 'Reservas',
@@ -57,7 +57,7 @@ export function AppBottomTab() {
         }}
       />
       <AppBottomTabNavigator.Screen
-        name='WaitingLine'
+        name='waiting-line'
         component={WaitingLine}
         options={{
           tabBarLabel: 'Fila de espera',
@@ -71,7 +71,7 @@ export function AppBottomTab() {
         }}
       />
       <AppBottomTabNavigator.Screen
-        name='Identification'
+        name='identification'
         component={Identification}
         options={{
           tabBarLabel: 'Identificação',
@@ -85,7 +85,7 @@ export function AppBottomTab() {
         }}
       />
       <AppBottomTabNavigator.Screen
-        name='SignOut'
+        name='sign-out'
         component={SignOutPage}
         options={{
           tabBarLabel: 'Sair',
