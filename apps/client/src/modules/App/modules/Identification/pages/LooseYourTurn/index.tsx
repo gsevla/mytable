@@ -1,8 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Headline } from 'react-native-paper';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IdentificationStackParamList } from '../../navigation/types';
 
-export function AppIdentificationLooseYourTurnPage() {
+type Props = NativeStackScreenProps<
+  IdentificationStackParamList,
+  'LooseYourTurn'
+>;
+
+export function AppIdentificationLooseYourTurnPage({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Headline style={styles.headline}>
@@ -22,7 +29,9 @@ export function AppIdentificationLooseYourTurnPage() {
 
       <Button
         mode='contained'
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate('Qr', { forceNavigate: true });
+        }}
       >
         Confirmar
       </Button>

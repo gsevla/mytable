@@ -1,11 +1,20 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Headline } from 'react-native-paper';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IdentificationStackParamList } from '../../navigation/types';
 
-export function AppIdentificationYourTurnPage() {
+type Props = NativeStackScreenProps<IdentificationStackParamList, 'YourTurn'>;
+
+export function AppIdentificationYourTurnPage({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Headline style={styles.headline}>
+      <Headline
+        onPress={() => {
+          navigation.navigate('LooseYourTurn', { forceNavigate: true });
+        }}
+        style={styles.headline}
+      >
         Sua vez chegou, {'\n'}dirija-se à recepção!
       </Headline>
 
@@ -15,7 +24,9 @@ export function AppIdentificationYourTurnPage() {
 
       <Button
         mode='contained'
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate('Qr', { forceNavigate: true });
+        }}
       >
         Confirmar
       </Button>

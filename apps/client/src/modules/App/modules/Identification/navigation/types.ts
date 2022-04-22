@@ -1,6 +1,14 @@
 export type IdentificationStackParamList = {
-  Qr: undefined;
-  Waiting: undefined;
-  YourTurn: undefined;
-  LooseYourTurn: undefined;
+  Qr: {
+    forceNavigate: boolean;
+  };
+  Waiting: {
+    forceNavigate: boolean;
+  };
+  YourTurn: {
+    forceNavigate: boolean;
+  };
+  LooseYourTurn: {
+    forceNavigate: boolean;
+  };
 };

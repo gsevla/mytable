@@ -2,8 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Headline, Caption } from 'react-native-paper';
 import { SizedBox } from '../../../../../../components/SizedBox';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IdentificationStackParamList } from '../../navigation/types';
 
-export function AppIdentificationQrPage() {
+type Props = NativeStackScreenProps<IdentificationStackParamList, 'Qr'>;
+
+export function AppIdentificationQrPage(props: Props) {
   return (
     <View style={styles.container}>
       <View>
@@ -19,7 +23,14 @@ export function AppIdentificationQrPage() {
       <View style={styles.qrImageContainer}>
         <View style={styles.imageSimulation} />
         <Caption>ID</Caption>
-        <Caption style={styles.captionBold}>XXXXXXXXX</Caption>
+        <Caption
+          onPress={() => {
+            props.navigation.navigate('Waiting', { forceNavigate: true });
+          }}
+          style={styles.captionBold}
+        >
+          XXXXXXXXX
+        </Caption>
       </View>
 
       <SizedBox />
