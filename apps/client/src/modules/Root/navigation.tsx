@@ -6,6 +6,7 @@ import { Text } from 'react-native-paper';
 import { AuthModule } from '../Auth';
 import { useContextSelector } from 'use-context-selector';
 import { RootContext } from './context';
+import { AppBottomTab } from '../App/navigation';
 
 const RootStackNavigator = createNativeStackNavigator();
 
@@ -30,11 +31,17 @@ export default function RootStack() {
   return (
     <RootStackNavigator.Navigator>
       {client && token ? (
-        <RootStackNavigator.Screen name="app" component={App} />
+        <RootStackNavigator.Screen
+          name='app'
+          component={AppBottomTab}
+          options={{
+            headerShown: false,
+          }}
+        />
       ) : (
         <RootStackNavigator.Screen
           options={{ headerShown: false }}
-          name="auth"
+          name='auth'
           component={AuthModule}
         />
       )}
