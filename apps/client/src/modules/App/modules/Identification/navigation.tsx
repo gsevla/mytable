@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { AppIdentificationLooseYourTurnPage } from './pages/LooseYourTurn';
-import { AppIdentificatioQrPage } from './pages/Qr';
+import { AppIdentificationQrPage } from './pages/Qr';
 import { AppIdentificationWaitingPage } from './pages/Waiting';
 import { AppIdentificationYourTurnPage } from './pages/YourTurn';
 
@@ -12,7 +12,7 @@ export function AppIdentificationStack() {
     <IdentificationStack.Navigator screenOptions={{ headerShown: false }}>
       <IdentificationStack.Screen
         name='Qr'
-        component={AppIdentificatioQrPage}
+        component={AppIdentificationQrPage}
       />
       <IdentificationStack.Screen
         name='Waiting'
