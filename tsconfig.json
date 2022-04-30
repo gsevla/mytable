@@ -10,5 +10,6 @@
     "target": "esnext",
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["./config/**/*.js"]
 }
