@@ -11,5 +11,5 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["./config/**/*.js"]
+  "include": ["./config/**/*.js", "./noop.ts"]
 }
