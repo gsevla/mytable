@@ -33,8 +33,14 @@ export const routes = {
       mobile: 'restaurant',
     },
     reservation: {
-      web: 'app/reservation',
-      mobile: 'reservation',
+      list: {
+        web: 'app/reservation/list',
+        mobile: 'reservation-list',
+      },
+      reserve: {
+        web: 'app/reservation/reserve',
+        mobile: 'reservation-reserve',
+      },
     },
     'waiting-line': {
       web: 'app/waiting-line',
@@ -80,7 +86,14 @@ const config = {
     app: {
       screens: {
         [routes.app.restaurant.mobile]: routes.app.restaurant.web,
-        [routes.app.reservation.mobile]: routes.app.reservation.web,
+        reservation: {
+          screens: {
+            [routes.app.reservation.list.mobile]:
+              routes.app.reservation.list.web,
+            [routes.app.reservation.reserve.mobile]:
+              routes.app.reservation.reserve.web,
+          },
+        },
         [routes.app['waiting-line'].mobile]: routes.app['waiting-line'].web,
         identification: {
           screens: {

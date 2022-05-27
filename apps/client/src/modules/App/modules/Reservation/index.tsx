@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { ReservationContextProvider } from './context';
+import { AppReservationStack } from './navigation';
 
 export function Reservation() {
   return (
-    <View>
-      <Text>this is reservation</Text>
-    </View>
+    <ReservationContextProvider>
+      <AppReservationStack />
+    </ReservationContextProvider>
   );
 }
