@@ -34,8 +34,14 @@ export const routes = {
     },
     reservation: {
       list: {
-        web: 'app/reservation/list',
-        mobile: 'reservation-list',
+        active: {
+          web: 'app/reservation/list/active',
+          mobile: 'reservation-list-active',
+        },
+        history: {
+          web: 'app/reservation/list/history',
+          mobile: 'reservation-list-history',
+        },
       },
       reserve: {
         web: 'app/reservation/reserve',
@@ -88,8 +94,14 @@ const config = {
         [routes.app.restaurant.mobile]: routes.app.restaurant.web,
         reservation: {
           screens: {
-            [routes.app.reservation.list.mobile]:
-              routes.app.reservation.list.web,
+            list: {
+              screens: {
+                [routes.app.reservation.list.active.mobile]:
+                  routes.app.reservation.list.active.web,
+                [routes.app.reservation.list.history.mobile]:
+                  routes.app.reservation.list.history.web,
+              },
+            },
             [routes.app.reservation.reserve.mobile]:
               routes.app.reservation.reserve.web,
           },
