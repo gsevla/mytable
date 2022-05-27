@@ -11,40 +11,19 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parser: '@typescript-eslint/parser',
-  // parserOptions: {
-  //   project: 'tsconfig.json',
-  //   tsconfigRootDir: path.join(__dirname, '..', '..'),
-  //   ecmaFeatures: {
-  //     jsx: true,
-  //   },
-  //   ecmaVersion: 2018,
-  //   sourceType: 'module',
-  //   warnOnUnsupportedTypeScriptVersion: false,
-  // },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'], // Your TypeScript files extension
-
-      // As mentioned in the comments, you should extend TypeScript plugins here,
-      // instead of extending them outside the `overrides`.
-      // If you don't want to extend any rules, you don't need an `extends` attribute.
-      extends: ['plugin:@typescript-eslint/recommended'],
-
-      parserOptions: {
-        project: ['tsconfig.json'], // Specify it only for TypeScript files
-        tsconfigRootDir: path.join(__dirname, '..', '..'),
-      },
-      ecmaFeatures: {
-        jsx: true,
-      },
-      ecmaVersion: 2018,
-      sourceType: 'module',
-      warnOnUnsupportedTypeScriptVersion: false,
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: path.join(__dirname, '..', '..'),
+    ecmaFeatures: {
+      jsx: true,
     },
-  ],
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    warnOnUnsupportedTypeScriptVersion: false,
+  },
   extends: [
     'eslint:recommended',
-    // 'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',

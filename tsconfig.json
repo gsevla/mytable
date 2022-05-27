@@ -10,6 +10,5 @@
     "target": "esnext",
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules"],
-  "include": ["./config/**/*.js", "./noop.ts"]
+  "exclude": ["node_modules"]
 }
