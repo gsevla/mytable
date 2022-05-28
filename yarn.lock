@@ -2932,6 +2932,11 @@
 
 "@mytable/dtos@link:packages/dtos":
   version "1.0.0"
+  dependencies:
+    "@mytable/enums" "link:packages/enums"
+
+"@mytable/enums@link:packages/enums":
+  version "1.0.0"
 
 "@napi-rs/triples@^1.0.3":
   version "1.0.3"
