@@ -1,7 +1,4 @@
-export enum EmployeeRoleEnum {
-  ADMIN,
-  ORDINARY,
-}
+import { EmployeeRoleEnum } from '@mytable/enums';
 
 export interface IEmployee {
   id: number;
