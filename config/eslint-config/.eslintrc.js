@@ -26,9 +26,13 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       extends: [
-        'plugin:import/typescript',
+        // 'plugin:@typescript-eslint/recommended',
         'airbnb-typescript',
-        'plugin:@typescript-eslint/recommended',
+        'plugin:import/typescript',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:import/recommended',
+        'prettier',
       ],
       parserOptions: {
         project: [
