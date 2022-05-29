@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es6: true,
@@ -11,29 +12,48 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: path.join(__dirname, '..', '..'),
-    ecmaFeatures: {
-      jsx: true,
+  // parserOptions: {
+  //   project: 'tsconfig.json',
+  //   tsconfigRootDir: path.join(__dirname, '..', '..'),
+  //   ecmaFeatures: {
+  //     jsx: true,
+  //   },
+  //   ecmaVersion: 2018,
+  //   sourceType: 'module',
+  //   warnOnUnsupportedTypeScriptVersion: false,
+  // },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      extends: [
+        'plugin:import/typescript',
+        'airbnb-typescript',
+        'plugin:@typescript-eslint/recommended',
+      ],
+      parserOptions: {
+        project: [
+          'tsconfig.json',
+          'apps/*/tsconfig.json',
+          'lib/*/tsconfig.json',
+          'packages/*/tsconfig.json',
+        ],
+        tsconfigRootDir: path.join(__dirname, '..', '..'),
+        sourceType: 'module',
+      },
     },
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    warnOnUnsupportedTypeScriptVersion: false,
-  },
+  ],
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    // 'eslint:recommended',
+    'airbnb',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
-    'plugin:import/typescript',
-    'airbnb-typescript',
     'prettier',
   ],
   plugins: ['react', '@typescript-eslint', 'import'],
   rules: {
-    'import/no-unresolved': 'error',
+    'import/no-unresolved': ['error', { commonjs: true }],
+    'import/prefer-default-export': 'off',
   },
   settings: {
     'import/parsers': {
@@ -61,8 +81,9 @@ module.exports = {
 
         // use an array of glob patterns
         project: [
-          path.join(__dirname, '..', '..', 'apps') + '/*/tsconfig.json',
-          path.join(__dirname, '..', '..', 'packages') + '/*/tsconfig.json',
+          `${path.join(__dirname, '..', '..', 'apps')}/*/tsconfig.json`,
+          `${path.join(__dirname, '..', '..', 'packages')}/*/tsconfig.json`,
+          `${path.join(__dirname, '..', '..', 'lib')}/*/tsconfig.json`,
         ],
       },
     },
