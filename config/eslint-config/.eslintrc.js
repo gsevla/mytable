@@ -22,42 +22,64 @@ module.exports = {
   //   sourceType: 'module',
   //   warnOnUnsupportedTypeScriptVersion: false,
   // },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'],
-      extends: [
-        // 'plugin:@typescript-eslint/recommended',
-        'airbnb-typescript',
-        'plugin:import/typescript',
-        'plugin:react/recommended',
-        'plugin:react-hooks/recommended',
-        'plugin:import/recommended',
-        'prettier',
-      ],
-      parserOptions: {
-        project: [
-          'tsconfig.json',
-          'apps/*/tsconfig.json',
-          'lib/*/tsconfig.json',
-          'packages/*/tsconfig.json',
-        ],
-        tsconfigRootDir: path.join(__dirname, '..', '..'),
-        sourceType: 'module',
-      },
+  parserOptions: {
+    tsconfigRootDir: path.join(__dirname, '..', '..'),
+    project: [
+      'tsconfig.eslint.json',
+      'apps/*/tsconfig.json',
+      'lib/*/tsconfig.json',
+      'packages/*/tsconfig.json',
+    ],
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
     },
-  ],
+  },
+  // overrides: [
+  //   {
+  //     files: ['*.ts', '*.tsx'],
+  //     extends: [
+  //       // 'plugin:@typescript-eslint/recommended',
+  //       'airbnb',
+  //       'airbnb-typescript',
+  //       'plugin:import/typescript',
+  //       // 'plugin:react/recommended',
+  //       // 'plugin:react-hooks/recommended',
+  //       'plugin:import/recommended',
+  //       'prettier',
+  //     ],
+  //     parserOptions: {
+  //       project: [
+  //         'tsconfig.json',
+  //         'apps/*/tsconfig.json',
+  //         'lib/*/tsconfig.json',
+  //         'packages/*/tsconfig.json',
+  //       ],
+  //       tsconfigRootDir: path.join(__dirname, '..', '..'),
+  //       sourceType: 'module',
+  //     },
+  //   },
+  // ],
   extends: [
     // 'eslint:recommended',
     'airbnb',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:import/recommended',
+    'airbnb-typescript',
+    // 'plugin:react/recommended',
+    // 'plugin:react-hooks/recommended',
+    // 'plugin:jsx-a11y/recommended',
+    // 'plugin:import/typescript',
+    // 'plugin:import/recommended',
     'prettier',
   ],
-  plugins: ['react', '@typescript-eslint', 'import'],
+  plugins: [
+    // 'react', 'react-hooks', 'jsx-a11y',
+    '@typescript-eslint',
+    // 'import',
+  ],
   rules: {
     'import/no-unresolved': ['error', { commonjs: true }],
     'import/prefer-default-export': 'off',
+    'react/jsx-no-constructed-context-values': 'warn',
   },
   settings: {
     'import/parsers': {
