@@ -1,48 +1,24 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { useContextSelector } from 'use-context-selector';
 import { SizedBox } from '../../../../../../components/SizedBox';
-import { AppReservationReserveCardComponent } from '../../components/ReserveCard';
-
-const items = [
-  {
-    id: 1,
-    label: 'fasf',
-  },
-  {
-    id: 2,
-    label: 'fasf',
-  },
-  {
-    id: 3,
-    label: 'fasf',
-  },
-  {
-    id: 4,
-    label: 'fasf',
-  },
-  {
-    id: 5,
-    label: 'fasf',
-  },
-  {
-    id: 6,
-    label: 'fasf',
-  },
-  {
-    id: 7,
-    label: 'fasf',
-  },
-];
+import { AppReservationReserveHistoryCardComponent } from '../../components/ReserveCard';
+import { ReservationContext } from '../../context';
 
 export function AppReservationListHistoryPage() {
+  const reservationsHistory = useContextSelector(
+    ReservationContext,
+    (values) => values.reservationsHistory
+  );
+
   return (
     <View>
       <FlatList
-        data={items}
+        data={reservationsHistory}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return <AppReservationReserveCardComponent />;
-        }}
+        renderItem={({ item }) => (
+          <AppReservationReserveHistoryCardComponent reservation={item} />
+        )}
         ItemSeparatorComponent={SizedBox}
         contentContainerStyle={{ flexGrow: 1, padding: 24 }}
       />
