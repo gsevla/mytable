@@ -3,4 +3,16 @@
 
 module.exports = {
   presets: ['@expo/next-adapter/babel'],
+  plugins: [
+    [
+      'module-resolver',
+      {
+        root: ['./src/'],
+        extensions: ['.js', '.ts', '.tsx'],
+        alias: {
+          '~': './src/',
+        },
+      },
+    ],
+  ],
 };
