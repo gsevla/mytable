@@ -20,6 +20,7 @@
   },
   "scripts": {
     "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
+    "cleanup": "npx rimraf ./**/node_modules && npx rimraf ./**/dist && npx rimraf ./**/expo",
     "expo:client:dev": "yarn workspace @mytable/client start",
     "expo:restaurant:dev": "yarn workspace @mytable/restaurant start",
     "next:client:dev": "yarn workspace @mytable/client next:dev",
