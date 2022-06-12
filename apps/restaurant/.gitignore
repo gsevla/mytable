@@ -36,6 +36,6 @@ web-build/
 # mytable
 next-env.d.ts
 
-# while "main" field in package.json is "__generated__/AppEntry", it always  
+# while "main" field in package.json is "__generated__/AppEntry", it always
 # will be generated in postinstall script, so we can remove it here
-__generated__ 
+__generated__

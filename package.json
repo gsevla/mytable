@@ -16,7 +16,7 @@
   "devDependencies": {
     "@mytable/eslint-config": "*",
     "@mytable/prettier-config": "*",
-    "typescript": "^4.6.3"
+    "typescript": "^4.7.3"
   },
   "scripts": {
     "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
