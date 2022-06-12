@@ -2,7 +2,7 @@ import { ReservationOrderDto } from '@mytable/dtos';
 import React from 'react';
 import { View } from 'react-native';
 import { IconButton, Subheading, Title } from 'react-native-paper';
-import { Paper } from '../../../../../../components/Paper';
+import { Paper } from '~/components/Paper';
 import { reservationOrderStatusEnumString } from '../../constants';
 import { styles } from './styles';
 
