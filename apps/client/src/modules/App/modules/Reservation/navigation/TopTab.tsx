@@ -1,9 +1,9 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useTheme } from 'react-native-paper';
 import { AppReservationListActivePage } from '../pages/ListActive';
 import { AppReservationListHistoryPage } from '../pages/ListHistory';
 import { routes } from '../../../../../constants/routes';
-import { useTheme } from 'react-native-paper';
 
 const ReservationTopTab = createMaterialTopTabNavigator();
 

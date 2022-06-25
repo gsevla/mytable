@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { Image, Platform, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
+import { createContext, useContextSelector } from 'use-context-selector';
+import { useRouting } from 'expo-next-react-navigation';
+import { useFormik, FormikContextType } from 'formik';
+import { ClientDto } from '@mytable/dtos';
+import { unMask } from 'remask';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
-import { createContext, useContextSelector } from 'use-context-selector';
-import { goBackService } from '../../services/navigation';
+import { goBack } from '../../services/navigation';
 import { ApiService, StorageService } from '../../services';
-import { useRouting } from 'expo-next-react-navigation';
 import { RootContext } from '../Root/context';
-import { useFormik, FormikContextType } from 'formik';
 import { yup } from '../../utils/yup';
-import { ClientDto } from '@mytable/dtos';
 import { useShowSnackBar } from '../Root/hooks/useShowSnackBar';
-import { unMask } from 'remask';
 
 export const AuthContext = createContext(
   {} as {
@@ -20,7 +20,7 @@ export const AuthContext = createContext(
     persistToken(data: string): void;
     persistClient(data: ClientDto.IClient): void;
     formik: FormikContextType<ClientDto.ICreateClient>;
-  },
+  }
 );
 
 const yupValidationSchema = yup.object().shape({
@@ -42,17 +42,17 @@ export function AuthContextProvider({
   const setToken = useContextSelector(RootContext, (values) => values.setToken);
   const setClient = useContextSelector(
     RootContext,
-    (values) => values.setClient,
+    (values) => values.setClient
   );
 
   const [activeStep, setActiveStep] = useState<AUTHENTICATION_STEPS>(
-    AUTHENTICATION_STEPS.AskForCpfPage,
+    AUTHENTICATION_STEPS.AskForCpfPage
   );
   const handleSetActiveStep = useCallback(
     (_activeStep: keyof typeof AUTHENTICATION_STEPS) => {
       setActiveStep(AUTHENTICATION_STEPS[_activeStep]);
     },
-    [],
+    []
   );
 
   const persistToken = useCallback(async (data: string) => {
@@ -104,11 +104,11 @@ export function AuthContextProvider({
         if (error.response?.status === 409) {
           showSnackBar(
             error.response?.data?.message ??
-              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
+              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
           );
         } else {
           showSnackBar(
-            'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
+            'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
           );
         }
       },
@@ -158,16 +158,16 @@ export function AuthContextProvider({
             <FAB
               style={styles.fab}
               small
-              icon="arrow-left"
+              icon='arrow-left'
               onPress={() => {
-                goBackService();
+                goBack();
               }}
             />
           )}
         </View>
         <Image
           source={require('../../../assets/logoDefault.png')}
-          resizeMode="contain"
+          resizeMode='contain'
           style={{
             width: '75%',
             height: '25%',

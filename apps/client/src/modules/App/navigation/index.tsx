@@ -41,7 +41,11 @@ export function AppBottomTab() {
     <>
       <AppBottomTabNavigator.Navigator
         screenOptions={{
-          headerTitle: '',
+          headerTitle: 'MyTable',
+          headerStyle: {
+            borderBottomWidth: 1.5,
+            borderBottomColor: '#eee',
+          },
           tabBarLabelStyle: {
             fontSize: 12,
           },
