@@ -22,6 +22,9 @@ COPY apps/restaurant/package.json ./apps/restaurant/package.json
 
 # RUN yarn install --frozen-lockfile --non-interactive
 # RUN yarn --ignore-scripts
+# RUN npm install -g npm@7.24.0
+# RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+RUN apk add --no-cache python3 make g++
 RUN yarn install
 
 COPY . .
