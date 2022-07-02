@@ -21,14 +21,14 @@
   "scripts": {
     "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
     "cleanup": "npx rimraf ./**/node_modules && npx rimraf ./**/dist && npx rimraf ./**/expo",
-    "expo:client:dev": "yarn workspace @mytable/client start",
-    "expo:restaurant:dev": "yarn workspace @mytable/restaurant start",
-    "next:client:dev": "yarn workspace @mytable/client next:dev",
-    "next:restaurant:dev": "yarn workspace @mytable/restaurant next:dev",
-    "android:client:dev": "yarn workspace @mytable/client android",
-    "android:restaurant:dev": "yarn workspace @mytable/restaurant android",
-    "ios:client:dev": "yarn workspace @mytable/client ios",
-    "ios:restaurant:dev": "yarn workspace @mytable/restaurant ios",
+    "client:expo:dev": "yarn workspace @mytable/client start",
+    "client:next:dev": "yarn workspace @mytable/client next:dev",
+    "client:android:dev": "yarn workspace @mytable/client android",
+    "client:ios:dev": "yarn workspace @mytable/client ios",
+    "restaurant:expo:dev": "yarn workspace @mytable/restaurant start",
+    "restaurant:next:dev": "yarn workspace @mytable/restaurant next:dev",
+    "restaurant:android:dev": "yarn workspace @mytable/restaurant android",
+    "restaurant:ios:dev": "yarn workspace @mytable/restaurant ios",
     "server:dev": "yarn workspace @mytable/server start:dev",
     "server:build": "yarn workspace @mytable/server build"
   }
