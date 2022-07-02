@@ -1,51 +1,53 @@
-version: '3.6'
-
 services:
   db:
     container_name: pg
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: password
+    env_file:
+      - .env
     ports:
-      - '5432:5432'
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ${POSTGRES_PATH}/${PROJECT_NAME}/${POSTGRES_DATABASE}/:/var/lib/postgresql/data
 
   server:
     container_name: server
     build:
       context: .
       dockerfile: Dockerfile
-      target: deps
+      target: development
     volumes:
       - .:/usr/src/mytable
       - /usr/src/mytable/node_modules
       - /usr/src/mytable/apps/server/node_modules
     ports:
       - 3000:3000 # nestjs
-      - 5555:5555 # prisma studio
     working_dir: '/usr/src/mytable/apps/server'
-    command: sh -c 'yarn prisma migrate dev && yarn start:dev'
+    # command: sh -c 'yarn prisma migrate dev && yarn start:dev'
+    command: yarn start:dev
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DATABASE}?schema=public
     depends_on:
       - db
 
-  client-next:
-    container_name: client-next
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: deps
-    volumes:
-      - ./:/usr/src/mytable
-      - /usr/src/mytable/node_modules
-      - /usr/src/mytable/apps/client/node_modules
-    ports:
-      - 4001:4001
-    command: yarn client:web:dev
-    depends_on:
-      - server
-    env_file:
-      - .env
+  # client-next:
+  #   container_name: client-next
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: deps
+  #   volumes:
+  #     - ./:/usr/src/mytable
+  #     - /usr/src/mytable/node_modules
+  #     - /usr/src/mytable/apps/client/node_modules
+  #   ports:
+  #     - 4001:4001
+  #   command: yarn client:web:dev
+  #   depends_on:
+  #     - server
+  #   env_file:
+  #     - .env
 
   # client-expo:
   #   container_name: client-expo
@@ -66,23 +68,23 @@ services:
   #   env_file:
   #     - .env
 
-  restaurant-next:
-    container_name: restaurant-next
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: deps
-    volumes:
-      - ./:/usr/src/mytable
-      - /usr/src/mytable/node_modules
-      - /usr/src/mytable/apps/restaurant/node_modules
-    ports:
-      - 4000:4000
-    command: sh -c "yarn restaurant:web:dev"
-    depends_on:
-      - server
-    env_file:
-      - .env
+  # restaurant-next:
+  #   container_name: restaurant-next
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: deps
+  #   volumes:
+  #     - ./:/usr/src/mytable
+  #     - /usr/src/mytable/node_modules
+  #     - /usr/src/mytable/apps/restaurant/node_modules
+  #   ports:
+  #     - 4000:4000
+  #   command: sh -c "yarn restaurant:web:dev"
+  #   depends_on:
+  #     - server
+  #   env_file:
+  #     - .env
 
   # restaurant-expo:
   #   container_name: restaurant-expo
@@ -103,11 +105,12 @@ services:
   #   env_file:
   #     - .env
 
-  dba:
-    container_name: pga4
-    image: dpage/pgadmin4
-    ports:
-      - 54321:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: mytable@email.com
-      PGADMIN_DEFAULT_PASSWORD: password
+  # dba:
+  #   container_name: prisma-studio
+  #   image: timothyjmiller/prisma-studio
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - ${PRISMA_STUDIO_PORT}:5555
+  #   depends_on:
+  #     - db
