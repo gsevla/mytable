@@ -22,10 +22,12 @@
     "prisma:generate": "npx dotenv-cli -e ../../.env -- npx prisma generate",
     "prisma:db:push": "npx dotenv-cli -e ../../.env -- npx prisma db push",
     "prisma:migrate:dev": "npx dotenv-cli -e ../../.env -- npx prisma migrate dev",
+    "prisma:migrate:reset": "npx dotenv-cli -e ../../.env -- npx prisma migrate reset",
     "prisma:studio": "npx dotenv-cli -e ../../.env -- npx prisma studio",
-    "prisma:db:seed": "prisma db seed"
+    "prisma:db:seed": "npx dotenv-cli -e ../../.env -- prisma db seed"
   },
   "prisma": {
+    "schema": "./prisma/schema.prisma",
     "seed": "ts-node --transpile-only prisma/seed.ts"
   },
   "dependencies": {
