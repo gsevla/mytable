@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Param, Post, Response } from '@nestjs/common';
-import { Client } from '@prisma/client';
 import { ClientService } from './client.service';
+import { CreateClientDto } from './dto/create-client.dto';
 
 @Controller('client')
 export class ClientController {
   constructor(private clientService: ClientService) {}
 
   @Post()
-  createClient(@Body() client: Client) {
+  createClient(@Body() client: CreateClientDto) {
     return this.clientService.createClient(client);
   }
 
