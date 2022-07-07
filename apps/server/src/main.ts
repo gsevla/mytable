@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('MyTable')
     .setDescription('MyTable API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
