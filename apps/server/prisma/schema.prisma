@@ -12,38 +12,125 @@ datasource db {
 }
 
 model Restaurant {
-  id           Int        @id @default(autoincrement())
-  name         String
-  ownerName    String
-  address      String
-  coverImage   String?
-  primaryColor String
-  accentColor  String
-  Employee     Employee[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  ownerName        String
+  address          String
+  coverImage       String?
+  primaryColor     String
+  accentColor      String
+  Employee         Employee[]
+  WorkingDays      WorkingDays[]
+  Environment      Environment[]
+  ReservationOrder ReservationOrder[]
 }
 
-enum EmployeeRole {
+enum EmployeeRoleEnum {
   ADMIN
   ORDINARY
 }
 
 model Employee {
-  id           Int          @id @default(autoincrement())
-  name         String
-  surname      String
-  username     String       @unique
-  password     String
-  role         EmployeeRole @default(ORDINARY)
-  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
-  restaurantId Int
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  surname                 String
+  username                String                    @unique
+  password                String
+  role                    EmployeeRoleEnum          @default(ORDINARY)
+  restaurant              Restaurant                @relation(fields: [restaurantId], references: [id])
+  restaurantId            Int
+  ReservationOrder        ReservationOrder[]
+  ReservationOrderHistory ReservationOrderHistory[]
 }
 
 model Client {
-  id         Int    @id @default(autoincrement())
-  name       String
-  surname    String
-  phone      String @unique
-  email      String @unique
-  cpf        String @unique
-  identifier String @unique @default(cuid())
+  id               Int                @id @default(autoincrement())
+  name             String
+  surname          String
+  phone            String             @unique
+  email            String             @unique
+  cpf              String             @unique
+  identifier       String             @unique @default(cuid())
+  ReservationOrder ReservationOrder[]
+}
+
+enum DayEnum {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model WorkingDays {
+  id           Int        @id @default(autoincrement())
+  day          DayEnum    @unique
+  opened       Boolean
+  openingTime  String
+  closingTime  String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+}
+
+model EnvironmentInfo {
+  id            Int         @id @default(autoincrement())
+  environment   Environment @relation(fields: [environmentId], references: [id])
+  environmentId Int
+  description   String
+  capacity      Int
+}
+
+model EnvironmentImage {
+  id            Int         @id @default(autoincrement())
+  environment   Environment @relation(fields: [environmentId], references: [id])
+  environmentId Int
+  path          String
+  addr          String
+  description   String
+}
+
+model Environment {
+  id               Int                @id @default(autoincrement())
+  name             String
+  restaurant       Restaurant         @relation(fields: [restaurantId], references: [id])
+  restaurantId     Int
+  EnvironmentInfo  EnvironmentInfo[]
+  EnvironmentImage EnvironmentImage[]
+}
+
+enum ReservationOrderStatusEnum {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELED
+  DONE
+}
+
+model ReservationOrder {
+  id                      Int                        @id @default(autoincrement())
+  client                  Client                     @relation(fields: [clientId], references: [id])
+  clientId                Int
+  restaurant              Restaurant                 @relation(fields: [restaurantId], references: [id])
+  restaurantId            Int
+  date                    String
+  startTime               String
+  endTime                 String
+  createdAt               DateTime                   @default(now())
+  modifiedAt              DateTime                   @updatedAt
+  status                  ReservationOrderStatusEnum @default(PENDING)
+  employee                Employee                   @relation(fields: [modifiedBy], references: [id])
+  modifiedBy              Int
+  ReservationOrderHistory ReservationOrderHistory[]
+}
+
+model ReservationOrderHistory {
+  id                 Int                        @id @default(autoincrement())
+  reservationOrder   ReservationOrder           @relation(fields: [reservationOrderId], references: [id])
+  reservationOrderId Int
+  status             ReservationOrderStatusEnum
+  employee           Employee                   @relation(fields: [employeeId], references: [id])
+  employeeId         Int
+  createdAt          DateTime                   @default(now())
 }
