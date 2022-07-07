@@ -11,16 +11,16 @@ export class ClientService {
   constructor(private prismaService: PrismaService) {}
 
   async createClient(data: Prisma.ClientCreateInput): Promise<Client> {
-    data.cpf = data.cpf.split('.').join('').split('-').join('');
+    const normalizedCpf = data.cpf.split('.').join('').split('-').join('');
 
     const dbClient = await this.prismaService.client
-      .create({ data })
+      .create({ data: { ...data, cpf: normalizedCpf } })
       .catch((error) => {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           if (error.code === 'P2002') {
             throw new ConflictException(
               'Desculpe, parece que esses dados já foram utilizados por outra pessoa.',
-              'Não foi possível completar o registro!',
+              'Não foi possível completar o registro!'
             );
           }
         }
@@ -31,14 +31,14 @@ export class ClientService {
   }
 
   async getClientById(clientId: number) {
-    const dbClient = this.prismaService.client.findUnique({
+    const dbClient = await this.prismaService.client.findUnique({
       where: { id: clientId },
     });
 
     if (!dbClient) {
       throw new NotFoundException(
         'Verifique os dados e tente novamente mais tarde.',
-        'Cliente não encontado!',
+        'Cliente não encontado!'
       );
     }
 
@@ -53,7 +53,7 @@ export class ClientService {
     if (!dbClient) {
       throw new NotFoundException(
         'Verifique os dados e tente novamente mais tarde.',
-        'Cliente não encontado!',
+        'Cliente não encontado!'
       );
     }
 
