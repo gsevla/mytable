@@ -6,11 +6,14 @@ import { Restaurant, Prisma } from '@prisma/client';
 export class RestaurantService {
   constructor(private prismaService: PrismaService) {}
 
-  createRestaurant(data: Prisma.RestaurantCreateInput): Promise<Restaurant> {
-    return this.prismaService.restaurant.create({ data });
-  }
-
   getRestaurant() {
     return this.prismaService.restaurant.findUnique({ where: { id: 1 } });
+  }
+
+  updateRestaurant(
+    id: number,
+    data: Prisma.RestaurantUpdateInput
+  ): Promise<Restaurant> {
+    return this.prismaService.restaurant.update({ where: { id }, data });
   }
 }
