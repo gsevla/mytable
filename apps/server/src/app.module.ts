@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { sync as findUpSync } from 'find-up';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
@@ -6,8 +8,7 @@ import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
 import { ClientModule } from './resources/client/client.module';
 import { RestaurantModule } from './resources/restaurant/restaurant.module';
-import { ConfigModule } from '@nestjs/config';
-import { sync as findUpSync } from 'find-up';
+import { EmployeeModule } from './resources/employee/employee.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { sync as findUpSync } from 'find-up';
     AuthModule,
     ClientModule,
     RestaurantModule,
+    EmployeeModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
