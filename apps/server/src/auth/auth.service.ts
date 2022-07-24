@@ -15,7 +15,7 @@ export class AuthService {
     private clientService: ClientService
   ) {}
 
-  async validateClient(cpf: string): Promise<Client | null> {
+  private async validateClient(cpf: string): Promise<Client | null> {
     const dbClient = await this.prismaService.client.findUnique({
       where: {
         cpf,
@@ -109,10 +109,11 @@ export class AuthService {
       web: `${process.env.CLIENT_WEB_LINK}/auth/authorization?token=${token}`,
     };
 
-    const url = platforms[platform];
+    const url = platforms[platform] as string | undefined;
 
     if (!url) {
       // return url for page not found
+      return '';
     }
 
     return url;
