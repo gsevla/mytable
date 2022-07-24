@@ -1,9 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Client } from '@prisma/client';
+import { Client, Employee } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ClientService } from 'src/resources/client/client.service';
+import { decryptPassword } from 'src/utils/password';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private mailService: MailService,
     private prismaService: PrismaService,
     private jwtService: JwtService,
-    private clientService: ClientService,
+    private clientService: ClientService
   ) {}
 
   async validateClient(cpf: string): Promise<Client | null> {
@@ -24,17 +25,48 @@ export class AuthService {
     if (!dbClient) {
       throw new UnauthorizedException(
         'Verifique seus dados e tente novamente.',
-        'Acesso não autorizado!',
+        'Acesso não autorizado!'
       );
     }
 
     return dbClient;
   }
 
+  private async validateEmployee(
+    username: string,
+    password: string
+  ): Promise<Employee | null> {
+    const dbEmployee = await this.prismaService.employee.findUnique({
+      where: {
+        username,
+      },
+    });
+
+    if (!dbEmployee) {
+      throw new UnauthorizedException(
+        'Verifique seus dados e tente novamente.',
+        'Acesso não autorizado!'
+      );
+    }
+
+    const passwordMatch = await decryptPassword(password, dbEmployee.password);
+
+    if (!passwordMatch) {
+      throw new UnauthorizedException(
+        'Verifique seus dados e tente novamente.',
+        'Acesso não autorizado!'
+      );
+    }
+
+    delete dbEmployee.password;
+
+    return dbEmployee;
+  }
+
   async signInClient(cpf: string) {
     cpf = cpf.split('.').join('').split('-').join('');
 
-    let dbClient = await this.validateClient(cpf);
+    const dbClient = await this.validateClient(cpf);
 
     const payload = {
       clientId: dbClient.id,
@@ -46,9 +78,25 @@ export class AuthService {
     await this.mailService.sendClientAuthorizationEmail(
       dbClient.email,
       dbClient.name,
-      accessToken,
+      accessToken
     );
     return dbClient;
+  }
+
+  async signInEmployee(username: string, password: string) {
+    const dbEmployee = await this.validateEmployee(username, password);
+
+    const payload = {
+      employeeId: dbEmployee.id,
+      employeeName: dbEmployee.name,
+      dbEmployeeUsername: dbEmployee.username,
+    };
+    const accessToken = this.jwtService.sign(payload);
+
+    return {
+      employee: dbEmployee,
+      accessToken,
+    };
   }
 
   async signUpClient(client: Client) {
