@@ -13,7 +13,7 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 export class EmployeeService {
   constructor(private prismaService: PrismaService) {}
 
-  private removeProps(employee: Employee | Array<Employee>) {
+  private static removeProps(employee: Employee | Array<Employee>) {
     if (!employee) {
       return employee;
     }
@@ -53,13 +53,13 @@ export class EmployeeService {
         throw error;
       });
 
-    return this.removeProps(dbEmployee);
+    return EmployeeService.removeProps(dbEmployee);
   }
 
   async findAll() {
     const dbEmployees = await this.prismaService.employee.findMany();
 
-    return this.removeProps(dbEmployees);
+    return EmployeeService.removeProps(dbEmployees);
   }
 
   async findOne(id: number) {
@@ -75,7 +75,7 @@ export class EmployeeService {
       );
     }
 
-    return this.removeProps(dbEmployee);
+    return EmployeeService.removeProps(dbEmployee);
   }
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
@@ -102,7 +102,7 @@ export class EmployeeService {
         throw error;
       });
 
-    return this.removeProps(dbEmployee);
+    return EmployeeService.removeProps(dbEmployee);
   }
 
   async remove(id: number) {
@@ -126,6 +126,6 @@ export class EmployeeService {
         throw error;
       });
 
-    return this.removeProps(dbRemovedEmployee);
+    return EmployeeService.removeProps(dbRemovedEmployee);
   }
 }
