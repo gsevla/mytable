@@ -37,6 +37,7 @@ model Employee {
   username                String                    @unique
   password                String
   role                    EmployeeRoleEnum          @default(ORDINARY)
+  enabled                 Boolean                   @default(true)
   restaurant              Restaurant                @relation(fields: [restaurantId], references: [id])
   restaurantId            Int
   ReservationOrder        ReservationOrder[]

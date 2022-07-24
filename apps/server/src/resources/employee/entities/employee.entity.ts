@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Employee } from '@prisma/client';
 
 export class EmployeeEntity implements Employee {
@@ -14,7 +14,7 @@ export class EmployeeEntity implements Employee {
   @ApiProperty()
   username: string;
 
-  @ApiProperty()
+  @ApiHideProperty()
   password: string;
 
   @ApiProperty()
@@ -22,4 +22,7 @@ export class EmployeeEntity implements Employee {
 
   @ApiProperty()
   restaurantId: number;
+
+  @ApiProperty()
+  enabled: boolean;
 }

@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/swagger';
+import { ApiHideProperty, PartialType } from '@nestjs/swagger';
 import { CreateEmployeeDto } from './create-employee.dto';
 
-export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {}
+export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
+  @ApiHideProperty()
+  username?: string;
+}
