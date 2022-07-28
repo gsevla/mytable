@@ -19,12 +19,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prisma:generate": "npx dotenv-cli -e ../../.env -- npx prisma generate",
-    "prisma:db:push": "npx dotenv-cli -e ../../.env -- npx prisma db push",
-    "prisma:migrate:dev": "npx dotenv-cli -e ../../.env -- npx prisma migrate dev",
-    "prisma:migrate:reset": "npx dotenv-cli -e ../../.env -- npx prisma migrate reset",
-    "prisma:studio": "npx dotenv-cli -e ../../.env -- npx prisma studio",
-    "prisma:db:seed": "npx dotenv-cli -e ../../.env -- prisma db seed"
+    "prisma:generate": "npx dotenv -e ../../.env -- prisma generate",
+    "prisma:db:push": "npx dotenv -e ../../.env -- prisma db push",
+    "prisma:migrate:dev": "npx dotenv -e ../../.env -- prisma migrate dev",
+    "prisma:migrate:reset": "npx dotenv -e ../../.env -- prisma migrate reset",
+    "prisma:studio": "npx dotenv -e ../../.env -- prisma studio",
+    "prisma:db:seed": "npx dotenv -e ../../.env -- prisma db seed"
   },
   "prisma": {
     "schema": "./prisma/schema.prisma",
@@ -44,6 +44,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "bcrypt": "^5.0.1",
+    "dotenv-cli": "^6.0.0",
     "find-up": "5.0.0",
     "handlebars": "^4.7.7",
     "morgan": "^1.10.0",
