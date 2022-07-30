@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClientModule } from './resources/client/client.module';
 import { RestaurantModule } from './resources/restaurant/restaurant.module';
 import { EmployeeModule } from './resources/employee/employee.module';
+import { WorkingDayModule } from './resources/working-day/working-day.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EmployeeModule } from './resources/employee/employee.module';
     ClientModule,
     RestaurantModule,
     EmployeeModule,
+    WorkingDayModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
