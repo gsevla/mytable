@@ -12,6 +12,8 @@ import { EmployeeModule } from './resources/employee/employee.module';
 import { WorkingDayModule } from './resources/working-day/working-day.module';
 import { EnvironmentModule } from './resources/environment/environment.module';
 import { EnvironmentImageModule } from './resources/environment-image/environment-image.module';
+import { ReservationOrderModule } from './resources/reservation-order/reservation-order.module';
+import { ReservationOrderHistoryModule } from './resources/reservation-order-history/reservation-order-history.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { EnvironmentImageModule } from './resources/environment-image/environmen
     WorkingDayModule,
     EnvironmentModule,
     EnvironmentImageModule,
+    ReservationOrderModule,
+    ReservationOrderHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

@@ -40,7 +40,6 @@ model Employee {
   enabled                 Boolean                   @default(true)
   restaurant              Restaurant                @relation(fields: [restaurantId], references: [id])
   restaurantId            Int
-  ReservationOrder        ReservationOrder[]
   ReservationOrderHistory ReservationOrderHistory[]
 }
 
@@ -90,6 +89,7 @@ model Environment {
   restaurant       Restaurant         @relation(fields: [restaurantId], references: [id])
   restaurantId     Int
   EnvironmentImage EnvironmentImage[]
+  ReservationOrder ReservationOrder[]
 }
 
 enum ReservationOrderStatusEnum {
@@ -102,27 +102,33 @@ enum ReservationOrderStatusEnum {
 
 model ReservationOrder {
   id                      Int                        @id @default(autoincrement())
-  client                  Client                     @relation(fields: [clientId], references: [id])
+  client                  Client                     @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId                Int
   restaurant              Restaurant                 @relation(fields: [restaurantId], references: [id])
   restaurantId            Int
+  environment             Environment                @relation(fields: [environmentId], references: [id])
+  environmentId           Int
+  peopleAmount            Int
   date                    String
   startTime               String
   endTime                 String
   createdAt               DateTime                   @default(now())
   modifiedAt              DateTime                   @updatedAt
   status                  ReservationOrderStatusEnum @default(PENDING)
-  employee                Employee                   @relation(fields: [modifiedBy], references: [id])
-  modifiedBy              Int
   ReservationOrderHistory ReservationOrderHistory[]
 }
 
 model ReservationOrderHistory {
   id                 Int                        @id @default(autoincrement())
-  reservationOrder   ReservationOrder           @relation(fields: [reservationOrderId], references: [id])
+  reservationOrder   ReservationOrder           @relation(fields: [reservationOrderId], references: [id], onDelete: Cascade)
   reservationOrderId Int
   status             ReservationOrderStatusEnum
   employee           Employee                   @relation(fields: [employeeId], references: [id])
   employeeId         Int
   createdAt          DateTime                   @default(now())
+  peopleAmount       Int
+  date               String
+  startTime          String
+  endTime            String
+  reason             String?
 }
