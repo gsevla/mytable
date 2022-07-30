@@ -74,29 +74,21 @@ model WorkingDays {
   restaurantId Int
 }
 
-model EnvironmentInfo {
-  id            Int         @id @default(autoincrement())
-  environment   Environment @relation(fields: [environmentId], references: [id])
-  environmentId Int
-  description   String
-  capacity      Int
-}
-
 model EnvironmentImage {
   id            Int         @id @default(autoincrement())
-  environment   Environment @relation(fields: [environmentId], references: [id])
+  environment   Environment @relation(fields: [environmentId], references: [id], onDelete: Cascade)
   environmentId Int
-  path          String
   addr          String
-  description   String
+  description   String?
 }
 
 model Environment {
   id               Int                @id @default(autoincrement())
   name             String
+  description      String?
+  capacity         Int
   restaurant       Restaurant         @relation(fields: [restaurantId], references: [id])
   restaurantId     Int
-  EnvironmentInfo  EnvironmentInfo[]
   EnvironmentImage EnvironmentImage[]
 }
 
