@@ -1,22 +1,13 @@
 // @generated: @expo/next-adapter@3.1.0
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import LoadingScreen from '../src/pages/Loading';
+import router from 'next/router';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Welcome to Expo + Next.js 👋</Text>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 16,
-  },
-});
+  useEffect(() => {
+    router.replace('app')
+  }, [])
+
+  return <LoadingScreen />;
+}

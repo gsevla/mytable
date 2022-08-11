@@ -5,7 +5,7 @@ const { withExpo } = require('@expo/next-adapter');
 const withFonts = require('next-fonts');
 const withImages = require('next-images');
 
-const withTM = require('next-transpile-modules')(['react-native-web']);
+const withTM = require('next-transpile-modules')(['react-native-web', 'expo-next-react-navigation']);
 
 module.exports = withExpo(
   withTM(
