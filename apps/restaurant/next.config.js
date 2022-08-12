@@ -5,7 +5,11 @@ const { withExpo } = require('@expo/next-adapter');
 const withFonts = require('next-fonts');
 const withImages = require('next-images');
 
-const withTM = require('next-transpile-modules')(['react-native-web', 'expo-next-react-navigation']);
+const withTM = require('next-transpile-modules')([
+  'react-native-web',
+  'expo-next-react-navigation',
+  '@mytable/api-service',
+]);
 
 module.exports = withExpo(
   withTM(
@@ -15,7 +19,7 @@ module.exports = withExpo(
         images: {
           disableStaticImages: true,
         },
-      }),
-    ),
-  ),
+      })
+    )
+  )
 );

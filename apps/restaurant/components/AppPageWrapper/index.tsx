@@ -1,14 +1,68 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { SizedBox } from '~/components/SizedBox';
+import { Button, Headline, Subheading } from 'react-native-paper';
 import router from 'next/router';
+import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
+import { SizedBox } from 'components/SizedBox';
 
 interface IAppPageWrapper {
   children: React.ReactNode;
 }
 
-export const AppPageWrapper = ({ children }: IAppPageWrapper) => {
+const routeNameMap = {
+  dashboard: 'Dashboard',
+  employee: 'Funcionários',
+  'reservation-order': 'Ordens de reserva',
+  restaurant: 'Restaurante',
+  'waiting-line': 'Fila de espera',
+} as const;
+
+const crudOperationsNameMap = {
+  list: '',
+  create: '',
+  edit: '',
+} as const;
+
+const routesExcludedFromCrudOperations = ['dashboard', 'restaurant'];
+
+function getPathnameInfo(pathname: string) {
+  const pathParts = pathname.split('/');
+  pathParts.shift();
+
+  const routeName = pathParts[1];
+  const crudOperationName = pathParts?.[2] ?? 'list';
+
+  return { routeName, crudOperationName };
+}
+
+export function AppPageWrapper({ children }: IAppPageWrapper) {
+  const { pathname } = router;
+
+  const pathnameInfo = getPathnameInfo(pathname);
+
+  const shouldShowBackButton = pathnameInfo.crudOperationName !== 'list';
+  const shouldShowPlustButton =
+    pathnameInfo.crudOperationName === 'list' &&
+    !routesExcludedFromCrudOperations.includes(pathnameInfo.routeName);
+
+  const routeName = (routeNameMap[pathnameInfo.routeName] ?? '') as string;
+  const crudOperationName = (crudOperationsNameMap[
+    pathnameInfo.crudOperationName
+  ] ?? '') as string;
+
+  function generateTitle() {
+    let name: string;
+    if (crudOperationName) {
+      name = `${crudOperationName} ${routeName}`;
+    } else {
+      name = routeName;
+    }
+
+    return name ?? '';
+  }
+
+  const title = generateTitle();
+
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <View
@@ -31,6 +85,7 @@ export const AppPageWrapper = ({ children }: IAppPageWrapper) => {
         }}
       >
         <View>
+          <Subheading>Geral</Subheading>
           <View>
             <Button
               mode='text'
@@ -64,6 +119,7 @@ export const AppPageWrapper = ({ children }: IAppPageWrapper) => {
             </Button>
           </View>
           <SizedBox />
+          <Subheading>Admin</Subheading>
           <View>
             <Button
               mode='text'
@@ -110,9 +166,18 @@ export const AppPageWrapper = ({ children }: IAppPageWrapper) => {
             padding: 16,
           }}
         >
+          <AppPageContentHeaderComponent
+            title={title}
+            showCloseButton={shouldShowBackButton}
+            onPressCloseButton={router.back}
+            showPlusButton={shouldShowPlustButton}
+            onPressPlusButton={() => {
+              router.push(`${router.route}/create`);
+            }}
+          />
           {children}
         </View>
       </View>
     </View>
   );
-};
+}

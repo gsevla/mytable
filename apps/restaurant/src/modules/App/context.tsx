@@ -2,7 +2,7 @@ import React from 'react';
 import { createContext } from 'use-context-selector';
 import { View } from 'react-native';
 import { Button, Headline, Text } from 'react-native-paper';
-import { SizedBox } from '~/components/SizedBox';
+import { SizedBox } from 'components/SizedBox';
 
 interface IAppContextProvider {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ interface IAppContextValues {}
 
 export const AppContext = createContext({} as IAppContextValues);
 
-export const AppContextProvider = ({ children }: IAppContextProvider) => {
+export function AppContextProvider({ children }: IAppContextProvider) {
   return (
     <AppContext.Provider value={{}}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -82,4 +82,4 @@ export const AppContextProvider = ({ children }: IAppContextProvider) => {
       </View>
     </AppContext.Provider>
   );
-};
+}
