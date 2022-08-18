@@ -14,5 +14,13 @@ module.exports = {
         },
       },
     ],
+    process.env.PLATFORM === 'web' && [
+      '@babel/plugin-proposal-private-property-in-object',
+      { loose: true },
+    ],
+    process.env.PLATFORM === 'web' && [
+      '@babel/plugin-proposal-private-methods',
+      { loose: true },
+    ],
   ],
 };

@@ -7,7 +7,7 @@
     "android": "expo start -p 19000 --android",
     "ios": "expo start -p 19000 --ios",
     "next:build": "next build",
-    "next:dev": "next dev -p 4000"
+    "next:dev": "npx dotenv -e ../../.env -v PLATFORM=web -- next dev -p 4000"
   },
   "dependencies": {
     "@expo/next-adapter": "^3.1.0",
@@ -21,6 +21,7 @@
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.2.5",
     "dotenv": "^16.0.0",
+    "dotenv-cli": "^6.0.0",
     "expo": "^44.0.0",
     "expo-constants": "~13.0.1",
     "expo-linking": "~3.0.0",
