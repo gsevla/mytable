@@ -1,6 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button, Headline, Subheading } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
+import { Button, Subheading } from 'react-native-paper';
 import router from 'next/router';
 import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
 import { SizedBox } from 'components/SizedBox';
@@ -175,7 +175,7 @@ export function AppPageWrapper({ children }: IAppPageWrapper) {
               router.push(`${router.route}/create`);
             }}
           />
-          {children}
+          <ScrollView>{children}</ScrollView>
         </View>
       </View>
     </View>
