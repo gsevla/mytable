@@ -23,6 +23,7 @@
     "expo-next-react-navigation": "^2.0.2",
     "expo-status-bar": "~1.2.0",
     "find-up": "5.0.0",
+    "formik": "^2.2.9",
     "next": "^11.1.2",
     "next-fonts": "^1.5.1",
     "next-images": "^1.8.1",
