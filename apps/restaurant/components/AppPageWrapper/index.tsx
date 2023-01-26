@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, Subheading } from 'react-native-paper';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
 import { SizedBox } from 'components/SizedBox';
 
@@ -36,7 +36,7 @@ function getPathnameInfo(pathname: string) {
 }
 
 export function AppPageWrapper({ children }: IAppPageWrapper) {
-  const { pathname } = router;
+  const { pathname, ...router } = useRouter();
 
   const pathnameInfo = getPathnameInfo(pathname);
 
