@@ -1,13 +1,17 @@
 import {
   QueryClient,
-  QueryClientProvider,
+  QueryClientProvider as Provider,
   QueryClientProviderProps,
 } from 'react-query';
 
 export const queryClient = new QueryClient();
 
 export function createQueryClientProvider(
-  props: React.PropsWithChildren<Omit<QueryClientProviderProps, 'client'>>,
+  props: React.PropsWithChildren<Omit<QueryClientProviderProps, 'client'>>
 ) {
-  return QueryClientProvider({ client: queryClient, ...props });
+  return Provider({ client: queryClient, ...props });
+}
+
+export function QueryClientProvider({ children }) {
+  return Provider({ client: queryClient, children });
 }
