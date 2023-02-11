@@ -1,4 +1,6 @@
 import SwaggerClient from 'swagger-client';
+import { SwaggerClientProtocol } from './protocols/swaggerClient';
+import { resourcesMap } from './resources/resourcesMap';
 
 type Methods = {
   [key: string]: (args: unknown) => unknown;
@@ -31,12 +33,14 @@ export default new SwaggerClient('http://localhost:3000/docs-json').then(
           {}
         );
 
-        resourcesAccu[resource] = cleanedMethods;
+        resourcesAccu[resourcesMap[resource]] = cleanedMethods;
 
         return resourcesAccu;
       },
       {}
     );
+
+    console.log('## resources:\n', resources);
 
     return resources;
 
@@ -46,4 +50,4 @@ export default new SwaggerClient('http://localhost:3000/docs-json').then(
     //   console.log('## restaurant', restaurant.data);
     // });
   }
-);
+) as Promise<SwaggerClientProtocol>;
