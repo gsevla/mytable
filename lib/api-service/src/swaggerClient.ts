@@ -40,7 +40,7 @@ export default new SwaggerClient('http://localhost:3000/docs-json').then(
       {}
     );
 
-    console.log('## resources:\n', resources);
+    // console.log('## resources:\n', resources);
 
     return resources;
 

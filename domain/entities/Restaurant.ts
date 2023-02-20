@@ -8,4 +8,4 @@ export interface Restaurant {
   accentColor: string;
 }
 
-export interface UpdateRestaurantInput extends Omit<Restaurant, 'id'>
+export type UpdateRestaurantInput = Omit<Restaurant, 'id'>;

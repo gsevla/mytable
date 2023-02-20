@@ -8,6 +8,6 @@ export interface Client {
   identifier: string;
 }
 
-export interface CreateClientInput extends Omit<Client, 'id' | 'identifier'> {}
+export type CreateClientInput = Omit<Client, 'id' | 'identifier'>;
 
-export interface CreateClientOutput extends Client {}
+export type CreateClientOutput = Client;
