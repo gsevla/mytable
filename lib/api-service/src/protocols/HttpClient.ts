@@ -1,35 +1,36 @@
-type Headers = Record<string, unknown>;
+export type Headers = Record<string, unknown>;
 
-type Params = Record<string, unknown>;
+export type Params = Record<string, unknown>;
 
-type Options = {
+export type Body = Record<string, unknown>;
+
+export type Config = {
   headers: Headers;
   params: Params;
 };
 
-type Data = Record<string, unknown>;
-
-type Return<T = unknown> = {
+export type Return<T = unknown> = {
   status: number;
   data?: T;
+  error?: string;
 };
 
 export interface HttpClientProtocol {
   baseUrl: string;
 
-  get<R = unknown>(url: string, config?: Options): Promise<Return<R>>;
+  get<R = unknown>(url: string, config?: Config): Promise<Return<R>>;
 
   post<R = unknown>(
     url: string,
-    body?: Data,
-    config?: Options
+    body?: Body,
+    config?: Config
   ): Promise<Return<R>>;
 
   patch<R = unknown>(
     url: string,
-    body?: Data,
-    config?: Options
+    body?: Body,
+    config?: Config
   ): Promise<Return<R>>;
 
-  delete(url: string, config?: Options): Promise<Return>;
+  delete(url: string, config?: Config): Promise<Return>;
 }
