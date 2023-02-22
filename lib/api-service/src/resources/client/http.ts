@@ -1,31 +1,31 @@
-import { AxiosInstance } from 'axios';
-import { ClientDto } from '@mytable/dtos';
-import { SwaggerClientProtocol } from '../../protocols/swaggerClient';
+import {
+  Client,
+  CreateClientInput,
+  CreateClientOutput,
+} from '#domain/entities/Client';
+import { HttpClientProtocol } from '../../protocols/HttpClient';
 
-// export function createClientEndpoints(axiosInstance: AxiosInstance) {
-//   // const url = '/client';
+export function createClientEndpoints(httpClient: HttpClientProtocol) {
+  const url = '/client';
 
-//   async function createClient(client: ClientDto.ICreateClient) {
-//     // const response = await axiosInstance.post<ClientDto.IClient>(url, client);
-//     const response = await
-//     return response.data;
-//   }
+  async function createClient(client: CreateClientInput) {
+    const response = await httpClient.post<CreateClientOutput>(url, client);
+    return response;
+  }
 
-//   async function getClientById(id: number) {
-//     const response = await axiosInstance.get<ClientDto.IClient>(`${url}/${id}`);
-//     return response.data;
-//   }
+  async function getClientById(id: number) {
+    const response = await httpClient.get<Client>(`${url}/${id}`);
+    return response;
+  }
 
-//   async function getClientByCpf(cpf: string) {
-//     const response = await axiosInstance.get<ClientDto.IClient>(
-//       `${url}/cpf/${cpf}`,
-//     );
-//     return response.data;
-//   }
+  async function getClientByCpf(cpf: string) {
+    const response = await httpClient.get<Client>(`${url}/cpf/${cpf}`);
+    return response;
+  }
 
-//   return {
-//     createClient,
-//     getClientById,
-//     getClientByCpf,
-//   };
-// }
+  return {
+    createClient,
+    getClientById,
+    getClientByCpf,
+  };
+}

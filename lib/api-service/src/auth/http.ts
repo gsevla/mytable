@@ -1,25 +1,31 @@
-import { ClientDto } from '@mytable/dtos';
-import { AxiosInstance } from 'axios';
+import type {
+  Client,
+  CreateClientInput,
+  CreateClientOutput,
+} from '#domain/entities/Client';
+import {
+  HttpClientProtocol,
+  HttpOperationResult,
+} from '../protocols/HttpClient';
 
-export function createAuthEndpoints(axiosInstance: AxiosInstance) {
+export function createAuthEndpoints(httpClient: HttpClientProtocol) {
   const url = '/auth';
 
-  async function signInClient(cpf: string) {
-    const response = await axiosInstance.post<ClientDto.IClient>(
-      `${url}/sign-in`,
-      {
-        cpf,
-      },
-    );
-    return response.data;
+  async function signInClient(cpf: string): HttpOperationResult<Client> {
+    const response = await httpClient.post<Client>(`${url}/sign-in`, {
+      cpf,
+    });
+    return response;
   }
 
-  async function signUpClient(client: ClientDto.ICreateClient) {
-    const response = await axiosInstance.post<ClientDto.IClient>(
+  async function signUpClient(
+    client: CreateClientInput
+  ): HttpOperationResult<CreateClientOutput> {
+    const response = await httpClient.post<CreateClientOutput>(
       `${url}/sign-up`,
-      client,
+      client
     );
-    return response.data;
+    return response;
   }
 
   return {

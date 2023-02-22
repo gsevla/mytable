@@ -1,25 +1,19 @@
-import { ClientDto } from '@mytable/dtos';
-import { AxiosError } from 'axios';
-import { useMutation, UseMutationOptions } from 'react-query';
+import { useMutation } from 'react-query';
+import { CreateClientInput } from '#domain/entities/Client';
+import { MutationOptions } from '../../protocols/MutationOptions';
 import { createClientEndpoints } from './http';
 
 export function createClientMutations(
-  clientEndpoints: ReturnType<typeof createClientEndpoints>,
+  clientEndpoints: ReturnType<typeof createClientEndpoints>
 ) {
-  function useCreateClientMutation(
-    options?: UseMutationOptions<
-      ClientDto.IClient,
-      AxiosError,
-      ClientDto.ICreateClient
-    >,
-  ) {
-    return useMutation<ClientDto.IClient, AxiosError, ClientDto.ICreateClient>(
-      clientEndpoints.createClient,
-      options,
+  function useCreateClient(options: MutationOptions = {}) {
+    return useMutation(
+      (client: CreateClientInput) => clientEndpoints.createClient(client),
+      options
     );
   }
 
   return {
-    useCreateClientMutation,
+    useCreateClient,
   };
 }

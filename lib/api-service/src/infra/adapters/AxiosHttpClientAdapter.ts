@@ -1,10 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestHeaders } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import type {
   Body,
   Headers,
   HttpClientProtocol,
+  HttpOperationResult,
   Params,
-  Return,
 } from '../../protocols/HttpClient';
 
 export class AxiosHttpClientAdapter implements HttpClientProtocol {
@@ -17,21 +17,45 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
     this.client = axios.create({ baseURL: baseUrl });
   }
 
+  private static errorHandler(error: AxiosError) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      return {
+        status: error.response.status,
+        error: error.response.data as string,
+      };
+    }
+    throw new Error(error.message);
+    // if (error.request) {
+    //   // The request was made but no response was received
+    //   // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    //   // http.ClientRequest in node.js
+    //   return `Error on try to request: ${error.config.url}`
+    // }
+    // // Something happened in setting up the request that triggered an Error
+    // return error.message
+  }
+
   async get<R = unknown>(
     url: string,
     config?: {
       headers: Headers;
       params: Params;
     }
-  ): Promise<Return<R>> {
-    const result = await this.client.get(url, {
-      headers: config?.headers as AxiosRequestHeaders,
-      params: config?.params,
-    });
-    return {
-      status: result.status,
-      data: result.data as R,
-    };
+  ): HttpOperationResult<R> {
+    try {
+      const result = await this.client.get(url, {
+        headers: config?.headers as AxiosRequestHeaders,
+        params: config?.params,
+      });
+      return {
+        status: result.status,
+        data: result.data as R,
+      };
+    } catch (error) {
+      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+    }
   }
 
   async post<R = unknown>(
@@ -41,15 +65,19 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
       headers: Headers;
       params: Params;
     }
-  ): Promise<Return<R>> {
-    const result = await this.client.post(url, body, {
-      headers: config?.headers as AxiosRequestHeaders,
-      params: config?.params,
-    });
-    return {
-      status: result.status,
-      data: result.data as R,
-    };
+  ): HttpOperationResult<R> {
+    try {
+      const result = await this.client.post(url, body, {
+        headers: config?.headers as AxiosRequestHeaders,
+        params: config?.params,
+      });
+      return {
+        status: result.status,
+        data: result.data as R,
+      };
+    } catch (error) {
+      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+    }
   }
 
   async patch<R = unknown>(
@@ -59,30 +87,39 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
       headers: Headers;
       params: Params;
     }
-  ): Promise<Return<R>> {
-    const result = await this.client.patch(url, body, {
-      headers: config?.headers as AxiosRequestHeaders,
-      params: config?.params,
-    });
-    return {
-      status: result.status,
-      data: result.data as R,
-    };
+  ): HttpOperationResult<R> {
+    try {
+      const result = await this.client.patch(url, body, {
+        headers: config?.headers as AxiosRequestHeaders,
+        params: config?.params,
+      });
+      return {
+        status: result.status,
+        data: result.data as R,
+      };
+    } catch (error) {
+      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+    }
   }
 
-  async delete(
+  async delete<R = void>(
     url: string,
     config?: {
       headers: Headers;
       params: Params;
     }
-  ): Promise<{ status: number }> {
-    const result = await this.client.delete(url, {
-      headers: config?.headers as AxiosRequestHeaders,
-      params: config?.params,
-    });
-    return {
-      status: result.status,
-    };
+  ): HttpOperationResult<R> {
+    try {
+      const result = await this.client.delete(url, {
+        headers: config?.headers as AxiosRequestHeaders,
+        params: config?.params,
+      });
+      return {
+        data: result.data as R,
+        status: result.status,
+      };
+    } catch (error) {
+      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+    }
   }
 }

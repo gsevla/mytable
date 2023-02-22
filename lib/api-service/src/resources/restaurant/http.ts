@@ -1,12 +1,12 @@
-import { RestaurantDto } from '@mytable/dtos';
-import { AxiosInstance } from 'axios';
+import { Restaurant } from '#domain/entities/Restaurant';
+import { HttpClientProtocol } from '../../protocols/HttpClient';
 
-export function createRestaurantEndpoints(axiosInstance: AxiosInstance) {
+export function createRestaurantEndpoints(httpClient: HttpClientProtocol) {
   const url = '/restaurant';
 
   async function getRestaurant() {
-    const response = await axiosInstance.get<RestaurantDto.IRestaurant>(url);
-    return response.data;
+    const response = await httpClient.get<Restaurant>(url);
+    return response;
   }
 
   return {

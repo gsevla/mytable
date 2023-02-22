@@ -1,11 +1,9 @@
-// import { AxiosInstance } from 'axios';
-// import { createRestaurantEndpoints } from './http';
-import { SwaggerClientProtocol } from '../../protocols/swaggerClient';
+import { createRestaurantEndpoints } from './http';
+import { HttpClientProtocol } from '../../protocols/HttpClient';
 import { createRestaurantQueries } from './queries';
 
-export function createRestaurantResource(swaggerClient: SwaggerClientProtocol) {
-  const { restaurant: restaurantEndpoints } = swaggerClient;
-  // const restaurantEndpoints = createRestaurantEndpoints(axiosInstance);
+export function createRestaurantResource(httpClient: HttpClientProtocol) {
+  const restaurantEndpoints = createRestaurantEndpoints(httpClient);
   const restaurantQueries = createRestaurantQueries(restaurantEndpoints);
 
   return {

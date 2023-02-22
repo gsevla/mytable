@@ -12,6 +12,6 @@ export function createQueryClientProvider(
   return Provider({ client: queryClient, ...props });
 }
 
-export function QueryClientProvider({ children }) {
+export function QueryClientProvider({ children }: { children: unknown }) {
   return Provider({ client: queryClient, children });
 }

@@ -9,28 +9,40 @@ export type Config = {
   params: Params;
 };
 
-export type Return<T = unknown> = {
+export type Response<T = unknown> = {
   status: number;
-  data?: T;
-  error?: string;
+  data: T;
+  error?: never;
 };
+
+export type ResponseError = {
+  status: number;
+  error: string;
+  data?: never;
+};
+
+export type RequestError = string;
+
+export type HttpOperationResult<R = unknown> = Promise<
+  Response<R> | ResponseError
+>;
 
 export interface HttpClientProtocol {
   baseUrl: string;
 
-  get<R = unknown>(url: string, config?: Config): Promise<Return<R>>;
+  get<R = unknown>(url: string, config?: Config): HttpOperationResult<R>;
 
   post<R = unknown>(
     url: string,
     body?: Body,
     config?: Config
-  ): Promise<Return<R>>;
+  ): HttpOperationResult<R>;
 
   patch<R = unknown>(
     url: string,
     body?: Body,
     config?: Config
-  ): Promise<Return<R>>;
+  ): HttpOperationResult<R>;
 
-  delete(url: string, config?: Config): Promise<Return>;
+  delete<R = void>(url: string, config?: Config): HttpOperationResult<R>;
 }

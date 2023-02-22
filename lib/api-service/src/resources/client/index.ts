@@ -1,12 +1,10 @@
-// import { AxiosInstance } from 'axios';
-import { SwaggerClientProtocol } from '../../protocols/swaggerClient';
-// import { createClientEndpoints } from './http';
+import { HttpClientProtocol } from '../../protocols/HttpClient';
+import { createClientEndpoints } from './http';
 import { createClientMutations } from './mutations';
 import { createClientQueries } from './queries';
 
-export function createClientResource(swaggerClient: SwaggerClientProtocol) {
-  // const clientEndpoints = createClientEndpoints(axiosInstance);
-  const { client: clientEndpoints } = swaggerClient;
+export function createClientResource(httpClient: HttpClientProtocol) {
+  const clientEndpoints = createClientEndpoints(httpClient);
   const clientQueries = createClientQueries(clientEndpoints);
   const clientMutations = createClientMutations(clientEndpoints);
 

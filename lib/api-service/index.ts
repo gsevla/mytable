@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createAuth } from './src/auth';
 import { createResources } from './src/resources';
 import {
@@ -6,26 +5,21 @@ import {
   createQueryClientProvider,
   QueryClientProvider,
 } from './src/queryClient';
-import client from './src/swaggerClient';
+import { AxiosHttpClientAdapter } from './src/infra/adapters/AxiosHttpClientAdapter';
 
-export async function createApiService(baseURL: string) {
-  const swaggerClient = await client;
-  const axiosInstance = axios.create({
-    baseURL,
-    timeout: 15000,
-  });
+export function createApiService(baseURL: string) {
+  const httpClient = new AxiosHttpClientAdapter(baseURL);
 
-  const auth = createAuth(axiosInstance);
+  const auth = createAuth(httpClient);
 
-  const resources = createResources(swaggerClient);
+  const resources = createResources(httpClient);
 
   return {
-    axiosInstance,
+    httpClient,
     queryClient,
     createQueryClientProvider,
     QueryClientProvider,
     auth,
     resources,
-    client,
   };
 }

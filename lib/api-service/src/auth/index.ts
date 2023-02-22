@@ -1,9 +1,9 @@
-import { AxiosInstance } from 'axios';
+import { HttpClientProtocol } from '../protocols/HttpClient';
 import { createAuthEndpoints } from './http';
 import { createAuthMutations } from './mutations';
 
-export function createAuth(axiosInstance: AxiosInstance) {
-  const authEndpoints = createAuthEndpoints(axiosInstance);
+export function createAuth(httpClient: HttpClientProtocol) {
+  const authEndpoints = createAuthEndpoints(httpClient);
   const authMutations = createAuthMutations(authEndpoints);
 
   return {

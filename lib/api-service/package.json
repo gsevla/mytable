@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
-    "react-query": "^3.34.16",
-    "swagger-client": "^3.18.5"
+    "react-query": "^3.34.16"
   },
   "devDependencies": {
     "ts-loader": "^9.2.7",

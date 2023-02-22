@@ -1,47 +1,33 @@
-import { ClientDto } from '@mytable/dtos';
-import { AxiosError, AxiosResponse } from 'axios';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery } from 'react-query';
+import { QueryOptions } from '../../protocols/QueryOptions';
 import { createClientEndpoints } from './http';
 import { clientQueryKeys } from './keys';
 
 export function createClientQueries(
-  clientEndpoints: ReturnType<typeof createClientEndpoints>,
+  clientEndpoints: ReturnType<typeof createClientEndpoints>
 ) {
-  function useQueryClientByCpf(
-    cpf: string,
-    options?: UseQueryOptions<
-      ClientDto.IClient,
-      AxiosError<{
-        error: string;
-        message: string;
-        statusCode: number;
-      }>
-    >,
-  ) {
-    const _queryKey = [clientQueryKeys.clientByCpf, cpf];
+  function useClientWithCpf(cpf: string, options: QueryOptions = {}) {
+    const key = [clientQueryKeys.clientByCpf, cpf];
 
-    return useQuery<ClientDto.IClient, AxiosError>(
-      _queryKey,
-      ({ queryKey }) => clientEndpoints.getClientByCpf(queryKey[1] as string),
-      options,
+    return useQuery(
+      key,
+      ({ queryKey }) => clientEndpoints.getClientByCpf(queryKey[1]),
+      options
     );
   }
 
-  function useQueryClientById(
-    id: number,
-    options?: UseQueryOptions<ClientDto.IClient, AxiosError>,
-  ) {
-    const _queryKey = [clientQueryKeys.clientByCpf, id];
+  function useClientWithId(id: number, options: QueryOptions = {}) {
+    const key = [clientQueryKeys.clientByCpf, id];
 
-    return useQuery<ClientDto.IClient, AxiosError>(
-      _queryKey,
+    return useQuery(
+      key,
       ({ queryKey }) => clientEndpoints.getClientById(queryKey[1] as number),
-      options,
+      options
     );
   }
 
   return {
-    useQueryClientByCpf,
-    useQueryClientById,
+    useClientWithCpf,
+    useClientWithId,
   };
 }
