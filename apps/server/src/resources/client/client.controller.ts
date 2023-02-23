@@ -19,17 +19,17 @@ import { ClientEntity } from './entities/client.entity';
 export class ClientController {
   constructor(private clientService: ClientService) {}
 
-  @Post()
-  @ApiCreatedResponse({
-    description: 'Client created successfully',
-    type: ClientEntity,
-  })
-  @ApiConflictResponse({
-    description: "Client not created because it's data was already used",
-  })
-  createClient(@Body() client: CreateClientDto) {
-    return this.clientService.createClient(client);
-  }
+  // @Post()
+  // @ApiCreatedResponse({
+  //   description: 'Client created successfully',
+  //   type: ClientEntity,
+  // })
+  // @ApiConflictResponse({
+  //   description: "Client not created because it's data was already used",
+  // })
+  // createClient(@Body() client: CreateClientDto) {
+  //   return this.clientService.createClient(client);
+  // }
 
   @ApiOkResponse({
     description: 'Return a client',
