@@ -8,10 +8,10 @@ import { HttpClientProtocol } from '../../protocols/HttpClient';
 export function createClientEndpoints(httpClient: HttpClientProtocol) {
   const url = '/client';
 
-  async function createClient(client: CreateClientInput) {
-    const response = await httpClient.post<CreateClientOutput>(url, client);
-    return response;
-  }
+  // async function createClient(client: CreateClientInput) {
+  //   const response = await httpClient.post<CreateClientOutput>(url, client);
+  //   return response;
+  // }
 
   async function getClientById(id: number) {
     const response = await httpClient.get<Client>(`${url}/${id}`);
@@ -24,7 +24,7 @@ export function createClientEndpoints(httpClient: HttpClientProtocol) {
   }
 
   return {
-    createClient,
+    // createClient,
     getClientById,
     getClientByCpf,
   };

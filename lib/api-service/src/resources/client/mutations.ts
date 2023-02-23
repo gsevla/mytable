@@ -6,14 +6,14 @@ import { createClientEndpoints } from './http';
 export function createClientMutations(
   clientEndpoints: ReturnType<typeof createClientEndpoints>
 ) {
-  function useCreateClient(options: MutationOptions = {}) {
-    return useMutation(
-      (client: CreateClientInput) => clientEndpoints.createClient(client),
-      options
-    );
-  }
+  // function useCreateClient(options: MutationOptions = {}) {
+  //   return useMutation(
+  //     (client: CreateClientInput) => clientEndpoints.createClient(client),
+  //     options
+  //   );
+  // }
 
   return {
-    useCreateClient,
+    // useCreateClient,
   };
 }
