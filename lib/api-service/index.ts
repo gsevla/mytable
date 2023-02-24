@@ -1,10 +1,6 @@
 import { createAuth } from './src/auth';
 import { createResources } from './src/resources';
-import {
-  queryClient,
-  createQueryClientProvider,
-  QueryClientProvider,
-} from './src/queryClient';
+import { queryClient, QueryClientProvider } from './src/queryClient';
 import { AxiosHttpClientAdapter } from './src/infra/adapters/AxiosHttpClientAdapter';
 
 export function createApiService(baseURL: string) {
@@ -17,7 +13,6 @@ export function createApiService(baseURL: string) {
   return {
     httpClient,
     queryClient,
-    createQueryClientProvider,
     QueryClientProvider,
     auth,
     resources,

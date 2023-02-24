@@ -20,6 +20,10 @@ export type CreateEmployeeInput = Omit<
 
 export type CreateEmployeeOutput = EmployeeWithoutPassword;
 
-export type UpdateEmployeeInput = Omit<Employee, 'id' | 'restaurantId'>;
+export type UpdateEmployeeInput = Omit<Employee, 'restaurantId'>;
 
 export type UpdateEmployeeOutput = EmployeeWithoutPassword;
+
+export type DeleteEmployeeInput = number;
+
+export type DeleteEmployeeOutput = void;
