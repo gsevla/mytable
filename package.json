@@ -19,7 +19,7 @@
     "typescript": "^4.7.3"
   },
   "scripts": {
-    "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall && cd ../restaurant && expo-yarn-workspaces postinstall",
+    "postinstall": "cd ./apps/client && expo-yarn-workspaces postinstall",
     "cleanup": "npx rimraf ./**/node_modules && npx rimraf ./**/dist && npx rimraf ./**/expo",
     "client:expo:dev": "yarn workspace @mytable/client start",
     "client:next:dev": "yarn workspace @mytable/client next:dev",
