@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start -p 19000",
-    "android": "expo start -p 19000 --android",
-    "ios": "expo start -p 19000 --ios",
+    "android": "npx dotenv -e ../../.env -v PLATFORM=android -- expo start -p 19000 --android",
+    "ios": "npx dotenv -e ../../.env -v PLATFORM=ios -- expo start -p 19000 --ios",
     "next:build": "next build",
     "next:dev": "npx dotenv -e ../../.env -v PLATFORM=web -- next dev -p 4000"
   },
