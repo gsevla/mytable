@@ -1,0 +1,21 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "isolatedModules": true,
+    "jsx": "preserve"
+    //   "baseUrl": ".",
+    //   "paths": {
+    //     "~/*": ["src/*"],
+    //     "#/services/*": ["services/*"],
+    //     "#/components/*": ["components/*"]
+    //   }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
+
+// {
+//   "extends": "../../tsconfig.eslint.json"
+// }
