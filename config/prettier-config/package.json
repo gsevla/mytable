@@ -2,8 +2,8 @@
   "name": "@mytable/prettier-config",
   "version": "1.0.0",
   "main": ".prettierrc.js",
+  "private": true,
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "prettier": "2.6.2"
   }

@@ -2,6 +2,7 @@
   "name": "@mytable/eslint-config",
   "version": "1.0.0",
   "main": ".eslintrc.js",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.13.0",
