@@ -1,0 +1,46 @@
+services:
+  database:
+    container_name: database
+    image: postgres:alpine
+    env_file:
+      - .env
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - ${DATABASE_DATA_PATH}/${PROJECT_NAME}/${DATABASE_NAME}/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+    # networks:
+    #   - default
+    #   - mytable-network
+
+  server:
+    container_name: server
+    build:
+      context: .
+      args:
+        SERVER_ENV: ${SERVER_ENV}
+      dockerfile: Dockerfile.server
+      target: install
+    volumes:
+      - .:/usr/src/mytable
+      - /usr/src/mytable/node_modules
+      - /usr/src/mytable/apps/server/node_modules
+    ports:
+      - ${SERVER_PORT}:3000
+    working_dir: '/usr/src/mytable/apps/server'
+    command: sh -c "yarn start:${SERVER_ENV}"
+    # command: sh -c 'yarn start:prod'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}?schema=public
+    depends_on:
+      - database
+    # networks:
+    #   - default
+    #   - mytable-network
+# networks:
+#   mytable-network:
+#     name: mytable-network
