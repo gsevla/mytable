@@ -37,7 +37,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
     // return error.message
   }
 
-  async get<R = unknown>(
+  public async get<R = unknown>(
     url: string,
     config?: {
       headers: Headers;
@@ -58,7 +58,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
     }
   }
 
-  async post<R = unknown>(
+  public async post<R = unknown>(
     url: string,
     body?: Body,
     config?: {
@@ -80,7 +80,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
     }
   }
 
-  async patch<R = unknown>(
+  public async patch<R = unknown>(
     url: string,
     body?: Body,
     config?: {
@@ -102,7 +102,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
     }
   }
 
-  async delete<R = void>(
+  public async delete<R = void>(
     url: string,
     config?: {
       headers: Headers;

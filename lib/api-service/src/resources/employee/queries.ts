@@ -19,7 +19,7 @@ export function createEmployeeQueries(employeeEndpoints: EmployeeEndpoints) {
     >(key, () => employeeEndpoints.getAllEmployee(), options);
 
     return {
-      data,
+      data: data?.data,
       isLoading,
     };
   }
@@ -42,7 +42,7 @@ export function createEmployeeQueries(employeeEndpoints: EmployeeEndpoints) {
     );
 
     return {
-      data,
+      data: data?.data,
       isLoading,
     };
   }
