@@ -25,8 +25,8 @@ module.exports = {
     'airbnb',
     'airbnb-typescript',
     'airbnb/hooks',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    // 'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
   plugins: ['@typescript-eslint'],
@@ -36,6 +36,7 @@ module.exports = {
     'no-param-reassign': 'warn',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'react-hooks/exhaustive-deps': 'warn'
+    'react-hooks/exhaustive-deps': 'warn',
+    'react/jsx-no-bind': 'off',
   },
 };
