@@ -9,9 +9,9 @@ export function ServicesProvider({
 }) {
   const [isServicesLoaded, setIsServicesLoaded] = useState(false);
 
-  async function loadServices() {
+  function loadServices() {
     try {
-      await ApiService.getInstance().loadService();
+      ApiService.getInstance().loadService();
       setIsServicesLoaded(true);
     } catch (error) {
       console.log('error on load services', error);
@@ -22,5 +22,5 @@ export function ServicesProvider({
     loadServices();
   }, []);
 
-  return !isServicesLoaded ? <LoadingScreen /> : children;
+  return isServicesLoaded === false ? <LoadingScreen /> : children;
 }

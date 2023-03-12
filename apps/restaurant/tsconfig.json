@@ -8,10 +8,37 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
-      "#/services/*": ["services/*"],
-      "#/components/*": ["components/*"]
-    }
+      "~/*": [
+        "src/*"
+      ],
+      "#/services/*": [
+        "services/*"
+      ],
+      "#/components/*": [
+        "components/*"
+      ],
+      "#/providers/*": [
+        "providers/*"
+      ],
+      "#/hooks/*": [
+        "hooks/*"
+      ]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "resolveJsonModule": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../../domain"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

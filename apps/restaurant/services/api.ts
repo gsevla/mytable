@@ -4,7 +4,9 @@ import { createApiService } from '@mytable/api-service';
 export class ApiService {
   private static instance: ApiService | null = null;
 
-  static getInstance() {
+  private apiService: ReturnType<typeof createApiService> | null = null;
+
+  static getInstance(): ApiService {
     if (ApiService.instance === null) {
       ApiService.instance = new ApiService();
     }
@@ -12,21 +14,22 @@ export class ApiService {
     return ApiService.instance;
   }
 
-  private constructor() {}
+  static isLoaded = false;
 
-  private apiService: Awaited<ReturnType<typeof createApiService>> | undefined;
+  loadService() {
+    if (ApiService.isLoaded) return;
 
-  async loadService() {
-    this.apiService = await createApiService(
+    this.apiService = createApiService(
       Constants?.manifest?.extra?.API_URL as string
     );
+    ApiService.isLoaded = true;
   }
 
   getQueryClientProvider() {
     return this.apiService?.QueryClientProvider;
   }
 
-  getService() {
-    return this.apiService;
+  getService(): ReturnType<typeof createApiService> {
+    return this.apiService as ReturnType<typeof createApiService>;
   }
 }

@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
-import { ApiService } from '#/services/api';
+import { useApiService } from '#/hooks/api/useApiService';
 
 export function QueryClientProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const service = ApiService.getInstance().getService();
+  const apiService = useApiService();
 
   const Provider = useMemo(
-    () => service?.QueryClientProvider,
-    [service?.QueryClientProvider]
+    () => apiService?.QueryClientProvider,
+    [apiService?.QueryClientProvider]
   );
 
   return !Provider ? null : <Provider>{children}</Provider>;
