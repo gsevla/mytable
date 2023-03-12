@@ -8,6 +8,7 @@ export type TextInputProps = {
   touched?: boolean;
   error?: string;
   value: string;
+  disabled?: boolean;
 };
 
 function TextInputWithoutRef(
