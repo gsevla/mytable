@@ -105,27 +105,27 @@ export class EmployeeService {
     return EmployeeService.removeProps(dbEmployee);
   }
 
-  async remove(id: number) {
-    const dbRemovedEmployee = await this.prismaService.employee
-      .update({
-        where: {
-          id,
-        },
-        data: {
-          enabled: false,
-        },
-      })
-      .catch((error) => {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-          if (error.code === 'P2025') {
-            throw new NotFoundException(
-              'Verifique os dados e tente novamente mais tarde.'
-            );
-          }
-        }
-        throw error;
-      });
-
-    return EmployeeService.removeProps(dbRemovedEmployee);
-  }
+  // async remove(id: number) {
+  //   const dbRemovedEmployee = await this.prismaService.employee
+  //     .update({
+  //       where: {
+  //         id,
+  //       },
+  //       data: {
+  //         enabled: false,
+  //       },
+  //     })
+  //     .catch((error) => {
+  //       if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  //         if (error.code === 'P2025') {
+  //           throw new NotFoundException(
+  //             'Verifique os dados e tente novamente mais tarde.'
+  //           );
+  //         }
+  //       }
+  //       throw error;
+  //     });
+  //
+  //   return EmployeeService.removeProps(dbRemovedEmployee);
+  // }
 }
