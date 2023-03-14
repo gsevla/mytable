@@ -1,4 +1,4 @@
-import { Day } from '#domain/enums/Day';
+import { Day } from '../enums/Day';
 
 export interface WorkingDay {
   id: string;

@@ -1,6 +1,9 @@
 {
-  "extends": "../tsconfig.eslint.json"
-  // "compilerOptions": {
-  //   "baseUrl": "."
-  // }
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+  }
 }

@@ -1,4 +1,4 @@
-import { EmployeeRole } from '#domain/enums/EmployeeRole';
+import { EmployeeRole } from '../enums/EmployeeRole';
 
 export interface Employee {
   id: number;
