@@ -49,8 +49,14 @@ export class AuthValidator {
         'Acesso não autorizado!'
       );
     }
-
     delete dbEmployee.password;
+
+    if (!dbEmployee.enabled) {
+      throw new UnauthorizedException(
+        'Você não está autorizado a logar.',
+        'Acesso não autorizado!'
+      );
+    }
 
     return dbEmployee;
   }
