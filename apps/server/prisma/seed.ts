@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { encryptPassword } from '../src/utils/password';
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -20,8 +21,8 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      name: 'Gabriel',
-      surname: 'Adm',
+      name: 'Administrador',
+      surname: 'MyTable',
       username: 'admin',
       password: await encryptPassword('admin'),
       role: 'ADMIN',
@@ -29,6 +30,21 @@ async function main() {
     },
   });
   console.log('employeeAdmin created:\n', employeeAdmin);
+
+  const client = await prisma.client.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      name: 'Gabriel',
+      surname: 'Alves',
+      cpf: '12345678909',
+      phone: '88997130469',
+      email: 'gabrieltots@gmail.com',
+    },
+  });
+  console.log('client created:\n', client);
 }
 
 main()
