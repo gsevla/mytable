@@ -14,6 +14,7 @@ import { EnvironmentModule } from './resources/environment/environment.module';
 import { EnvironmentImageModule } from './resources/environment-image/environment-image.module';
 import { ReservationOrderModule } from './resources/reservation-order/reservation-order.module';
 import { ReservationOrderHistoryModule } from './resources/reservation-order-history/reservation-order-history.module';
+import { AuthValidator } from './auth/validator';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import { ReservationOrderHistoryModule } from './resources/reservation-order-his
     ReservationOrderHistoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, AuthValidator],
 })
 export class AppModule {}

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { AuthValidator } from './validator';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private authValidator: AuthValidator) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -12,12 +13,23 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: {
-    clientId: number;
-    clientName: string;
-    clientIdentifier: string;
-  }) {
-    const { clientId, clientName, clientIdentifier } = payload;
-    return { clientId, clientName, clientIdentifier };
+  async validate(payload) {
+    try {
+      if (payload?.cpf) {
+        return await this.authValidator.validateClient(payload.cpf);
+      }
+      if (payload?.username && payload?.password) {
+        return await this.authValidator.validateEmployee(
+          payload.username,
+          payload.password
+        );
+      }
+    } catch (error) {
+      console.log('## jwt-strategy validate error\n', error);
+    }
+    throw new UnauthorizedException(
+      'Verifique seus dados e tente novamente.',
+      'Acesso não autorizado!'
+    );
   }
 }

@@ -38,7 +38,7 @@ export class AuthController {
     @Query('token') token: string,
     @Res() res: Response
   ) {
-    const url: string = this.authService.signInAuthorization(platform, token);
+    const url: string = AuthService.signInAuthorization(platform, token);
 
     res.redirect(url);
   }

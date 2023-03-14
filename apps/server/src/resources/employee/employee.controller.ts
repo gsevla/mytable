@@ -5,22 +5,29 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { EmployeeRole } from '@mytable/domain';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeEntity } from './entities/employee.entity';
+import { EmployeeRoleGuard } from './employee-role-guard';
+import { EmployeeRoleScope } from './scopes';
 
 @Controller('employee')
 @ApiTags('employee')
+@ApiBearerAuth()
+@EmployeeRoleScope(EmployeeRole.ADMIN)
+@UseGuards(EmployeeRoleGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
@@ -32,6 +39,7 @@ export class EmployeeController {
   }
 
   @Get()
+  @ApiOkResponse()
   findAll() {
     return this.employeeService.findAll();
   }
@@ -53,10 +61,10 @@ export class EmployeeController {
     return this.employeeService.update(+id, updateEmployeeDto);
   }
 
-  @Delete(':id')
-  @ApiNotFoundResponse()
-  @ApiOkResponse()
-  remove(@Param('id') id: string) {
-    return this.employeeService.remove(parseInt(id, 10));
-  }
+  // @Delete(':id')
+  // @ApiNotFoundResponse()
+  // @ApiOkResponse()
+  // remove(@Param('id') id: string) {
+  //   return this.employeeService.remove(parseInt(id, 10));
+  // }
 }
