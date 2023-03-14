@@ -20,14 +20,14 @@ import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeEntity } from './entities/employee.entity';
-import { EmployeeRoleGuard } from './employee-role-guard';
+import { EmployeeGuard } from './employee-guard';
 import { EmployeeRoleScope } from './scopes';
 
 @Controller('employee')
 @ApiTags('employee')
 @ApiBearerAuth()
 @EmployeeRoleScope(EmployeeRole.ADMIN)
-@UseGuards(EmployeeRoleGuard)
+@UseGuards(EmployeeGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 

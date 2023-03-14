@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { EmployeeRole } from '@mytable/domain';
 
 @Injectable()
-export class EmployeeRoleGuard extends AuthGuard('jwt') {
+export class EmployeeGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
   }
@@ -13,21 +13,21 @@ export class EmployeeRoleGuard extends AuthGuard('jwt') {
     const superCanActivate = await super.canActivate(context);
     if (!superCanActivate) return false;
 
-    const scopes = this.reflector.get<EmployeeRole[]>(
-      'scopes',
-      context.getClass()
-    );
-
-    if (!scopes) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
 
     const { user } = request;
 
-    const hasRole = !!user?.role;
-    if (!hasRole) return false;
+    const isEnabled = user?.enabled;
+    if (!isEnabled) return false;
+
+    const isClient = !!user?.role === false;
+    if (isClient) return false;
+
+    const scopes = this.reflector.get<EmployeeRole[]>(
+      'scopes',
+      context.getClass()
+    );
+    if (!scopes) return true;
 
     return scopes.includes(user.role);
   }
