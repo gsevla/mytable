@@ -2,10 +2,12 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  PreconditionFailedException,
 } from '@nestjs/common';
 import { Employee, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { encryptPassword } from 'src/utils/password';
+import { EmployeeRole } from '@mytable/domain';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
@@ -62,6 +64,17 @@ export class EmployeeService {
     return EmployeeService.removeProps(dbEmployees);
   }
 
+  async findAllActiveAdmins() {
+    const activeAdmins = await this.prismaService.employee.findMany({
+      where: {
+        enabled: true,
+        role: EmployeeRole.ADMIN,
+      },
+    });
+
+    return activeAdmins;
+  }
+
   async findOne(id: number) {
     const dbEmployee = await this.prismaService.employee.findUnique({
       where: {
@@ -80,8 +93,22 @@ export class EmployeeService {
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
     if (updateEmployeeDto.password) {
-      const newPassword = await encryptPassword(updateEmployeeDto.password);
-      updateEmployeeDto.password = newPassword;
+      updateEmployeeDto.password = await encryptPassword(
+        updateEmployeeDto.password
+      );
+    }
+
+    const activeAdmins = await this.findAllActiveAdmins();
+
+    if (activeAdmins.length === 1) {
+      if (
+        updateEmployeeDto.enabled === false ||
+        updateEmployeeDto.role === EmployeeRole.ORDINARY
+      )
+        throw new PreconditionFailedException(
+          'Você é o único administrador ativo.',
+          'Edição de usuário não permitida.'
+        );
     }
 
     const dbEmployee = await this.prismaService.employee
