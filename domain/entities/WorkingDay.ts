@@ -1,7 +1,7 @@
 import { Day } from '../enums/Day';
 
 export interface WorkingDay {
-  id: string;
+  id: number;
   day: Day;
   openingTime: string;
   closingTime: string;
