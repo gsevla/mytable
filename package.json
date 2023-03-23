@@ -21,7 +21,7 @@
   },
   "scripts": {
     "postinstall": "yarn workspace @mytable/domain build",
-    "cleanup": "npx rimraf ./**/node_modules && npx rimraf ./**/dist && npx rimraf ./**/expo",
+    "cleanup": "npx rimraf --glob ./**/node_modules && npx rimraf --glob ./**/dist && npx rimraf --glob ./**/expo",
     "client:expo:dev": "yarn workspace @mytable/client start",
     "client:next:dev": "yarn workspace @mytable/client next:dev",
     "client:android:dev": "yarn workspace @mytable/client android",
