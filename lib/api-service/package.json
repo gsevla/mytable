@@ -9,6 +9,7 @@
     "build:watch": "webpack --watch"
   },
   "dependencies": {
+    "@mytable/domain": "*",
     "axios": "^0.26.0",
     "react-query": "^3.34.16"
   },
