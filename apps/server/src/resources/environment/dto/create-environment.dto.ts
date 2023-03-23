@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { CreateEnvironmentInput } from '@mytable/domain';
 
-export class CreateEnvironmentDto
-  implements Prisma.EnvironmentCreateWithoutRestaurantInput
-{
+export class CreateEnvironmentDto implements CreateEnvironmentInput {
   @ApiProperty({ example: 'Ambiente interno' })
   name: string;
 

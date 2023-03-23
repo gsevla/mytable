@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Environment } from '@prisma/client';
+import { Environment } from '@mytable/domain';
 
 export class EnvironmentEntity implements Environment {
   @ApiProperty({ example: 1 })
@@ -19,4 +19,7 @@ export class EnvironmentEntity implements Environment {
 
   @ApiProperty({ example: 1 })
   restaurantId: number;
+
+  @ApiProperty({ example: true })
+  enabled: boolean;
 }

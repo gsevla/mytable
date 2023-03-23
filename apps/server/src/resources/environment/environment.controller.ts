@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { EnvironmentService } from './environment.service';
 import { CreateEnvironmentDto } from './dto/create-environment.dto';
@@ -48,10 +40,5 @@ export class EnvironmentController {
     @Body() updateEnvironmentDto: UpdateEnvironmentDto
   ) {
     return this.environmentService.update(+id, updateEnvironmentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.environmentService.remove(+id);
   }
 }

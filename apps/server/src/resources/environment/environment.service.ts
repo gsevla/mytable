@@ -23,7 +23,7 @@ export class EnvironmentService {
   findAllWithImage() {
     return this.prismaService.environment.findMany({
       include: {
-        EnvironmentImage: true,
+        images: true,
       },
     });
   }
@@ -42,7 +42,7 @@ export class EnvironmentService {
         id,
       },
       include: {
-        EnvironmentImage: true,
+        images: true,
       },
     });
   }
@@ -53,14 +53,6 @@ export class EnvironmentService {
         id,
       },
       data: updateEnvironmentDto,
-    });
-  }
-
-  remove(id: number) {
-    return this.prismaService.environment.delete({
-      where: {
-        id,
-      },
     });
   }
 }

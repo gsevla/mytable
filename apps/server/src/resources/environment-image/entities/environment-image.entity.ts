@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EnvironmentImage } from '@prisma/client';
+import { EnvironmentImage } from '@mytable/domain';
 
 export class EnvironmentImageEntity implements EnvironmentImage {
   @ApiProperty({ example: 1 })

@@ -1,12 +1,7 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
+import { CreateEnvironmentImageInput } from '@mytable/domain';
 
-export class CreateEnvironmentImageDto
-  implements Prisma.EnvironmentImageCreateInput
-{
-  @ApiHideProperty()
-  environment: Prisma.EnvironmentCreateNestedOneWithoutEnvironmentImageInput;
-
+export class CreateEnvironmentImageDto implements CreateEnvironmentImageInput {
   @ApiProperty({ example: 1 })
   environmentId: number;
 

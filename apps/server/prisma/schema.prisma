@@ -82,14 +82,15 @@ model EnvironmentImage {
 }
 
 model Environment {
-  id               Int                @id @default(autoincrement())
-  name             String
-  description      String?
-  capacity         Int
-  restaurant       Restaurant         @relation(fields: [restaurantId], references: [id])
-  restaurantId     Int
-  EnvironmentImage EnvironmentImage[]
-  ReservationOrder ReservationOrder[]
+  id           Int                @id @default(autoincrement())
+  name         String
+  description  String?
+  capacity     Int
+  enabled      Boolean            @default(true)
+  restaurant   Restaurant         @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+  images       EnvironmentImage[]
+  orders       ReservationOrder[]
 }
 
 enum ReservationOrderStatusEnum {
