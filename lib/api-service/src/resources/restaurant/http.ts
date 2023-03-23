@@ -1,4 +1,4 @@
-import { Restaurant } from '#domain/entities/Restaurant';
+import { Restaurant } from '@mytable/domain';
 import { HttpClientProtocol } from '../../protocols/HttpClient';
 
 export function createRestaurantEndpoints(httpClient: HttpClientProtocol) {

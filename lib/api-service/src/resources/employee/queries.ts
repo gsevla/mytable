@@ -1,12 +1,14 @@
 import { useQuery } from 'react-query';
-import { EmployeeWithoutPassword } from '#domain/entities/Employee';
+import { EmployeeWithoutPassword } from '@mytable/domain';
 import { HttpOperationResult } from '../../protocols/HttpClient';
 import { QueryResult } from '../../protocols/QueryClient';
 import { QueryOptions } from '../../protocols/QueryOptions';
-import { EmployeeEndpoints } from './http';
+import { createEmployeeEndpoints } from './http';
 import { employeeQueryKeys } from './keys';
 
-export function createEmployeeQueries(employeeEndpoints: EmployeeEndpoints) {
+export function createEmployeeQueries(
+  employeeEndpoints: ReturnType<typeof createEmployeeEndpoints>
+) {
   function useEmployee(
     options: QueryOptions = {}
   ): QueryResult<Array<EmployeeWithoutPassword>> {

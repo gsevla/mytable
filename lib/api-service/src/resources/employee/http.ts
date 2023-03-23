@@ -4,43 +4,8 @@ import {
   CreateEmployeeInput,
   CreateEmployeeOutput,
   UpdateEmployeeOutput,
-} from '#domain/entities/Employee';
+} from '@mytable/domain';
 import { HttpClientProtocol } from '../../protocols/HttpClient';
-
-export class EmployeeEndpoints {
-  private httpClient: HttpClientProtocol;
-
-  private url = '/employee';
-
-  constructor(httpClient: HttpClientProtocol) {
-    this.httpClient = httpClient;
-    console.log('empHttpClient', this.httpClient);
-  }
-
-  public createEmployee(employee: CreateEmployeeInput) {
-    return this.httpClient.post<CreateEmployeeOutput>(this.url, employee);
-  }
-
-  public getAllEmployee() {
-    console.log('thi', this);
-    return this.httpClient.get<Array<EmployeeWithoutPassword>>(this.url);
-  }
-
-  public getEmployeeById(id: number) {
-    return this.httpClient.get<EmployeeWithoutPassword>(`${this.url}/${id}`);
-  }
-
-  public updateEmployee({ id, ...employee }: UpdateEmployeeInput) {
-    return this.httpClient.patch<UpdateEmployeeOutput>(
-      `${this.url}/${id.toString()}`,
-      { ...employee }
-    );
-  }
-
-  public deleteEmployee(id: number) {
-    return this.httpClient.delete(`${this.url}/${id}`);
-  }
-}
 
 export function createEmployeeEndpoints(httpClient: HttpClientProtocol) {
   const url = '/employee';

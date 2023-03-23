@@ -2,12 +2,10 @@ import { MutationFunction, useMutation } from 'react-query';
 import {
   CreateEmployeeInput,
   CreateEmployeeOutput,
-  DeleteEmployeeInput,
-  DeleteEmployeeOutput,
   EmployeeWithoutPassword,
   UpdateEmployeeInput,
   UpdateEmployeeOutput,
-} from '#domain/entities/Employee';
+} from '@mytable/domain';
 import { MutationOptions } from '../../protocols/MutationOptions';
 import { MutationResult } from '../../protocols/QueryClient';
 import { createEmployeeEndpoints } from './http';
@@ -17,7 +15,6 @@ import { employeeQueryKeys } from './keys';
 export function createEmployeeMutations({
   createEmployee,
   updateEmployee,
-  deleteEmployee,
 }: ReturnType<typeof createEmployeeEndpoints>) {
   function useCreateEmployee(
     options: MutationOptions = {}
@@ -77,31 +74,8 @@ export function createEmployeeMutations({
     };
   }
 
-  // function useDeleteEmployee(
-  //   options: MutationOptions = {}
-  // ): MutationResult<DeleteEmployeeOutput, DeleteEmployeeInput> {
-  //   const { data, isLoading, mutate } = useMutation<
-  //     DeleteEmployeeOutput,
-  //     unknown,
-  //     DeleteEmployeeInput
-  //   >(
-  //     deleteEmployee as unknown as MutationFunction<
-  //       DeleteEmployeeOutput,
-  //       DeleteEmployeeInput
-  //     >,
-  //     options
-  //   );
-  //
-  //   return {
-  //     data,
-  //     isLoading,
-  //     mutate,
-  //   };
-  // }
-
   return {
     useCreateEmployee,
     useUpdateEmployee,
-    // useDeleteEmployee,
   };
 }
