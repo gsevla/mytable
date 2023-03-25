@@ -1,9 +1,9 @@
-import { ReservationOrderStatusEnum } from '@mytable/enums';
+import { ReservationOrderStatus } from '@mytable/domain';
 
 export const reservationOrderStatusEnumString = {
-  [ReservationOrderStatusEnum.accepted]: 'Aceita',
-  [ReservationOrderStatusEnum.cancelled]: 'Cancelada',
-  [ReservationOrderStatusEnum.done]: 'Finalizada',
-  [ReservationOrderStatusEnum.pending]: 'Pendente',
-  [ReservationOrderStatusEnum.rejected]: 'Rejeitada',
+  [ReservationOrderStatus.ACCEPTED]: 'Aceita',
+  [ReservationOrderStatus.CANCELED]: 'Cancelada',
+  [ReservationOrderStatus.DONE]: 'Finalizada',
+  [ReservationOrderStatus.PENDING]: 'Pendente',
+  [ReservationOrderStatus.REJECTED]: 'Rejeitada',
 };

@@ -1,5 +1,4 @@
-import { ReservationOrderDto } from '@mytable/dtos';
-import { ReservationOrderStatusEnum } from '@mytable/enums';
+import { ReservationOrder, ReservationOrderStatus } from '@mytable/domain';
 import React, { useState } from 'react';
 import { createContext } from 'use-context-selector';
 
@@ -8,16 +7,14 @@ interface Props {
 }
 
 interface Values {
-  reservations: Array<ReservationOrderDto.IReservationOrder>;
-  reservationsHistory: Array<ReservationOrderDto.IReservationOrder>;
+  reservations: Array<ReservationOrder>;
+  reservationsHistory: Array<ReservationOrder>;
 }
 
 export const ReservationContext = createContext({} as Values);
 
 export function ReservationContextProvider({ children }: Props) {
-  const [reservations, setReservations] = useState<
-    Array<ReservationOrderDto.IReservationOrder>
-  >([
+  const [reservations, setReservations] = useState<Array<ReservationOrder>>([
     {
       id: 1,
       restaurantId: 1,
@@ -29,7 +26,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.pending,
+      status: ReservationOrderStatus.PENDING,
     },
     {
       id: 2,
@@ -42,7 +39,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.pending,
+      status: ReservationOrderStatus.PENDING,
     },
     {
       id: 3,
@@ -55,7 +52,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.pending,
+      status: ReservationOrderStatus.PENDING,
     },
     {
       id: 4,
@@ -68,7 +65,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.pending,
+      status: ReservationOrderStatus.PENDING,
     },
     {
       id: 5,
@@ -81,7 +78,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.accepted,
+      status: ReservationOrderStatus.ACCEPTED,
     },
     {
       id: 6,
@@ -94,11 +91,11 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.accepted,
+      status: ReservationOrderStatus.ACCEPTED,
     },
   ]);
   const [reservationsHistory, setReservationsHistory] = useState<
-    Array<ReservationOrderDto.IReservationOrder>
+    Array<ReservationOrder>
   >([
     {
       id: 7,
@@ -111,7 +108,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.done,
+      status: ReservationOrderStatus.DONE,
     },
     {
       id: 8,
@@ -124,7 +121,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.rejected,
+      status: ReservationOrderStatus.REJECTED,
     },
     {
       id: 9,
@@ -137,7 +134,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.cancelled,
+      status: ReservationOrderStatus.CANCELED,
     },
     {
       id: 10,
@@ -150,7 +147,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.done,
+      status: ReservationOrderStatus.DONE,
     },
     {
       id: 11,
@@ -163,7 +160,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.done,
+      status: ReservationOrderStatus.DONE,
     },
     {
       id: 12,
@@ -176,7 +173,7 @@ export function ReservationContextProvider({ children }: Props) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       modifiedBy: 1,
-      status: ReservationOrderStatusEnum.cancelled,
+      status: ReservationOrderStatus.CANCELED,
     },
   ]);
 

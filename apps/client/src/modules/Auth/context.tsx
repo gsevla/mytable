@@ -4,7 +4,7 @@ import { FAB } from 'react-native-paper';
 import { createContext, useContextSelector } from 'use-context-selector';
 import { useRouting } from 'expo-next-react-navigation';
 import { useFormik, FormikContextType } from 'formik';
-import { ClientDto } from '@mytable/dtos';
+import { Client, CreateClientInput } from '@mytable/domain';
 import { unMask } from 'remask';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
@@ -18,8 +18,8 @@ export const AuthContext = createContext(
   {} as {
     handleSetActiveStep(_activeStep: keyof typeof AUTHENTICATION_STEPS): void;
     persistToken(data: string): void;
-    persistClient(data: ClientDto.IClient): void;
-    formik: FormikContextType<ClientDto.ICreateClient>;
+    persistClient(data: Client): void;
+    formik: FormikContextType<CreateClientInput>;
   }
 );
 
@@ -74,7 +74,7 @@ export function AuthContextProvider({
     }
   }, []);
 
-  const persistClient = useCallback(async (data: ClientDto.IClient) => {
+  const persistClient = useCallback(async (data: Client) => {
     await StorageService.setData({
       key: 'client',
       value: JSON.stringify(data),
@@ -91,7 +91,7 @@ export function AuthContextProvider({
   const { mutate: signUpClient } =
     ApiService.auth.authMutations.useQuerySignUpClient();
 
-  function onFormSubmit(values: ClientDto.ICreateClient) {
+  function onFormSubmit(values: CreateClientInput) {
     const { cpf: _cpf, phone: _phone, ...restValues } = values;
     const unMaskedValues = {
       ...restValues,
@@ -115,7 +115,7 @@ export function AuthContextProvider({
     });
   }
 
-  const formik = useFormik<ClientDto.ICreateClient>({
+  const formik = useFormik<CreateClientInput>({
     validationSchema: yupValidationSchema,
     initialValues: {
       cpf: '',

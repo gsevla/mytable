@@ -1,4 +1,4 @@
-import { ReservationOrderDto } from '@mytable/dtos';
+import { ReservationOrder } from '@mytable/domain';
 import React from 'react';
 import { View } from 'react-native';
 import { IconButton, Subheading, Title } from 'react-native-paper';
@@ -7,7 +7,7 @@ import { reservationOrderStatusEnumString } from '../../constants';
 import { styles } from './styles';
 
 interface Props {
-  reservation: ReservationOrderDto.IReservationOrder;
+  reservation: ReservationOrder;
 }
 
 export function AppReservationReserveHistoryCardComponent({
