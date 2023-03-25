@@ -13,3 +13,15 @@ export type ReservationOrder = {
   modifiedAt: Date; // DateTime
   status: ReservationOrderStatus;
 };
+
+export type CeateReservationOrderInput = Omit<
+  ReservationOrder,
+  'id' | 'restaurantId' | 'status' | 'createdAt' | 'modifiedAt'
+>;
+
+export type UpdateReservationOrderInput = Omit<
+  ReservationOrder,
+  'restaurantId' | 'createdAt' | 'modifiedAt'
+> & {
+  reason?: string;
+};

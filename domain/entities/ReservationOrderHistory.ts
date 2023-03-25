@@ -5,7 +5,7 @@ export type ReservationOrderHistory = {
   reservationOrderId: number;
   status: ReservationOrderStatus;
   employeeId: number;
-  createdAt: string;
+  createdAt: string; // DateTime
   peopleAmount: number;
   date: string;
   startTime: string;
