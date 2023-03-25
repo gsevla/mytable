@@ -1,7 +1,28 @@
 import { PrismaClient } from '@prisma/client';
+import { Day } from '@mytable/domain';
 import { encryptPassword } from '../src/utils/password';
 
 const prisma = new PrismaClient();
+
+async function createWorkingDays(restaurantId: number) {
+  const days = Object.keys(Day);
+
+  const workingDaysPromises = days.map((day) =>
+    prisma.workingDays.upsert({
+      where: { day: Day[day] },
+      update: {},
+      create: {
+        openingTime: '10:00',
+        closingTime: '23:00',
+        day: Day[day],
+        restaurantId,
+      },
+    })
+  );
+
+  const workingDays = await Promise.all(workingDaysPromises);
+  console.log('working days created: \n', workingDays);
+}
 
 async function main() {
   const restaurant = await prisma.restaurant.upsert({
@@ -16,6 +37,8 @@ async function main() {
     },
   });
   console.log('restaurant created:\n', restaurant);
+
+  await createWorkingDays(restaurant.id);
 
   const employeeAdmin = await prisma.employee.upsert({
     where: { id: 1 },

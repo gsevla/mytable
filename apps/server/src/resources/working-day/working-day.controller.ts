@@ -1,15 +1,14 @@
 import {
   Controller,
   Get,
-  Post,
+  // Post,
   Body,
   Patch,
   Param,
-  Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { WorkingDayService } from './working-day.service';
-import { CreateWorkingDayDto } from './dto/create-working-day.dto';
+// import { CreateWorkingDayDto } from './dto/create-working-day.dto';
 import { UpdateWorkingDayDto } from './dto/update-working-day.dto';
 
 @Controller('working-day')
@@ -17,19 +16,19 @@ import { UpdateWorkingDayDto } from './dto/update-working-day.dto';
 export class WorkingDayController {
   constructor(private readonly workingDayService: WorkingDayService) {}
 
-  @Post()
-  create(@Body() createWorkingDayDto: CreateWorkingDayDto) {
-    return this.workingDayService.create(createWorkingDayDto);
-  }
+  // @Post()
+  // create(@Body() createWorkingDayDto: CreateWorkingDayDto) {
+  //   return this.workingDayService.create(createWorkingDayDto);
+  // }
 
   @Get()
   findAll() {
     return this.workingDayService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workingDayService.findOne(+id);
+  @Get('enabled')
+  findAllEnabled() {
+    return this.workingDayService.findAll();
   }
 
   @Patch(':id')
@@ -38,10 +37,5 @@ export class WorkingDayController {
     @Body() updateWorkingDayDto: UpdateWorkingDayDto
   ) {
     return this.workingDayService.update(+id, updateWorkingDayDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workingDayService.remove(+id);
   }
 }

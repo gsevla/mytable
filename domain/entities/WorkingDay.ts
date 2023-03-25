@@ -6,8 +6,12 @@ export interface WorkingDay {
   openingTime: string;
   closingTime: string;
   restaurantId: number;
+  open?: boolean;
 }
 
-export type CreateWorkingDayInput = Omit<WorkingDay, 'id' | 'restaurantId'>;
+export type CreateWorkingDayInput = Omit<
+  WorkingDay,
+  'id' | 'restaurantId' | 'open'
+>;
 
-export type CreateWorkingDayOutput = WorkingDay;
+export type UpdateWorkingDayInput = Omit<WorkingDay, 'id' | 'restaurantId'>;

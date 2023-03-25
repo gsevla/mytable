@@ -1,13 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DayEnum, Prisma } from '@prisma/client';
+import { Day, CreateWorkingDayInput } from '@mytable/domain';
 
-export class CreateWorkingDayDto
-  implements Prisma.WorkingDaysCreateWithoutRestaurantInput
-{
-  @ApiProperty({ example: DayEnum.MONDAY })
-  day: DayEnum;
+export class CreateWorkingDayDto implements CreateWorkingDayInput {
+  @ApiProperty({ example: Day.MONDAY })
+  day: Day;
 
-  @ApiProperty({ example: '14:00' })
+  @ApiProperty({ example: '10:00' })
   openingTime: string;
 
   @ApiProperty({ example: '23:00' })

@@ -71,6 +71,7 @@ model WorkingDays {
   closingTime  String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId Int
+  open         Boolean    @default(true)
 }
 
 model EnvironmentImage {

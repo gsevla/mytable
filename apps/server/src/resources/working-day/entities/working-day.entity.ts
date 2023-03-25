@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DayEnum, WorkingDays } from '@prisma/client';
+import { Day, WorkingDay as DomainWorkingDay } from '@mytable/domain';
 
-export class WorkingDay implements WorkingDays {
+export class WorkingDay implements DomainWorkingDay {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @ApiProperty({ example: DayEnum.MONDAY })
-  day: DayEnum;
+  @ApiProperty({ example: Day.MONDAY })
+  day: Day;
 
-  @ApiProperty({ example: '14:00' })
+  @ApiProperty({ example: '10:00' })
   openingTime: string;
 
   @ApiProperty({ example: '23:00' })
@@ -16,4 +16,7 @@ export class WorkingDay implements WorkingDays {
 
   @ApiProperty({ example: 1 })
   restaurantId: number;
+
+  @ApiProperty({ example: false })
+  open: boolean;
 }

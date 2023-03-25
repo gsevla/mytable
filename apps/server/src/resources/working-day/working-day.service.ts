@@ -38,22 +38,22 @@ export class WorkingDayService {
     return true;
   }
 
-  create(createWorkingDayDto: CreateWorkingDayDto) {
-    WorkingDayService.isTimeValid(createWorkingDayDto);
+  // create(createWorkingDayDto: CreateWorkingDayDto) {
+  //   WorkingDayService.isTimeValid(createWorkingDayDto);
 
-    return this.prismaService.workingDays.create({
-      data: { ...createWorkingDayDto, restaurantId: 1 },
-    });
-  }
+  //   return this.prismaService.workingDays.create({
+  //     data: { ...createWorkingDayDto, restaurantId: 1 },
+  //   });
+  // }
 
   findAll() {
     return this.prismaService.workingDays.findMany();
   }
 
-  findOne(id: number) {
-    return this.prismaService.workingDays.findUnique({
+  findAllEnabled() {
+    return this.prismaService.workingDays.findMany({
       where: {
-        id,
+        open: true,
       },
     });
   }
@@ -66,14 +66,6 @@ export class WorkingDayService {
         id,
       },
       data: updateWorkingDayDto,
-    });
-  }
-
-  remove(id: number) {
-    return this.prismaService.workingDays.delete({
-      where: {
-        id,
-      },
     });
   }
 }
