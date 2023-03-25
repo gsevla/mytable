@@ -40,6 +40,19 @@ async function main() {
 
   await createWorkingDays(restaurant.id);
 
+  const defaultEnvironment = await prisma.environment.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      capacity: 40,
+      name: 'Espaço Climatizado',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni quam autem necessitatibus sit ipsum. Consectetur atque autem, provident et enim nemo labore, aspernatur possimus odio nulla quas dolorum, reiciendis iste?',
+      restaurantId: restaurant.id,
+    },
+  });
+  console.log('default environment created:\n', defaultEnvironment);
+
   const employeeAdmin = await prisma.employee.upsert({
     where: { id: 1 },
     update: {},
