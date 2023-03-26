@@ -15,6 +15,7 @@ const routeNameMap = {
   'reservation-order': 'Ordens de reserva',
   restaurant: 'Restaurante',
   'waiting-line': 'Fila de espera',
+  environment: 'Ambientes',
 } as const;
 
 const crudOperationsNameMap = {
@@ -128,6 +129,17 @@ export function AppPageWrapper({ children }: IAppPageWrapper) {
               }}
             >
               Restaurante
+            </Button>
+          </View>
+          <SizedBox />
+          <View>
+            <Button
+              mode='text'
+              onPress={() => {
+                router.push('/app/environment');
+              }}
+            >
+              Ambientes
             </Button>
           </View>
           <SizedBox />

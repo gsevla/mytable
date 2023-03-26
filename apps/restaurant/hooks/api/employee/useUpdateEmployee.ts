@@ -1,4 +1,5 @@
 import { MutationOptions } from '@mytable/api-service';
+import { UpdateEmployeeOutput } from '@mytable/domain';
 import { useApiService } from '#/hooks/api/useApiService';
 
 export function useUpdateEmployee(

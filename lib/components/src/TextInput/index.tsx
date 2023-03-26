@@ -9,6 +9,7 @@ export type TextInputProps = {
   error?: string;
   value: string;
   disabled?: boolean;
+  multiline?: boolean;
 };
 
 function TextInputWithoutRef(
@@ -21,6 +22,10 @@ function TextInputWithoutRef(
         ref={ref}
         label={label}
         placeholder={placeholder}
+        style={{
+          height: rest?.multiline ? 128 : 76,
+        }}
+        numberOfLines={rest?.multiline ? 4 : 1}
         {...rest}
       />
       <HelperText

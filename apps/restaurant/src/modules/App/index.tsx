@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native-paper';
 import { AppContextProvider } from './context';
 import AppStack from './navigation';
 

@@ -49,6 +49,10 @@ export function AppContextProvider({ children }: IAppContextProvider) {
             </View>
             <SizedBox />
             <View>
+              <Button mode='text'>Ambientes</Button>
+            </View>
+            <SizedBox />
+            <View>
               <Button mode='text'>Funcionários</Button>
             </View>
           </View>
