@@ -3,6 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { EnvironmentService } from './environment.service';
 import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { UpdateEnvironmentDto } from './dto/update-environment.dto';
+import { CreateEnvironmentWithImagesDto } from './dto/create-environment-with-images.dto';
+import { UpdateEnvironmentWithImagesDto } from './dto/update-environment-with-images.dto';
 
 @Controller('environment')
 @ApiTags('environment')
@@ -12,6 +14,15 @@ export class EnvironmentController {
   @Post()
   create(@Body() createEnvironmentDto: CreateEnvironmentDto) {
     return this.environmentService.create(createEnvironmentDto);
+  }
+
+  @Post('with-image')
+  createWithImages(
+    @Body() createEnvironmentWithImagesDto: CreateEnvironmentWithImagesDto
+  ) {
+    return this.environmentService.createWithImages(
+      createEnvironmentWithImagesDto
+    );
   }
 
   @Get()
@@ -40,5 +51,16 @@ export class EnvironmentController {
     @Body() updateEnvironmentDto: UpdateEnvironmentDto
   ) {
     return this.environmentService.update(+id, updateEnvironmentDto);
+  }
+
+  @Patch('with-image/:id')
+  updateWithImages(
+    @Param('id') id: string,
+    @Body() updateEnvironmentWithImagesDto: UpdateEnvironmentWithImagesDto
+  ) {
+    return this.environmentService.updateWithImages(
+      +id,
+      updateEnvironmentWithImagesDto
+    );
   }
 }

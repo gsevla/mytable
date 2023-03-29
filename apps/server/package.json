@@ -46,6 +46,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "bcrypt": "^5.0.1",
+    "class-transformer": "^0.5.1",
     "dotenv-cli": "^6.0.0",
     "find-up": "5.0.0",
     "handlebars": "^4.7.7",

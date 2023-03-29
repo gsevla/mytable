@@ -1,4 +1,8 @@
-import { EnvironmentImage } from './EnvironmentImage';
+import {
+  CreateEnvironmentImageInput,
+  EnvironmentImage,
+  UpdateEnvironmentImageInput,
+} from './EnvironmentImage';
 
 export interface Environment {
   id: number;
@@ -22,4 +26,12 @@ export type UpdateEnvironmentOutput = Environment;
 
 export type EnvironmentWithImage = Environment & {
   images: Array<EnvironmentImage>;
+};
+
+export type CreateEnvironmentWithImagesInput = CreateEnvironmentInput & {
+  images?: Array<Omit<CreateEnvironmentImageInput, 'environmentId'>>;
+};
+
+export type UpdateEnvironmentWithImagesInput = UpdateEnvironmentInput & {
+  images?: Array<UpdateEnvironmentImageInput>;
 };
