@@ -6,14 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthenticatedUser } from 'src/interceptors/authenticatedUser';
 import { ReservationOrderService } from './reservation-order.service';
 import { CreateReservationOrderDto } from './dto/create-reservation-order.dto';
 import { UpdateReservationOrderDto } from './dto/update-reservation-order.dto';
+import { ReservationOrderGuard } from './reservation-order.guard';
 
 @Controller('reservation-order')
 @ApiTags('reservation-order')
+@ApiBearerAuth()
+@UseGuards(ReservationOrderGuard)
 export class ReservationOrderController {
   constructor(
     private readonly reservationOrderService: ReservationOrderService
@@ -25,7 +30,11 @@ export class ReservationOrderController {
   }
 
   @Get()
-  findAll() {
+  findAll(@AuthenticatedUser() user: any) {
+    // console.log('user', user);
+    if (user?.cpf) {
+      return this.reservationOrderService.findAllFromClient(user.id);
+    }
     return this.reservationOrderService.findAll();
   }
 

@@ -40,6 +40,14 @@ export class ReservationOrderService {
     return this.prismaService.reservationOrder.findMany();
   }
 
+  findAllFromClient(clientId: number) {
+    return this.prismaService.reservationOrder.findMany({
+      where: {
+        clientId,
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.prismaService.reservationOrder.findUnique({
       where: {
