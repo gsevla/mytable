@@ -4,6 +4,7 @@ import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { ClientService } from 'src/resources/client/client.service';
 import { AuthValidator } from './validator';
+import { SignUpClientDto } from './dto/sign-up-client.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
 
     return {
       client,
-      accessToken,
+      // accessToken,
     };
   }
 
@@ -45,7 +46,7 @@ export class AuthService {
     };
   }
 
-  async signUpClient(client: Client) {
+  async signUpClient(client: SignUpClientDto) {
     return this.clientService.createClient(client);
   }
 

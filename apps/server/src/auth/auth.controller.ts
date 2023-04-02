@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Client } from '@prisma/client';
 // eslint-disable-next-line
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
+import { SignUpClientDto } from './dto/sign-up-client.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -28,7 +28,7 @@ export class AuthController {
   }
 
   @Post('sign-up')
-  signUp(@Body() client: Client) {
+  signUp(@Body() client: SignUpClientDto) {
     return this.authService.signUpClient(client);
   }
 
