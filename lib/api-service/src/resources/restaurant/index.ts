@@ -3,11 +3,11 @@ import { HttpClientProtocol } from '../../protocols/HttpClient';
 import { createRestaurantQueries } from './queries';
 
 export function createRestaurantResource(httpClient: HttpClientProtocol) {
-  const restaurantEndpoints = createRestaurantEndpoints(httpClient);
-  const restaurantQueries = createRestaurantQueries(restaurantEndpoints);
+  const endpoints = createRestaurantEndpoints(httpClient);
+  const queries = createRestaurantQueries(endpoints);
 
   return {
-    restaurantEndpoints,
-    restaurantQueries,
+    endpoints,
+    queries,
   };
 }
