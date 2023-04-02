@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 import type { CreateClientInput } from '@mytable/domain';
 import { createAuthEndpoints } from './http';
-import type { MutationOptions } from '../protocols/MutationOptions';
+import type { MutationOptions } from '../../protocols/MutationOptions';
 
 export function createAuthMutations(
   authEndpoints: ReturnType<typeof createAuthEndpoints>

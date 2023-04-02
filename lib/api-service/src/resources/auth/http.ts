@@ -3,7 +3,7 @@ import type {
   CreateClientInput,
   CreateClientOutput,
 } from '@mytable/domain';
-import { HttpClientProtocol } from '../protocols/HttpClient';
+import { HttpClientProtocol } from '../../protocols/HttpClient';
 
 export function createAuthEndpoints(httpClient: HttpClientProtocol) {
   const url = '/auth';

@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
 import { MailModule } from './mail/mail.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './resources/auth/auth.module';
 import { ClientModule } from './resources/client/client.module';
 import { RestaurantModule } from './resources/restaurant/restaurant.module';
 import { EmployeeModule } from './resources/employee/employee.module';
@@ -14,7 +14,7 @@ import { EnvironmentModule } from './resources/environment/environment.module';
 import { EnvironmentImageModule } from './resources/environment-image/environment-image.module';
 import { ReservationOrderModule } from './resources/reservation-order/reservation-order.module';
 import { ReservationOrderHistoryModule } from './resources/reservation-order-history/reservation-order-history.module';
-import { AuthValidator } from './auth/validator';
+import { AuthValidator } from './resources/auth/validator';
 
 @Module({
   imports: [
