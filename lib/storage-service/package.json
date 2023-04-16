@@ -1,0 +1,23 @@
+{
+  "name": "@mytable/storage-service",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --watch"
+  },
+  "dependencies": {
+    "nookies": "^2.5.2",
+    "@react-native-async-storage/async-storage": "~1.15.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.2.7",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "peerDependencies": {
+    "react-native": "0.64.3"
+  }
+}
