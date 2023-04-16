@@ -15,12 +15,18 @@ type Size =
 type Weight = 'normal' | 'bold';
 
 export type TextProps = {
-  children: React.ReactChild;
+  children: React.ReactChild | string[];
   size?: Size;
   weight?: Weight;
+  alignment?: 'left' | 'center' | 'right';
 };
 
-export function Text({ children, size = 'md', weight = 'normal' }: TextProps) {
+export function Text({
+  children,
+  size = 'md',
+  weight = 'normal',
+  alignment = 'left',
+}: TextProps) {
   const innerSize = {
     xxxsm: 8,
     xxsm: 10,
@@ -39,7 +45,13 @@ export function Text({ children, size = 'md', weight = 'normal' }: TextProps) {
   }[weight];
 
   return (
-    <PaperText style={{ fontSize: innerSize, fontWeight: innerWeight }}>
+    <PaperText
+      style={{
+        fontSize: innerSize,
+        fontWeight: innerWeight,
+        textAlign: alignment,
+      }}
+    >
       {children}
     </PaperText>
   );

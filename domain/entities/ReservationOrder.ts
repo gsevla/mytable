@@ -14,14 +14,22 @@ export type ReservationOrder = {
   status: ReservationOrderStatus;
 };
 
-export type CeateReservationOrderInput = Omit<
+export type CreateReservationOrderInput = Omit<
   ReservationOrder,
   'id' | 'restaurantId' | 'status' | 'createdAt' | 'modifiedAt'
 >;
 
-export type UpdateReservationOrderInput = Omit<
-  ReservationOrder,
-  'restaurantId' | 'createdAt' | 'modifiedAt'
+export type UpdateReservationOrderInput = Partial<
+  Omit<ReservationOrder, 'restaurantId' | 'createdAt' | 'modifiedAt'>
 > & {
+  id: number;
   reason?: string;
+};
+
+export type ReservationOrderWithClientData = ReservationOrder & {
+  client: {
+    name: string;
+    surname: string;
+    identifier: string;
+  };
 };

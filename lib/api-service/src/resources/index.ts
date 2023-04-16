@@ -5,6 +5,7 @@ import { createEmployeeResource } from './employee';
 import { createRestaurantResource } from './restaurant';
 import { createEnvironmentResource } from './environment';
 import { createEnvironmentImageResource } from './environment-image';
+import { createReservationOrderResource } from './reservation-order';
 
 export function createResources(httpClient: HttpClientProtocol) {
   const resources = {
@@ -14,6 +15,7 @@ export function createResources(httpClient: HttpClientProtocol) {
     employee: createEmployeeResource(httpClient),
     environment: createEnvironmentResource(httpClient),
     environmentImage: createEnvironmentImageResource(httpClient),
+    reservationOrder: createReservationOrderResource(httpClient),
   };
 
   return resources;

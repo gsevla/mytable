@@ -17,6 +17,15 @@ export class ReservationOrderService {
     // add future limitation like two weeks from now
 
     return this.prismaService.reservationOrder.create({
+      include: {
+        client: {
+          select: {
+            name: true,
+            surname: true,
+            identifier: true,
+          },
+        },
+      },
       data: {
         ...createReservationOrderDto,
         restaurantId: 1,
@@ -37,7 +46,22 @@ export class ReservationOrderService {
   }
 
   findAll() {
-    return this.prismaService.reservationOrder.findMany();
+    return this.prismaService.reservationOrder.findMany({
+      include: {
+        client: {
+          select: {
+            name: true,
+            surname: true,
+            identifier: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          date: 'desc',
+        },
+      ],
+    });
   }
 
   findAllFromClient(clientId: number) {
@@ -52,6 +76,15 @@ export class ReservationOrderService {
     return this.prismaService.reservationOrder.findUnique({
       where: {
         id,
+      },
+      include: {
+        client: {
+          select: {
+            name: true,
+            surname: true,
+            identifier: true,
+          },
+        },
       },
     });
   }
@@ -81,6 +114,15 @@ export class ReservationOrderService {
     }
 
     return this.prismaService.reservationOrder.update({
+      include: {
+        client: {
+          select: {
+            name: true,
+            surname: true,
+            identifier: true,
+          },
+        },
+      },
       where: {
         id,
       },

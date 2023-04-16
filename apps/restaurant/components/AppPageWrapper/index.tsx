@@ -1,15 +1,15 @@
 import React from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
-import { Button, Subheading } from 'react-native-paper';
+import { ActivityIndicator, Button, Subheading } from 'react-native-paper';
 import { useRouter } from 'next/router';
 import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
 import { SizedBox } from 'components/SizedBox';
 import { useStorageService } from '#/hooks/storage';
 import { STORAGE_KEYS } from '#/services/storage/keys';
-import { AuthGuardProvider } from '#/providers/AuthGuardProvider';
 
 interface IAppPageWrapper {
   children: React.ReactNode;
+  isLoading?: boolean;
 }
 
 const routeNameMap = {
@@ -39,7 +39,10 @@ function getPathnameInfo(pathname: string) {
   return { routeName, crudOperationName };
 }
 
-export function AppPageWrapper({ children }: IAppPageWrapper) {
+export function AppPageWrapper({
+  children,
+  isLoading = true,
+}: IAppPageWrapper) {
   const { pathname, ...router } = useRouter();
   const storageService = useStorageService();
   const dimensions = useWindowDimensions();
@@ -199,14 +202,21 @@ export function AppPageWrapper({ children }: IAppPageWrapper) {
         >
           <AppPageContentHeaderComponent
             title={title}
-            showCloseButton={shouldShowBackButton}
+            showCloseButton={!isLoading && shouldShowBackButton}
             onPressCloseButton={router.back}
-            showPlusButton={shouldShowPlustButton}
+            showPlusButton={!isLoading && shouldShowPlustButton}
             onPressPlusButton={() => {
               router.push(`${router.route}/create`);
             }}
           />
-          <ScrollView>{children}</ScrollView>
+          {isLoading ? (
+            <ActivityIndicator
+              animating
+              size='large'
+            />
+          ) : (
+            <ScrollView>{children}</ScrollView>
+          )}
         </View>
       </View>
     </View>
