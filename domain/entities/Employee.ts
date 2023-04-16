@@ -27,3 +27,8 @@ export type UpdateEmployeeOutput = EmployeeWithoutPassword;
 export type DeleteEmployeeInput = number;
 
 export type DeleteEmployeeOutput = void;
+
+export type AuthenticateEmployeeInput = {
+  username: string;
+  password: string;
+};

@@ -1,4 +1,5 @@
 import type {
+  AuthenticateEmployeeInput,
   Client,
   CreateClientInput,
   CreateClientOutput,
@@ -23,8 +24,15 @@ export function createAuthEndpoints(httpClient: HttpClientProtocol) {
     return response;
   }
 
+  function signInEmployee(
+    authenticateEmployeeInput: AuthenticateEmployeeInput
+  ) {
+    return httpClient.post(`${url}/sign-in`, authenticateEmployeeInput);
+  }
+
   return {
     signInClient,
     signUpClient,
+    signInEmployee,
   };
 }

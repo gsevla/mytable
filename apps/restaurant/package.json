@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/next-adapter": "^3.1.0",
     "@mytable/api-service": "*",
+    "@mytable/storage-service": "*",
     "@mytable/components": "*",
     "@mytable/domain": "*",
     "@react-navigation/drawer": "^6.4.3",

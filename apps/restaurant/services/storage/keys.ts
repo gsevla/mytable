@@ -1,0 +1,4 @@
+export enum STORAGE_KEYS {
+  EMPLOYEE = 'EMPLOYEE',
+  ACCESS_TOKEN = 'ACCESS_TOKEN',
+}

@@ -6,13 +6,13 @@ function LoadingScreen() {
   return (
     <View
       style={{
-        flex: 1,
+        flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#eee',
       }}
     >
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size='large' />
       <Title>Carregando</Title>
     </View>
   );

@@ -15,7 +15,6 @@ export function createApiService(baseURL: string) {
     httpClient,
     queryClient,
     QueryClientProvider,
-    auth,
     resources,
     useQuery,
     useMutation,

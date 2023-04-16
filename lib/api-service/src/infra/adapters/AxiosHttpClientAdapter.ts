@@ -54,7 +54,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
         data: result.data as R,
       };
     } catch (error) {
-      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+      throw AxiosHttpClientAdapter.errorHandler(error as AxiosError);
     }
   }
 
@@ -76,7 +76,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
         data: result.data as R,
       };
     } catch (error) {
-      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+      throw AxiosHttpClientAdapter.errorHandler(error as AxiosError);
     }
   }
 
@@ -98,7 +98,7 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
         data: result.data as R,
       };
     } catch (error) {
-      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+      throw AxiosHttpClientAdapter.errorHandler(error as AxiosError);
     }
   }
 
@@ -119,7 +119,11 @@ export class AxiosHttpClientAdapter implements HttpClientProtocol {
         status: result.status,
       };
     } catch (error) {
-      return AxiosHttpClientAdapter.errorHandler(error as AxiosError);
+      throw AxiosHttpClientAdapter.errorHandler(error as AxiosError);
     }
+  }
+
+  public setHeader(key: string, value: string) {
+    this.client.defaults.headers[key] = value;
   }
 }

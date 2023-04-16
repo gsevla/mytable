@@ -9,6 +9,7 @@ const withTM = require('next-transpile-modules')([
   'react-native-web',
   'expo-next-react-navigation',
   '@mytable/api-service',
+  '@mytable/storage-service',
   '@mytable/components',
   '@mytable/domain',
 ]);

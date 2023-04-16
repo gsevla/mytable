@@ -1,9 +1,12 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, useWindowDimensions } from 'react-native';
 import { Button, Subheading } from 'react-native-paper';
 import { useRouter } from 'next/router';
 import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
 import { SizedBox } from 'components/SizedBox';
+import { useStorageService } from '#/hooks/storage';
+import { STORAGE_KEYS } from '#/services/storage/keys';
+import { AuthGuardProvider } from '#/providers/AuthGuardProvider';
 
 interface IAppPageWrapper {
   children: React.ReactNode;
@@ -38,6 +41,8 @@ function getPathnameInfo(pathname: string) {
 
 export function AppPageWrapper({ children }: IAppPageWrapper) {
   const { pathname, ...router } = useRouter();
+  const storageService = useStorageService();
+  const dimensions = useWindowDimensions();
 
   const pathnameInfo = getPathnameInfo(pathname);
 
@@ -155,11 +160,25 @@ export function AppPageWrapper({ children }: IAppPageWrapper) {
           </View>
         </View>
         <View>
-          <Button mode='text'>Sair</Button>
+          <Button
+            mode='text'
+            onPress={async () => {
+              await storageService.destroyData(STORAGE_KEYS.ACCESS_TOKEN);
+              await storageService.destroyData(STORAGE_KEYS.EMPLOYEE);
+              await router.push('/auth');
+            }}
+          >
+            Sair
+          </Button>
         </View>
       </View>
       <View
-        style={{ flex: 0.8, alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          flex: 0.8,
+          alignItems: 'center',
+          justifyContent: 'center',
+          maxHeight: dimensions.height,
+        }}
       >
         <View
           style={{

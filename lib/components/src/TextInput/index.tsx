@@ -10,6 +10,7 @@ export type TextInputProps = {
   value: string;
   disabled?: boolean;
   multiline?: boolean;
+  secureTextEntry?: boolean;
 };
 
 function TextInputWithoutRef(

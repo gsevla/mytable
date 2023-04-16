@@ -47,4 +47,6 @@ export interface HttpClientProtocol {
   ): HttpOperationResult<R>;
 
   delete<R = void>(url: string, config?: Config): HttpOperationResult<R>;
+
+  setHeader(key: string, value: string): void;
 }
