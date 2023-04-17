@@ -9,9 +9,10 @@ export type CreateEnvironmentImageInput = Omit<EnvironmentImage, 'id'>;
 
 export type CreateEnvironmentImageOutput = EnvironmentImage;
 
-export type UpdateEnvironmentImageInput = Omit<
-  EnvironmentImage,
-  'environmentId'
->;
+export type UpdateEnvironmentImageInput = Partial<
+  Omit<EnvironmentImage, 'environmentId'>
+> & {
+  id: number;
+};
 
 export type UpdateEnvironmentImageOutput = EnvironmentImage;

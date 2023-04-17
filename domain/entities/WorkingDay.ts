@@ -14,4 +14,8 @@ export type CreateWorkingDayInput = Omit<
   'id' | 'restaurantId' | 'open'
 >;
 
-export type UpdateWorkingDayInput = Omit<WorkingDay, 'id' | 'restaurantId'>;
+export type UpdateWorkingDayInput = Partial<
+  Omit<WorkingDay, 'id' | 'restaurantId'>
+> & {
+  id: number;
+};

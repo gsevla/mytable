@@ -20,7 +20,11 @@ export type CreateEnvironmentInput = Omit<
 
 export type CreateEnvironmentOutput = Environment;
 
-export type UpdateEnvironmentInput = Omit<Environment, 'restaurantId'>;
+export type UpdateEnvironmentInput = Partial<
+  Omit<Environment, 'restaurantId'>
+> & {
+  id: number;
+};
 
 export type UpdateEnvironmentOutput = Environment;
 

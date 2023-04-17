@@ -8,4 +8,6 @@ export interface Restaurant {
   accentColor: string;
 }
 
-export type UpdateRestaurantInput = Omit<Restaurant, 'id'>;
+export type UpdateRestaurantInput = Partial<Omit<Restaurant, 'id'>> & {
+  id: number;
+};
