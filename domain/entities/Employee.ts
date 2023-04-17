@@ -20,7 +20,9 @@ export type CreateEmployeeInput = Omit<
 
 export type CreateEmployeeOutput = EmployeeWithoutPassword;
 
-export type UpdateEmployeeInput = Omit<Employee, 'restaurantId'>;
+export type UpdateEmployeeInput = Partial<Omit<Employee, 'restaurantId'>> & {
+  id: number;
+};
 
 export type UpdateEmployeeOutput = EmployeeWithoutPassword;
 
