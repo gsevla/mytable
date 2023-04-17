@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import { ReservationOrderStatus } from '@mytable/domain';
 import { View } from 'react-native';
 import { Icon, SizedBox } from '@mytable/components';
+import { useRouter } from 'next/router';
 import { useReservationOrder } from '#/hooks/api/reservationOrder/useReservationOrder';
 import { Item, Menu } from '#/components/Menu';
 import { useUpdateReservationOrder } from '#/hooks/api/reservationOrder/useUpdateReservationOrder';
@@ -41,6 +42,8 @@ const statusMap = {
 };
 
 export default function AppReservationOrderPage() {
+  const router = useRouter();
+
   const { data: reservationOrder, isLoading } = useReservationOrder();
 
   const { mutate } = useUpdateReservationOrder();
@@ -97,7 +100,7 @@ export default function AppReservationOrderPage() {
           {
             iconName: 'pencil',
             action: (item) => {
-              // router.push(`${router.route}/edit/${item.id}`);
+              router.push(`${router.route}/edit/${item.id}`);
             },
           },
         ]}
