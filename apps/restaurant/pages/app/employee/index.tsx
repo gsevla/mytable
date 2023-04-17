@@ -1,10 +1,13 @@
 import { AppPageWrapper } from 'components/AppPageWrapper';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
+import { View } from 'react-native';
+import { Icon, SizedBox } from '@mytable/components';
 import { useEmployee } from '#/hooks/api/employee/useEmployee';
-import { Table } from '#/components/Table';
 import { employeeRoleMap } from '../../../constants/employeeRoleMap';
 import { useUpdateEmployee } from '#/hooks/api/employee/useUpdateEmployee';
+import { TableRow, TableV2 } from '#/components/TableV2';
+import { Item, Menu } from '#/components/Menu';
 
 const columns = [
   { title: 'Nome', itemNameReference: 'name' },
@@ -13,56 +16,72 @@ const columns = [
   { title: 'Estado', itemNameReference: 'enabled' },
 ];
 
+const employeeStatus = {
+  true: 'Ativo',
+  false: 'Inativo',
+};
+
 export default function AppEmployeePage() {
   const router = useRouter();
 
-  const { data: employee } = useEmployee();
+  const { data: employee, isLoading } = useEmployee();
+
+  const { mutate } = useUpdateEmployee();
+
+  const mountEmployeeStatusItems = useCallback(
+    (employeeId: number) =>
+      Object.entries(employeeStatus).map(([key, value]) => ({
+        key,
+        label: value,
+        action: (item: Item) => {
+          mutate({
+            id: employeeId,
+            enabled: item.key === 'true',
+          });
+        },
+      })),
+    []
+  );
 
   const tabulatedEmployee = useMemo(() => {
     if (!employee) return [];
 
-    return employee.map((emp) => ({
-      ...emp,
-      name: `${emp.name} ${emp.surname}`,
-      role: employeeRoleMap[emp.role],
-      enabled: emp.enabled ? 'Ativo' : 'Inativo',
-    }));
-  }, [employee]);
+    return employee.reduce((accu, emp) => {
+      accu.push({
+        id: emp.id.toString(),
+        data: {
+          username: emp.username,
+          name: `${emp.name} ${emp.surname}`,
+          role: employeeRoleMap[emp.role],
+          enabled: (
+            <Menu items={mountEmployeeStatusItems(emp.id)}>
+              <View style={{ flexDirection: 'row' }}>
+                <>{emp.enabled ? 'Ativo' : 'Inativo'}</>
+                <SizedBox w={4} />
+                <Icon
+                  name='chevron-down'
+                  size={16}
+                />
+              </View>
+            </Menu>
+          ),
+        },
+      });
 
-  const { mutate } = useUpdateEmployee({
-    onSuccess: (_) => {
-      router.push(router.route);
-    },
-  });
+      return accu;
+    }, [] as Array<TableRow>);
+  }, [employee, mountEmployeeStatusItems]);
 
   return (
-    <AppPageWrapper>
-      <Table
-        data={tabulatedEmployee}
+    <AppPageWrapper isLoading={isLoading}>
+      <TableV2
         columns={columns}
+        data={tabulatedEmployee}
         actionButtons={[
           {
             iconName: 'pencil',
-            action: (item, index) => {
+            action: (item) => {
               router.push(`${router.route}/edit/${item.id}`);
-            },
-          },
-          {
-            iconName: 'close',
-            action: (item, index) => {
-              mutate({
-                id: item.id,
-                enabled: false,
-              });
-            },
-          },
-          {
-            iconName: 'check',
-            action: (item, index) => {
-              mutate({
-                id: item.id,
-                enabled: true,
-              });
             },
           },
         ]}

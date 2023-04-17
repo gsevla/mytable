@@ -11,7 +11,9 @@ export default function AppEmployeeEditPage() {
 
   const { id } = router.query;
 
-  const { data: employee } = useEmployeeById(parseInt(id as string, 10));
+  const { data: employee, isLoading } = useEmployeeById(
+    parseInt(id as string, 10)
+  );
 
   const { mutate } = useUpdateEmployee();
   function onFormSubmit(values: UpdateEmployeeInput, other) {
@@ -24,7 +26,7 @@ export default function AppEmployeeEditPage() {
   }
 
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={isLoading}>
       <EmployeeForm
         employee={employee}
         onFormSubmit={onFormSubmit}

@@ -19,7 +19,7 @@ export default function AppEmployeeCreatePage() {
   }
 
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <EmployeeForm onFormSubmit={onFormSubmit} />
     </AppPageWrapper>
   );
