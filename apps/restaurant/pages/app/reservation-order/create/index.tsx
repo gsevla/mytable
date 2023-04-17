@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 
 export default function AppReservationOrderCreatePage() {
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <View>
         <Text>Criação de ordem de reserva</Text>
       </View>

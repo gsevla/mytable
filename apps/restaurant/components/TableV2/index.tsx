@@ -6,7 +6,12 @@ import { DataTable } from 'react-native-paper';
 export type TableColumn = {
   title: string;
   isNumeric?: boolean;
+  widthMultiplier?: number;
   itemNameReference: string;
+  spacing?: {
+    left?: number;
+    right?: number;
+  };
 };
 
 export type TableRow = {
@@ -50,23 +55,37 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
       <DataTable.Header>
         {columns.map((column) => (
           <DataTable.Title
+            style={{
+              flex: column.widthMultiplier ?? 1,
+              marginLeft: column?.spacing?.left ?? 0,
+              marginRight: column?.spacing?.right ?? 0,
+            }}
             numeric={column.isNumeric ?? false}
             key={`dt-col-${column.title}`}
           >
             {column.title}
           </DataTable.Title>
         ))}
-        {isActionButtonsExists && <DataTable.Title>Ações</DataTable.Title>}
+        {isActionButtonsExists && (
+          <DataTable.Title numeric>Ações</DataTable.Title>
+        )}
       </DataTable.Header>
       {data.map((item) => (
         <DataTable.Row key={`dt-row-${item.id}`}>
           {columns.map((column) => (
-            <DataTable.Cell>
+            <DataTable.Cell
+              numeric={column.isNumeric ?? false}
+              style={{
+                flex: column.widthMultiplier ?? 1,
+                marginLeft: column?.spacing?.left ?? 0,
+                marginRight: column?.spacing?.right ?? 0,
+              }}
+            >
               {item.data[column.itemNameReference]}
             </DataTable.Cell>
           ))}
           {isActionButtonsExists && (
-            <DataTable.Cell>
+            <DataTable.Cell numeric>
               {actionButtons?.map((actionButton, index) => (
                 <React.Fragment key={actionButton.iconName}>
                   <TouchableOpacity

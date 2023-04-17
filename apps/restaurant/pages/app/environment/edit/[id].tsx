@@ -11,7 +11,9 @@ export default function AppEmployeeEditPage() {
 
   const { id } = router.query;
 
-  const { data: environment } = useEnvironmentByIdWithImages(parseInt(id, 10));
+  const { data: environment, isLoading } = useEnvironmentByIdWithImages(
+    parseInt(id, 10)
+  );
 
   const normalizedEnvironment = useMemo(
     () => ({
@@ -40,7 +42,7 @@ export default function AppEmployeeEditPage() {
   }
 
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={isLoading}>
       <EnvironmentForm
         environment={normalizedEnvironment}
         onFormSubmit={onFormSubmit}

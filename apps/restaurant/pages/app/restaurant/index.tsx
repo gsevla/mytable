@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 
 export default function AppRestaurantPage() {
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <View>
         <Text>Restaurant screen</Text>
       </View>

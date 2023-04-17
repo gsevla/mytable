@@ -21,7 +21,7 @@ export default function AppEnvironmentCreatePage() {
   }
 
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <EnvironmentForm onFormSubmit={onFormSubmit} />
     </AppPageWrapper>
   );

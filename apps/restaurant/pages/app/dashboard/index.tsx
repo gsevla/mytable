@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 
 export default function AppDashboardPage() {
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <View>
         <Text>Dashboard screen</Text>
       </View>

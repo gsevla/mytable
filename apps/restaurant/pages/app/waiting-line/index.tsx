@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 
 export default function AppWaitingLinePage() {
   return (
-    <AppPageWrapper>
+    <AppPageWrapper isLoading={false}>
       <View>
         <Text>Waiting Line screen</Text>
       </View>
