@@ -59,4 +59,12 @@ export class ClientService {
 
     return dbClient;
   }
+
+  async deleteClient(clientId: number) {
+    return this.prismaService.client.delete({
+      where: {
+        id: clientId,
+      },
+    });
+  }
 }

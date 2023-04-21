@@ -1,13 +1,13 @@
 import React, { useCallback, useRef } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button, TextInput, HelperText } from 'react-native-paper';
-import { AuthContext } from '../../context';
 import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
-import { SizedBox } from '../../../../components/SizedBox';
 import { useContextSelector } from 'use-context-selector';
 import { mask, unMask } from 'remask';
-import { ApiService } from '../../../../services';
+import { SizedBox } from '../../../../components/SizedBox';
+import { AuthContext } from '../../context';
 import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
+import { useClientWithCpf } from '#hooks/api/client/useClientWithCpf';
 
 export function AskForCpfPage() {
   const router = useRouting();
@@ -15,46 +15,47 @@ export function AskForCpfPage() {
 
   const handleSetActiveStep = useContextSelector(
     AuthContext,
-    (values) => values.handleSetActiveStep,
+    (values) => values.handleSetActiveStep
   );
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('AskForCpfPage');
-    }, [handleSetActiveStep]),
+    }, [handleSetActiveStep])
   );
 
   const formik = useContextSelector(AuthContext, (values) => values.formik);
   const persistClient = useContextSelector(
     AuthContext,
-    (values) => values.persistClient,
+    (values) => values.persistClient
   );
 
   const scrollRef = useRef<ScrollView>(null);
 
-  const { refetch, isLoading, isRefetching } =
-    ApiService.resources.client.clientQueries.useQueryClientByCpf(
-      unMask(formik.values.cpf),
-      {
-        enabled: false,
-        retry: false,
-        onSuccess: persistClient,
-        onError: async (error) => {
-          if (error.response?.status === 404) {
-            router.navigate({
-              routeName: 'identification',
-              web: {
-                path: 'auth/identification',
-              },
-            });
-          } else {
-            showSnackBar(
-              error.response?.data?.message ??
-                'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
-            );
-          }
-        },
+  const { refetch, isLoading, isRefetching } = useClientWithCpf(
+    unMask(formik.values.cpf),
+    {
+      enabled: false,
+      retry: false,
+      onSuccess: (data) => {
+        persistClient(data?.data);
       },
-    );
+      onError: async (error) => {
+        if (error?.status === 404) {
+          router.navigate({
+            routeName: 'identification',
+            web: {
+              path: 'auth/identification',
+            },
+          });
+        } else {
+          showSnackBar(
+            error?.error?.message ??
+              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
+          );
+        }
+      },
+    }
+  );
 
   return (
     <ScrollView
@@ -71,9 +72,9 @@ export function AskForCpfPage() {
       <>
         <View style={{ alignSelf: 'stretch', backgroundColor: '#eeeeee' }}>
           <TextInput
-            label="CPF"
-            placeholder="Digite seu CPF"
-            keyboardType="numeric"
+            label='CPF'
+            placeholder='Digite seu CPF'
+            keyboardType='numeric'
             value={mask(formik.values.cpf, ['999.999.999-99'])}
             onChangeText={formik.handleChange('cpf')}
             onBlur={formik.handleBlur('cpf')}
@@ -82,7 +83,7 @@ export function AskForCpfPage() {
             }}
           />
           <HelperText
-            type="error"
+            type='error'
             visible={!!formik.touched.cpf && !!formik.errors.cpf}
           >
             {formik.errors.cpf}
@@ -93,7 +94,7 @@ export function AskForCpfPage() {
           <Button
             loading={isLoading || isRefetching}
             disabled={isLoading || isRefetching || !formik.values.cpf}
-            mode="contained"
+            mode='contained'
             onPress={refetch}
           >
             Avançar

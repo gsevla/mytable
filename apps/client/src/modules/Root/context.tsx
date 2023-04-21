@@ -6,7 +6,9 @@ import { Snackbar } from 'react-native-paper';
 import { Platform } from 'react-native';
 import router from 'next/router';
 import { ThemeProvider } from '../Theme';
-import { ApiService, StorageService } from '../../services';
+import { useStorageService } from '#hooks/storage';
+import { STORAGE_KEYS } from '~/services/storage/keys';
+import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
 
 interface IRootContextProvider {
   children: React.ReactNode;
@@ -25,6 +27,8 @@ interface IRootContextValues {
 export const RootContext = createContext({} as IRootContextValues);
 
 function RootContextProvider({ children }: IRootContextProvider) {
+  const storageService = useStorageService();
+
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState<Client | null>(null);
@@ -36,7 +40,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
   const [snackBarMessage, setSnackBarMessage] = useState('');
 
   const { data: restaurantData, isLoading: isRestaurantLoading } =
-    ApiService.resources.restaurant.restaurantQueries.useQueryRestaurant();
+    useRestaurant();
 
   // lazy load effect to avoid next js warn about useLayout
   useFocusEffect(
@@ -56,18 +60,19 @@ function RootContextProvider({ children }: IRootContextProvider) {
   }
 
   async function loadToken() {
-    const _token = await StorageService.getData({ key: 'token' });
-    if (_token) {
-      setToken(_token);
+    const innerToken = await storageService.getData<string>(STORAGE_KEYS.token);
+    if (innerToken) {
+      setToken(innerToken);
     }
     setTokenLoaded(true);
   }
 
   async function loadClient() {
-    const _client = await StorageService.getData({ key: 'client' });
-    if (_client) {
-      const parsedClient = JSON.parse(_client) as Client;
-      setClient(parsedClient);
+    const innerClient = await storageService.getData<Client>(
+      STORAGE_KEYS.client
+    );
+    if (innerClient) {
+      setClient(innerClient);
     }
     setClientLoaded(true);
   }

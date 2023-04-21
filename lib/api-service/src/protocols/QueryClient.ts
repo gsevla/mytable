@@ -27,6 +27,8 @@ export type MutationResult<Result = unknown, Input = unknown> = {
 export type QueryResult<Result = unknown> = {
   data?: Result;
   isLoading: boolean;
+  isRefetching: boolean;
+  refetch(): void;
 };
 
 export type QueryKey = Array<unknown>;

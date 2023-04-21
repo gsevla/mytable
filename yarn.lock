@@ -14010,12 +14010,10 @@ relateurl@^0.2.7:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-remask@^0.1.0-alpha.5:
-  version "0.1.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/remask/-/remask-0.1.0-alpha.5.tgz#003d49b203210501a4e66b6e7c034e6a92b6e417"
-  integrity sha512-oRVGV7FWDvL6aOcATa/TPyNs78PUr9F1gn2495/J2A4G1B6mSGWKnZfyyc5hfoqLkpxmUdF2LR/pICR2Ox9Ovw==
-  dependencies:
-    vanilla-masker "^1.2.0"
+remask@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/remask/-/remask-1.0.1.tgz#22aa7f7db39d8e71222fe47b7b7550dfd1a4e846"
+  integrity sha512-mtFh6KO4Zjpr/OekxBUSMKC06/dI+L+XlrPgiufeEDik/CUgs1FKITDQ/Y1BetQiLSNNh/PK8G0hV0Bxp92VXw==
 
 remote-content@^3.0.0:
   version "3.0.0"

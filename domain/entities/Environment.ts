@@ -37,5 +37,8 @@ export type CreateEnvironmentWithImagesInput = CreateEnvironmentInput & {
 };
 
 export type UpdateEnvironmentWithImagesInput = UpdateEnvironmentInput & {
-  images?: Array<UpdateEnvironmentImageInput>;
+  images?: Array<
+    | UpdateEnvironmentImageInput &
+        Omit<CreateEnvironmentImageInput, 'environmentId'>
+  >;
 };

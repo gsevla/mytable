@@ -1,12 +1,13 @@
 import {
+  CreateEnvironmentImageInput,
   UpdateEnvironmentImageInput,
   UpdateEnvironmentWithImagesInput,
 } from '@mytable/domain';
-import { ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { ApiPropertyOptional, PartialType, OmitType } from '@nestjs/swagger';
 import { CreateEnvironmentWithImagesDto } from './create-environment-with-images.dto';
 
 export class UpdateEnvironmentWithImagesDto
-  extends PartialType(CreateEnvironmentWithImagesDto)
+  extends PartialType(OmitType(CreateEnvironmentWithImagesDto, ['images']))
   implements Partial<Omit<UpdateEnvironmentWithImagesInput, 'id'>>
 {
   @ApiPropertyOptional({ example: true })
@@ -20,5 +21,8 @@ export class UpdateEnvironmentWithImagesDto
       },
     ],
   })
-  images?: Array<UpdateEnvironmentImageInput>;
+  images?: Array<
+    | UpdateEnvironmentImageInput &
+        Omit<CreateEnvironmentImageInput, 'environmentId'>
+  >;
 }

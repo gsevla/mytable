@@ -9,10 +9,12 @@ import { unMask } from 'remask';
 import { SizedBox } from '../../components/SizedBox';
 import { AUTHENTICATION_STEPS } from './constants';
 import { goBack } from '../../services/navigation';
-import { ApiService, StorageService } from '../../services';
 import { RootContext } from '../Root/context';
 import { yup } from '../../utils/yup';
 import { useShowSnackBar } from '../Root/hooks/useShowSnackBar';
+import { useStorageService } from '#hooks/storage';
+import { STORAGE_KEYS } from '~/services/storage/keys';
+import { useSignUpClient } from '#hooks/api/client/useSignUpClient';
 
 export const AuthContext = createContext(
   {} as {
@@ -38,6 +40,7 @@ export function AuthContextProvider({
 }) {
   const router = useRouting();
   const showSnackBar = useShowSnackBar();
+  const storageService = useStorageService();
 
   const setToken = useContextSelector(RootContext, (values) => values.setToken);
   const setClient = useContextSelector(
@@ -56,9 +59,7 @@ export function AuthContextProvider({
   );
 
   const persistToken = useCallback(async (data: string) => {
-    await StorageService.setData({
-      key: 'token',
-      value: JSON.stringify(data),
+    await storageService.setData(STORAGE_KEYS.token, JSON.stringify(data), {
       options: {
         path: '/',
       },
@@ -75,10 +76,7 @@ export function AuthContextProvider({
   }, []);
 
   const persistClient = useCallback(async (data: Client) => {
-    await StorageService.setData({
-      key: 'client',
-      value: JSON.stringify(data),
-    });
+    await storageService.setData(STORAGE_KEYS.client, JSON.stringify(data));
     setClient(data);
     router.replace({
       routeName: 'identification-done',
@@ -88,31 +86,34 @@ export function AuthContextProvider({
     });
   }, []);
 
-  const { mutate: signUpClient } =
-    ApiService.auth.authMutations.useQuerySignUpClient();
+  const { mutate: signUpClient } = useSignUpClient({
+    onSuccess: async (data) => {
+      console.log('useSignUpClient data', data);
+      await persistClient(data?.data);
+    },
+    onError: (error) => {
+      console.log('useSignUpClient error', error);
+      if (error?.status === 409) {
+        showSnackBar(
+          error?.error?.message ??
+            'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
+        );
+      } else {
+        showSnackBar(
+          'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
+        );
+      }
+    },
+  });
 
   function onFormSubmit(values: CreateClientInput) {
     const { cpf: _cpf, phone: _phone, ...restValues } = values;
     const unMaskedValues = {
       ...restValues,
-      cpf: unMask(_cpf, ['999.999.999-99']) as string,
-      phone: unMask(_phone, ['(99) 99999-9999']) as string,
+      cpf: unMask(_cpf) as string,
+      phone: unMask(_phone) as string,
     };
-    signUpClient(unMaskedValues, {
-      onSuccess: persistClient,
-      onError: (error) => {
-        if (error.response?.status === 409) {
-          showSnackBar(
-            error.response?.data?.message ??
-              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
-          );
-        } else {
-          showSnackBar(
-            'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
-          );
-        }
-      },
-    });
+    signUpClient(unMaskedValues);
   }
 
   const formik = useFormik<CreateClientInput>({

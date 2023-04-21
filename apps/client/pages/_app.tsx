@@ -1,16 +1,17 @@
+import React from 'react';
 import { AppProps } from 'next/app';
 import { AuthContextProvider } from '../src/modules/Auth/context';
 import { RootContextProvider } from '../src/modules/Root/context';
-import { ApiService } from '../src/services';
+import { Providers } from '../providers';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApiService.QueryClientProvider>
+    <Providers>
       <RootContextProvider>
         <AuthContextProvider>
           <Component {...pageProps} />
         </AuthContextProvider>
       </RootContextProvider>
-    </ApiService.QueryClientProvider>
+    </Providers>
   );
 }

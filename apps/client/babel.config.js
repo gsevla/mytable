@@ -7,10 +7,13 @@ module.exports = {
     [
       'module-resolver',
       {
-        root: ['./src/'],
+        root: ['./'],
         extensions: ['.js', '.ts', '.tsx'],
         alias: {
           '~': './src/',
+          '#services': './src/services/',
+          '#providers': './providers/',
+          '#hooks': './hooks/',
         },
       },
     ],

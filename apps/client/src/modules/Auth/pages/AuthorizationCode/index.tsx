@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { useContextSelector } from 'use-context-selector';
-import { AuthContext } from '../../context';
 import { Caption, Headline, Subheading } from 'react-native-paper';
 import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
-import { ApiService } from '../../../../services';
+import { AuthContext } from '../../context';
 import { RootContext } from '../../../Root/context';
 import { useShowSnackBar } from '../../../Root/hooks/useShowSnackBar';
+import { useSignInClient } from '#hooks/api/client/useSignInClient';
 
 export function AuthorizationCodePage() {
   const router = useRouting();
@@ -20,19 +20,19 @@ export function AuthorizationCodePage() {
 
   const handleSetActiveStep = useContextSelector(
     AuthContext,
-    (values) => values.handleSetActiveStep,
+    (values) => values.handleSetActiveStep
   );
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('AuthorizationCodePage');
-    }, [handleSetActiveStep]),
+    }, [handleSetActiveStep])
   );
 
   const client = useContextSelector(RootContext, (values) => values.client);
 
   const persistToken = useContextSelector(
     AuthContext,
-    (values) => values.persistToken,
+    (values) => values.persistToken
   );
 
   useEffect(() => {
@@ -41,31 +41,31 @@ export function AuthorizationCodePage() {
     }
   }, [token]);
 
-  const { mutate: signInClient } =
-    ApiService.auth.authMutations.useQuerySignInClient();
+  const { mutate: signInClient } = useSignInClient({
+    onError: (error) => {
+      console.log('useSignInClient error', error);
+      if (error?.status === 401) {
+        showSnackBar(
+          error?.error?.message ??
+            'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
+        );
+      } else {
+        showSnackBar(
+          'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.'
+        );
+      }
+      router.replace({
+        routeName: 'identification-done',
+        web: {
+          path: 'auth/identification/done',
+        },
+      });
+    },
+  });
 
   useEffect(() => {
     if (client && (shouldSendCode === 'true' || shouldSendCode === true)) {
-      signInClient(client.cpf, {
-        onError: (error) => {
-          if (error.response?.status === 401) {
-            showSnackBar(
-              error.response?.data?.message ??
-                'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
-            );
-          } else {
-            showSnackBar(
-              'Ops! Um erro inesperado aconteceu, tente novamente mais tarde.',
-            );
-          }
-          router.replace({
-            routeName: 'identification-done',
-            web: {
-              path: 'auth/identification/done',
-            },
-          });
-        },
-      });
+      signInClient(client.cpf);
     }
   }, []);
 
