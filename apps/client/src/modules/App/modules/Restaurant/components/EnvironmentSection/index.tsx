@@ -30,17 +30,18 @@ export function AppRestaurantEnvironmentSectionComponent({
         if (images.length > 0) {
           return (
             <ScrollView horizontal>
-              {images.map((item, index, arr) => {
-                console.log('i', item);
-                return (
-                  <React.Fragment key={item.id.toString()}>
-                    <AppRestaurantImageComponent
-                      imageProps={{ source: item.source }}
-                    />
-                    {index < arr.length - 1 && <SizedBox />}
-                  </React.Fragment>
-                );
-              })}
+              {images.map((item, index, arr) => (
+                <React.Fragment key={item.id.toString()}>
+                  <AppRestaurantImageComponent
+                    imageProps={{
+                      source: {
+                        uri: item.source,
+                      },
+                    }}
+                  />
+                  {index < arr.length - 1 && <SizedBox />}
+                </React.Fragment>
+              ))}
             </ScrollView>
           );
         }

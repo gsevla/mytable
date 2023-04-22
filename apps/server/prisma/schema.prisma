@@ -12,17 +12,17 @@ datasource db {
 }
 
 model Restaurant {
-  id               Int                @id @default(autoincrement())
-  name             String
-  ownerName        String
-  address          String
-  coverImage       String?
-  primaryColor     String
-  accentColor      String
-  Employee         Employee[]
-  WorkingDays      WorkingDays[]
-  Environment      Environment[]
-  ReservationOrder ReservationOrder[]
+  id                Int                @id @default(autoincrement())
+  name              String
+  ownerName         String
+  address           String
+  coverImage        String?
+  primaryColor      String
+  accentColor       String
+  employees         Employee[]
+  workingDays       WorkingDays[]
+  environments      Environment[]
+  reservationOrders ReservationOrder[]
 }
 
 enum EmployeeRoleEnum {
@@ -40,18 +40,18 @@ model Employee {
   enabled                 Boolean                   @default(true)
   restaurant              Restaurant                @relation(fields: [restaurantId], references: [id])
   restaurantId            Int
-  ReservationOrderHistory ReservationOrderHistory[]
+  reservationOrderHistory ReservationOrderHistory[]
 }
 
 model Client {
-  id               Int                @id @default(autoincrement())
-  name             String
-  surname          String
-  phone            String             @unique
-  email            String             @unique
-  cpf              String             @unique
-  identifier       String             @unique @default(cuid())
-  ReservationOrder ReservationOrder[]
+  id                Int                @id @default(autoincrement())
+  name              String
+  surname           String
+  phone             String             @unique
+  email             String             @unique
+  cpf               String             @unique
+  identifier        String             @unique @default(cuid())
+  reservationOrders ReservationOrder[]
 }
 
 enum DayEnum {
@@ -117,7 +117,7 @@ model ReservationOrder {
   createdAt               DateTime                   @default(now())
   modifiedAt              DateTime                   @updatedAt
   status                  ReservationOrderStatusEnum @default(PENDING)
-  ReservationOrderHistory ReservationOrderHistory[]
+  reservationOrderHistory ReservationOrderHistory[]
 }
 
 model ReservationOrderHistory {

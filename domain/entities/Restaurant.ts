@@ -1,3 +1,6 @@
+import { EnvironmentWithImage } from './Environment';
+import { WorkingDay } from './WorkingDay';
+
 export interface Restaurant {
   id: number;
   name: string;
@@ -10,4 +13,9 @@ export interface Restaurant {
 
 export type UpdateRestaurantInput = Partial<Omit<Restaurant, 'id'>> & {
   id: number;
+};
+
+export type RestaurantWithInfo = Restaurant & {
+  workingDays: Array<WorkingDay>;
+  environments: Array<EnvironmentWithImage>;
 };

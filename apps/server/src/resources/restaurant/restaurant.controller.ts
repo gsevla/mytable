@@ -18,6 +18,11 @@ export class RestaurantController {
     return this.restaurantService.getRestaurant();
   }
 
+  @Get('/with-info')
+  getRestaurantWithInfo() {
+    return this.restaurantService.getRestaurantWithInfo();
+  }
+
   @ApiBearerAuth()
   @ApiNoContentResponse()
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

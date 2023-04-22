@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { Restaurant } from '@mytable/domain';
+import { Restaurant, RestaurantWithInfo } from '@mytable/domain';
 import { QueryOptions } from '../../protocols/QueryOptions';
 import { createRestaurantEndpoints } from './http';
 import { restaurantQueryKeys } from './keys';
@@ -29,7 +29,27 @@ export function createRestaurantQueries(
     };
   }
 
+  function useRestaurantWithInfo(
+    options: QueryOptions<RestaurantWithInfo> = {}
+  ): QueryResult<RestaurantWithInfo> {
+    const queryKey = [restaurantQueryKeys.restaurantWithInfo];
+
+    const { data, isLoading, isRefetching, refetch } = useQuery(
+      queryKey,
+      restaurantEndpoints.getRestaurantWithInfo,
+      options
+    );
+
+    return {
+      data: data?.data,
+      isLoading,
+      isRefetching,
+      refetch,
+    };
+  }
+
   return {
     useRestaurant,
+    useRestaurantWithInfo,
   };
 }

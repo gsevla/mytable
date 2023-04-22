@@ -16,7 +16,9 @@ export type EmployeeWithoutPassword = Omit<Employee, 'password'>;
 export type CreateEmployeeInput = Omit<
   Employee,
   'id' | 'enabled' | 'role' | 'restaurantId'
->;
+> & {
+  role?: EmployeeRole;
+};
 
 export type CreateEmployeeOutput = EmployeeWithoutPassword;
 

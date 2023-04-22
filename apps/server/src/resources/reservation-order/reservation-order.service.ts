@@ -29,7 +29,7 @@ export class ReservationOrderService {
       data: {
         ...createReservationOrderDto,
         restaurantId: 1,
-        ReservationOrderHistory: {
+        reservationOrderHistory: {
           create: [
             {
               employeeId: 1,
@@ -128,7 +128,7 @@ export class ReservationOrderService {
       },
       data: {
         ...updateReservationOrderDto,
-        ReservationOrderHistory: {
+        reservationOrderHistory: {
           create: [
             {
               employeeId: 1,

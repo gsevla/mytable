@@ -1,11 +1,7 @@
-import {
-  ApiHideProperty,
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { CreateEmployeeInput, EmployeeRole } from '@mytable/domain';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateEmployeeDto implements Prisma.EmployeeCreateInput {
+export class CreateEmployeeDto implements CreateEmployeeInput {
   @ApiProperty({ example: 'Gabriel' })
   name: string;
 
@@ -19,13 +15,7 @@ export class CreateEmployeeDto implements Prisma.EmployeeCreateInput {
   password: string;
 
   @ApiPropertyOptional({
-    example: 'ORDINARY',
+    example: EmployeeRole.ORDINARY,
   })
-  role?: 'ADMIN' | 'ORDINARY';
-
-  @ApiHideProperty()
-  enabled?: boolean;
-
-  @ApiHideProperty()
-  restaurant: Prisma.RestaurantCreateNestedOneWithoutEmployeeInput;
+  role?: EmployeeRole;
 }

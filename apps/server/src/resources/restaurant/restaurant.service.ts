@@ -10,6 +10,22 @@ export class RestaurantService {
     return this.prismaService.restaurant.findUnique({ where: { id: 1 } });
   }
 
+  getRestaurantWithInfo() {
+    return this.prismaService.restaurant.findUnique({
+      where: {
+        id: 1,
+      },
+      include: {
+        environments: {
+          include: {
+            images: true,
+          },
+        },
+        workingDays: true,
+      },
+    });
+  }
+
   updateRestaurant(
     id: number,
     data: Prisma.RestaurantUpdateInput
