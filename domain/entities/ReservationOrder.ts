@@ -33,3 +33,16 @@ export type ReservationOrderWithClientData = ReservationOrder & {
     identifier: string;
   };
 };
+
+export type ReservationOrderWithEnvironmentData = ReservationOrder & {
+  environment: {
+    name: string;
+  };
+};
+
+export type ReservationOrderWithReservationOrderHistoryData =
+  ReservationOrder & {
+    reservationOrderHistory: {
+      reason?: string;
+    };
+  };

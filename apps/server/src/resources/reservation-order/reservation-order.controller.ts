@@ -38,6 +38,22 @@ export class ReservationOrderController {
     return this.reservationOrderService.findAll();
   }
 
+  @Get('/active')
+  findAllActive(@AuthenticatedUser() user: any) {
+    if (user?.cpf) {
+      return this.reservationOrderService.findAllActiveFromClient(user.id);
+    }
+    return this.reservationOrderService.findAllActive();
+  }
+
+  @Get('/history')
+  findAllHistory(@AuthenticatedUser() user: any) {
+    if (user?.cpf) {
+      return this.reservationOrderService.findAllHistoryFromClient(user.id);
+    }
+    return this.reservationOrderService.findAllHistory();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reservationOrderService.findOne(+id);
@@ -49,6 +65,13 @@ export class ReservationOrderController {
     @Body() updateReservationOrderDto: UpdateReservationOrderDto
   ) {
     return this.reservationOrderService.update(+id, updateReservationOrderDto);
+  }
+
+  @Patch('/cancel/:id')
+  cancel(@Param('id') id: string, @AuthenticatedUser() user: any) {
+    if (!user?.cpf) return this;
+
+    return this.reservationOrderService.cancel(parseInt(id, 10), user.id);
   }
 
   @Delete(':id')

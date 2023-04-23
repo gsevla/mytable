@@ -6,7 +6,7 @@ import { Snackbar } from 'react-native-paper';
 import { Platform } from 'react-native';
 import router from 'next/router';
 import { ThemeProvider } from '../Theme';
-import { useStorageService } from '#hooks/storage';
+import { useStorageService } from '#hooks/storage/useStorageService';
 import { STORAGE_KEYS } from '~/services/storage/keys';
 import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
 
@@ -62,6 +62,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
   async function loadToken() {
     const innerToken = await storageService.getData<string>(STORAGE_KEYS.token);
     if (innerToken) {
+      console.log('token', innerToken);
       setToken(innerToken);
     }
     setTokenLoaded(true);

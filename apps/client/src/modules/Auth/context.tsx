@@ -12,7 +12,7 @@ import { goBack } from '../../services/navigation';
 import { RootContext } from '../Root/context';
 import { yup } from '../../utils/yup';
 import { useShowSnackBar } from '../Root/hooks/useShowSnackBar';
-import { useStorageService } from '#hooks/storage';
+import { useStorageService } from '#hooks/storage/useStorageService';
 import { STORAGE_KEYS } from '~/services/storage/keys';
 import { useSignUpClient } from '#hooks/api/client/useSignUpClient';
 

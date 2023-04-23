@@ -1,21 +1,24 @@
-import { ReservationOrder } from '@mytable/domain';
+import {
+  ReservationOrderWithEnvironmentData,
+  ReservationOrderWithReservationOrderHistoryData,
+} from '@mytable/domain';
 import React from 'react';
 import { View } from 'react-native';
-import { IconButton, Subheading, Title } from 'react-native-paper';
+import { Subheading, Title } from 'react-native-paper';
+import { SizedBox, Text } from '@mytable/components';
 import { Paper } from '~/components/Paper';
 import { reservationOrderStatusEnumString } from '../../constants';
 import { styles } from './styles';
 
 interface Props {
-  reservation: ReservationOrder;
+  reservation: ReservationOrderWithEnvironmentData &
+    ReservationOrderWithReservationOrderHistoryData;
 }
 
 export function AppReservationReserveHistoryCardComponent({
   reservation,
 }: Props) {
-  const date = `${reservation.date.toLocaleDateString(
-    'pt-BR'
-  )} - ${reservation.date.toLocaleTimeString('pt-BR')}`;
+  const [reservationOrderHistory] = reservation.reservationOrderHistory;
 
   return (
     <Paper style={styles.container}>
@@ -24,21 +27,24 @@ export function AppReservationReserveHistoryCardComponent({
           <Title style={{}}>
             {reservationOrderStatusEnumString[reservation.status]}
           </Title>
-          <View>
-            <Subheading>{date}</Subheading>
-          </View>
-        </View>
-        <View
-          style={{
-            flexGrow: 0,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <IconButton
-            icon='information'
-            onPress={() => {}}
-          />
+          <Subheading style={{ fontWeight: 'bold' }}>Ambiente</Subheading>
+          <Text>{reservation.environment.name}</Text>
+          <SizedBox />
+          <Subheading style={{ fontWeight: 'bold' }}>Dia</Subheading>
+          <Text>{reservation.date}</Text>
+          <SizedBox />
+          <Subheading style={{ fontWeight: 'bold' }}>Permanência</Subheading>
+          <Text>
+            {reservation.startTime} ~ {reservation.endTime}
+          </Text>
+          {!!reservationOrderHistory?.reason && (
+            <>
+              <SizedBox />
+              <Subheading style={{ fontWeight: 'bold' }}>Razão</Subheading>
+              <Text>{reservationOrderHistory?.reason}</Text>
+            </>
+          )}
+          <SizedBox />
         </View>
       </View>
     </Paper>

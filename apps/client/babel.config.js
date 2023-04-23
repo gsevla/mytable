@@ -17,11 +17,12 @@ module.exports = {
         },
       },
     ],
-    process.env.PLATFORM === 'web'
-      ? ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
-      : undefined,
-    process.env.PLATFORM === 'web'
-      ? ['@babel/plugin-proposal-private-methods', { loose: true }]
-      : 'undefined',
+    ['@babel/plugin-transform-flow-strip-types'],
+    // process.env.PLATFORM === 'web'
+    //   ? ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
+    //   : undefined,
+    // process.env.PLATFORM === 'web'
+    //   ? ['@babel/plugin-proposal-private-methods', { loose: true }]
+    //   : undefined,
   ],
 };
