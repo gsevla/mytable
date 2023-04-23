@@ -51,8 +51,8 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
     );
 
   return (
-    <DataTable>
-      <DataTable.Header>
+    <DataTable pointerEvents='none'>
+      <DataTable.Header pointerEvents='none'>
         {columns.map((column) => (
           <DataTable.Title
             style={{
@@ -71,9 +71,13 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
         )}
       </DataTable.Header>
       {data.map((item) => (
-        <DataTable.Row key={`dt-row-${item.id}`}>
+        <DataTable.Row
+          key={`dt-row-${item.id}`}
+          pointerEvents='none'
+        >
           {columns.map((column) => (
             <DataTable.Cell
+              key={`dt-cell-item${item.id}-col${column.itemNameReference}`}
               numeric={column.isNumeric ?? false}
               style={{
                 flex: column.widthMultiplier ?? 1,
