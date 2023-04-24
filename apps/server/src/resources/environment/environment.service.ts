@@ -39,13 +39,20 @@ export class EnvironmentService {
   }
 
   findAll() {
-    return this.prismaService.environment.findMany();
+    return this.prismaService.environment.findMany({
+      orderBy: {
+        enabled: 'desc',
+      },
+    });
   }
 
   findAllWithImage() {
     return this.prismaService.environment.findMany({
       include: {
         images: true,
+      },
+      orderBy: {
+        enabled: 'desc',
       },
     });
   }
