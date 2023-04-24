@@ -35,7 +35,12 @@ export class ReservationOrderService {
     return innerDate;
   }
 
-  private async getEnvironmentOccupation(environmentId: number) {
+  private async getEnvironmentOccupation(
+    environmentId: number,
+    date: string,
+    startTime: string,
+    endTime: string
+  ) {
     const environmentOccupation = (
       await this.prismaService.reservationOrder.findMany({
         where: {
@@ -45,6 +50,19 @@ export class ReservationOrderService {
             },
             {
               environmentId,
+            },
+            {
+              date,
+            },
+            {
+              startTime: {
+                gte: startTime,
+              },
+            },
+            {
+              endTime: {
+                lte: endTime,
+              },
             },
           ],
         },
@@ -140,7 +158,10 @@ export class ReservationOrderService {
   private async ensureEnvironmentCanAttend(
     environmentId: number,
     peopleAmountToAdd: number,
-    reservationOrderId?: number
+    reservationOrderId: number | null,
+    date: string,
+    startTime: string,
+    endTime: string
   ) {
     // match restaurant occupation date and time
     if (!peopleAmountToAdd) return;
@@ -152,7 +173,10 @@ export class ReservationOrderService {
     });
 
     const environmentOccupation = await this.getEnvironmentOccupation(
-      environment.id
+      environment.id,
+      date,
+      startTime,
+      endTime
     );
 
     const lastReservationOrderPeopleAmount = reservationOrderId
@@ -195,7 +219,11 @@ export class ReservationOrderService {
     );
     await this.ensureEnvironmentCanAttend(
       createReservationOrderDto.environmentId,
-      createReservationOrderDto.peopleAmount
+      createReservationOrderDto.peopleAmount,
+      null,
+      createReservationOrderDto.date,
+      createReservationOrderDto.startTime,
+      createReservationOrderDto.endTime
     );
 
     return this.prismaService.reservationOrder.create({
@@ -242,6 +270,9 @@ export class ReservationOrderService {
         {
           date: 'desc',
         },
+        {
+          startTime: 'desc',
+        },
       ],
     });
   }
@@ -270,6 +301,9 @@ export class ReservationOrderService {
       orderBy: [
         {
           date: 'desc',
+        },
+        {
+          startTime: 'desc',
         },
       ],
     });
@@ -301,7 +335,10 @@ export class ReservationOrderService {
       },
       orderBy: [
         {
-          date: 'desc',
+          date: 'asc',
+        },
+        {
+          startTime: 'asc',
         },
       ],
     });
@@ -319,6 +356,14 @@ export class ReservationOrderService {
       where: {
         clientId,
       },
+      orderBy: [
+        {
+          date: 'asc',
+        },
+        {
+          startTime: 'asc',
+        },
+      ],
     });
   }
 
@@ -346,6 +391,14 @@ export class ReservationOrderService {
           },
         ],
       },
+      orderBy: [
+        {
+          date: 'asc',
+        },
+        {
+          startTime: 'asc',
+        },
+      ],
     });
   }
 
@@ -382,6 +435,14 @@ export class ReservationOrderService {
           },
         ],
       },
+      orderBy: [
+        {
+          date: 'asc',
+        },
+        {
+          startTime: 'asc',
+        },
+      ],
     });
   }
 
@@ -430,7 +491,10 @@ export class ReservationOrderService {
     await this.ensureEnvironmentCanAttend(
       dbReservationOrder.environmentId,
       updateReservationOrderDto.peopleAmount,
-      dbReservationOrder.id
+      dbReservationOrder.id,
+      updateReservationOrderDto.date ?? dbReservationOrder.date,
+      updateReservationOrderDto.startTime ?? dbReservationOrder.startTime,
+      updateReservationOrderDto.endTime ?? dbReservationOrder.endTime
     );
     ReservationOrderService.respectStateThreadmill(
       dbReservationOrder.status,
