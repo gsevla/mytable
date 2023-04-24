@@ -40,9 +40,14 @@ export class EnvironmentService {
 
   findAll() {
     return this.prismaService.environment.findMany({
-      orderBy: {
-        enabled: 'desc',
-      },
+      orderBy: [
+        {
+          enabled: 'desc',
+        },
+        {
+          name: 'asc',
+        },
+      ],
     });
   }
 
@@ -51,9 +56,12 @@ export class EnvironmentService {
       include: {
         images: true,
       },
-      orderBy: {
-        enabled: 'desc',
-      },
+      orderBy: [
+        {
+          enabled: 'desc',
+        },
+        { name: 'asc' },
+      ],
     });
   }
 

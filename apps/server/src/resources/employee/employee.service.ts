@@ -59,7 +59,16 @@ export class EmployeeService {
   }
 
   async findAll() {
-    const dbEmployees = await this.prismaService.employee.findMany();
+    const dbEmployees = await this.prismaService.employee.findMany({
+      orderBy: [
+        {
+          enabled: 'desc',
+        },
+        {
+          name: 'asc',
+        },
+      ],
+    });
 
     return EmployeeService.removeProps(dbEmployees);
   }
@@ -69,6 +78,9 @@ export class EmployeeService {
       where: {
         enabled: true,
         role: EmployeeRole.ADMIN,
+      },
+      orderBy: {
+        name: 'asc',
       },
     });
 

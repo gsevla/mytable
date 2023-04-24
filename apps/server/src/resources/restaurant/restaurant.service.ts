@@ -17,9 +17,17 @@ export class RestaurantService {
       },
       include: {
         environments: {
+          where: {
+            enabled: true,
+          },
           include: {
             images: true,
           },
+          orderBy: [
+            {
+              name: 'asc',
+            },
+          ],
         },
         workingDays: true,
       },
