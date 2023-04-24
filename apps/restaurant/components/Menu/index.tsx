@@ -1,4 +1,3 @@
-import { SizedBox, Text } from '@mytable/components';
 import React, { useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { Provider, Menu as PaperMenu, Portal } from 'react-native-paper';
