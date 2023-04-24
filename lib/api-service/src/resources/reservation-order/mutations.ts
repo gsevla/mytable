@@ -13,9 +13,10 @@ import { reservationOrderQueryKeys } from './keys';
 export function createReservationOrderMutations(
   reservationOrderEndpoints: ReturnType<typeof createReservationOrderEndpoints>
 ) {
-  function useCreateReservationOrder(
-    options: MutationOptions<ReservationOrderWithClientData> = {}
-  ): MutationResult<
+  function useCreateReservationOrder({
+    onSuccess,
+    ...options
+  }: MutationOptions<ReservationOrderWithClientData> = {}): MutationResult<
     ReservationOrderWithClientData,
     CreateReservationOrderInput
   > {
@@ -33,8 +34,9 @@ export function createReservationOrderMutations(
           queryClient.invalidateQueries([
             reservationOrderQueryKeys.reservationOrder,
           ]);
-          options?.onSuccess?.(output);
+          onSuccess?.(output);
         },
+        ...options,
       }
     );
 
@@ -45,9 +47,10 @@ export function createReservationOrderMutations(
     };
   }
 
-  function useUpdateReservationOrder(
-    options: MutationOptions<ReservationOrderWithClientData> = {}
-  ): MutationResult<
+  function useUpdateReservationOrder({
+    onSuccess,
+    ...options
+  }: MutationOptions<ReservationOrderWithClientData> = {}): MutationResult<
     ReservationOrderWithClientData,
     UpdateReservationOrderInput
   > {
@@ -69,8 +72,9 @@ export function createReservationOrderMutations(
             reservationOrderQueryKeys.reservationOrderById,
             output.id,
           ]);
-          options?.onSuccess?.(output);
+          onSuccess?.(output);
         },
+        ...options,
       }
     );
 

@@ -11,6 +11,7 @@ import { useAuthenticatedClient } from '#hooks/storage/useAuthenticatedClient';
 import { useRestaurantWithInfo } from '#hooks/api/restaurant/useRestaurantWithInfo';
 import LoadingScreen from '~/pages/Loading';
 import { goBack } from '~/services/navigation';
+import { useSnackbar } from '#hooks/useSnackbar';
 
 const TZ_OFFSET = -3 * 60 * 60 * 1000; // br offset = -3
 
@@ -292,6 +293,7 @@ export function AppReservationReservePage() {
   const startTimeInputRef = useRef<RNTextInput>(null);
   const endTimeInputRef = useRef<RNTextInput>(null);
 
+  const { showSnackbar } = useSnackbar();
   const client = useAuthenticatedClient();
   const { data: restaurant, isLoading: isRestaurantLoading } =
     useRestaurantWithInfo();
@@ -301,6 +303,9 @@ export function AppReservationReservePage() {
   } = useCreateReservationOrder({
     onSuccess: () => {
       goBack();
+    },
+    onError: (error) => {
+      showSnackbar(error?.error?.message ?? 'Ops! Tente novamente mais tarde!');
     },
   });
 

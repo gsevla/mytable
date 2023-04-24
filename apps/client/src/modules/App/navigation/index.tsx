@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Icon } from '../../../components/Icon';
 import { Restaurant } from '../modules/Restaurant';
 import { Reservation } from '../modules/Reservation';
 import { WaitingLine } from '../modules/WaitingLine';
 import { Identification } from '../modules/Identification';
 import { DialogWithConfirmation } from '../../../components/Dialog';
+import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
+import { routes } from '~/constants/routes';
 
 const AppBottomTabNavigator = createBottomTabNavigator();
 
@@ -16,6 +19,7 @@ function SignOutPage() {
 
 export function AppBottomTab() {
   const theme = useTheme();
+  const { data: restaurant } = useRestaurant();
 
   const [isSignOutDialogVisible, setIsSignOutDialogVisible] = useState(false);
 
@@ -37,21 +41,37 @@ export function AppBottomTab() {
     // remove token/logout function
   }
 
+  const removeTabFrom = [
+    routes.app.reservation.reserve.mobile,
+    routes.app.reservation.reserve.web,
+  ] as unknown as [string];
+
   return (
     <>
       <AppBottomTabNavigator.Navigator
-        screenOptions={{
-          headerTitle: 'MyTable',
-          headerStyle: {
-            borderBottomWidth: 1.5,
-            borderBottomColor: '#eee',
-          },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          tabBarActiveTintColor: theme.colors.accent,
-          tabBarInactiveTintColor: '#aaa',
-          tabBarAllowFontScaling: true,
+        screenOptions={({ route }) => {
+          const focusedRoute = getFocusedRouteNameFromRoute(route);
+
+          const tabBarStyleDisplay = !removeTabFrom.includes(focusedRoute ?? '')
+            ? 'flex'
+            : 'none';
+
+          return {
+            headerTitle: restaurant?.name ?? 'MyTable',
+            headerStyle: {
+              borderBottomWidth: 1.5,
+              borderBottomColor: '#eee',
+            },
+            tabBarStyle: {
+              display: tabBarStyleDisplay,
+            },
+            tabBarLabelStyle: {
+              fontSize: 12,
+            },
+            tabBarActiveTintColor: theme.colors.accent,
+            tabBarInactiveTintColor: '#aaa',
+            tabBarAllowFontScaling: true,
+          };
         }}
       >
         <AppBottomTabNavigator.Screen
@@ -72,6 +92,7 @@ export function AppBottomTab() {
           name='reservation'
           component={Reservation}
           options={{
+            headerShown: false,
             tabBarLabel: 'Reservas',
             tabBarIcon: ({ color, size }) => (
               <Icon
