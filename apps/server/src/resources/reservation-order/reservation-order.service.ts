@@ -199,7 +199,7 @@ export class ReservationOrderService {
 
     if (
       environmentOccupationWithoutReservation + peopleAmountToAdd >
-      environmentOccupation
+      environment.capacity
     ) {
       throw new NotAcceptableException(
         'O limite de pessoas nesse ambiente foi excedido.'
@@ -504,8 +504,6 @@ export class ReservationOrderService {
       dbReservationOrder.status,
       updateReservationOrderDto.status
     );
-    // this.ensureMinimumDateNotExceeded(updateReservationOrderDto.date, updateReservationOrderDto.startTime);
-    // this.ensureMaxDateLimitNotExceeded(updateReservationOrderDto.date, updateReservationOrderDto.endTime)
 
     const updateResponse = await this.prismaService.reservationOrder.update({
       include: {
