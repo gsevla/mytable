@@ -50,6 +50,7 @@ export default function AuthPage() {
       );
       // now should show app page
       await router.push('/app');
+      router.reload();
     },
     onError: (error) => {
       console.log('err', error);

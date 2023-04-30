@@ -3,7 +3,11 @@ import { QueryClientProvider } from '#/providers/QueryClientProvider';
 import { ServicesProvider } from '#/providers/ServicesProvider';
 import { AuthGuardProvider } from './AuthGuardProvider';
 
-export function Providers({ children }: { children: JSX.Element }) {
+export function Providers({
+  children,
+}: {
+  children: React.ReactNode | JSX.Element;
+}) {
   return (
     <ServicesProvider>
       <QueryClientProvider>
