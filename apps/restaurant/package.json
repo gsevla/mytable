@@ -23,6 +23,7 @@
     "dotenv-cli": "^6.0.0",
     "expo": "^44.0.0",
     "expo-constants": "~13.0.1",
+    "expo-linking": "~3.0.0",
     "expo-next-react-navigation": "^2.0.2",
     "expo-status-bar": "~1.2.0",
     "find-up": "5.0.0",

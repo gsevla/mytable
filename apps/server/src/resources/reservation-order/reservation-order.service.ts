@@ -304,10 +304,13 @@ export class ReservationOrderService {
       },
       orderBy: [
         {
+          status: 'asc',
+        },
+        {
           date: 'desc',
         },
         {
-          startTime: 'desc',
+          startTime: 'asc',
         },
       ],
     });

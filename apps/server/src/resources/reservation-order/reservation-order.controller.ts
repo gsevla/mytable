@@ -31,7 +31,6 @@ export class ReservationOrderController {
 
   @Get()
   findAll(@AuthenticatedUser() user: any) {
-    // console.log('user', user);
     if (user?.cpf) {
       return this.reservationOrderService.findAllFromClient(user.id);
     }

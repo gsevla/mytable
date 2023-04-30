@@ -2,13 +2,19 @@ import * as Linking from 'expo-linking';
 
 export const routes = {
   app: {
-    'dashboard': {
+    dashboard: {
       web: 'app/dashboard',
       mobile: 'dashboard',
     },
     'reservation-order': {
-      web: 'app/reservation-order',
-      mobile: 'reservation-order',
+      active: {
+        web: 'app/reservation-order/active',
+        mobile: 'reservation-order-active',
+      },
+      history: {
+        web: 'app/reservation-order/history',
+        mobile: 'reservation-order-history',
+      },
     },
     'waiting-queue': {
       web: 'app/waiting-queue',
@@ -24,7 +30,14 @@ const config = {
     app: {
       screens: {
         [routes.app.dashboard.mobile]: routes.app.dashboard.web,
-        [routes.app['reservation-order'].mobile]: routes.app['reservation-order'].web,
+        'reservation-order': {
+          screens: {
+            [routes.app['reservation-order'].active.mobile]:
+              routes.app['reservation-order'].active.web,
+            [routes.app['reservation-order'].history.mobile]:
+              routes.app['reservation-order'].history.web,
+          },
+        },
         [routes.app['waiting-queue'].mobile]: routes.app['waiting-queue'].web,
       },
     },
