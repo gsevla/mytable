@@ -51,7 +51,10 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
     );
 
   return (
-    <DataTable pointerEvents='none'>
+    <DataTable
+      pointerEvents='none'
+      style={{ flex: 1 }}
+    >
       <DataTable.Header pointerEvents='none'>
         {columns.map((column) => (
           <DataTable.Title

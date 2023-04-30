@@ -215,7 +215,13 @@ export function AppPageWrapper({
               size='large'
             />
           ) : (
-            <ScrollView>{children}</ScrollView>
+            <ScrollView
+              contentContainerStyle={{
+                flex: 1,
+              }}
+            >
+              {children}
+            </ScrollView>
           )}
         </View>
       </View>
