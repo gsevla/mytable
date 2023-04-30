@@ -7,6 +7,6 @@ export default ({ config }) => ({
   ...config,
   extra: {
     API_URL: process.env.API_URL,
-    SOCKET_ADDR: process.env.SOCKET_URL,
+    SOCKET_URL: process.env.SOCKET_URL,
   },
 });
