@@ -7,6 +7,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReservationOrderStatusEnum } from '@prisma/client';
 import { Day } from '@mytable/domain';
+import { EventsService } from 'src/events/events.service';
 import { CreateReservationOrderDto } from './dto/create-reservation-order.dto';
 import { UpdateReservationOrderDto } from './dto/update-reservation-order.dto';
 
@@ -14,7 +15,10 @@ const TZ_OFFSET = -3 * 60 * 60 * 1000;
 
 @Injectable()
 export class ReservationOrderService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private eventsService: EventsService
+  ) {}
 
   private static findRecommendedTimeSlots() {}
 
@@ -503,7 +507,7 @@ export class ReservationOrderService {
     // this.ensureMinimumDateNotExceeded(updateReservationOrderDto.date, updateReservationOrderDto.startTime);
     // this.ensureMaxDateLimitNotExceeded(updateReservationOrderDto.date, updateReservationOrderDto.endTime)
 
-    return this.prismaService.reservationOrder.update({
+    const updateResponse = await this.prismaService.reservationOrder.update({
       include: {
         client: {
           select: {
@@ -539,6 +543,16 @@ export class ReservationOrderService {
         },
       },
     });
+
+    this.eventsService.emitReservationOrderStatusChange(
+      updateResponse.client.identifier,
+      {
+        id: updateResponse.id,
+        status: updateResponse.status,
+      }
+    );
+
+    return updateResponse;
   }
 
   async cancel(id: number, userId: number) {
