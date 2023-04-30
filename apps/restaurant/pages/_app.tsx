@@ -6,12 +6,19 @@ import { Providers } from '#/providers/index';
 import { useStorageService } from '#/hooks/storage';
 import { STORAGE_KEYS } from '#/services/storage/keys';
 import { EventsService } from '#/services/events';
+import { useThemeDispatch } from '#/hooks/theme/useThemeDispatch';
+import { useRestaurant } from '#/hooks/api/restaurant/useRestaurant';
+import { useApiService } from '#/hooks/api/useApiService';
 
 function PostProviders() {
-  const [authenticated, setAuthenticated] = useState(false);
-
   const router = useRouter();
+  const apiService = useApiService();
   const storageService = useStorageService();
+  const themeDispatch = useThemeDispatch();
+
+  const { data: restaurant } = useRestaurant();
+
+  const [authorized, setAuthorized] = useState(false);
 
   const getAccessToken = () =>
     storageService.getData(STORAGE_KEYS.ACCESS_TOKEN);
@@ -39,7 +46,8 @@ function PostProviders() {
       redirectToAuth();
     } else {
       replaceForReservationOrder();
-      setAuthenticated(true);
+      apiService.httpClient.setHeader('Authorization', `Bearer ${accessToken}`);
+      setAuthorized(true);
     }
   };
 
@@ -48,10 +56,27 @@ function PostProviders() {
   }, []);
 
   useEffect(() => {
-    if (authenticated) {
+    if (authorized) {
       loadEventService();
     }
-  }, [authenticated]);
+  }, [authorized]);
+
+  useEffect(() => {
+    if (restaurant) {
+      themeDispatch({
+        type: 'setPrimaryColor',
+        payload: {
+          primaryColor: restaurant.primaryColor,
+        },
+      });
+      themeDispatch({
+        type: 'setAccentColor',
+        payload: {
+          accentColor: restaurant.accentColor,
+        },
+      });
+    }
+  }, [restaurant]);
 
   return null;
 }

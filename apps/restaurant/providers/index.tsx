@@ -1,7 +1,8 @@
 import React from 'react';
 import { QueryClientProvider } from '#/providers/QueryClientProvider';
 import { ServicesProvider } from '#/providers/ServicesProvider';
-import { AuthGuardProvider } from './AuthGuardProvider';
+import { NavigationProvider } from './NavigationProvider';
+import { ThemeProvider } from './ThemeProvider';
 
 export function Providers({
   children,
@@ -9,10 +10,12 @@ export function Providers({
   children: React.ReactNode | JSX.Element;
 }) {
   return (
-    <ServicesProvider>
-      <QueryClientProvider>
-        <AuthGuardProvider>{children}</AuthGuardProvider>
-      </QueryClientProvider>
-    </ServicesProvider>
+    <NavigationProvider>
+      <ServicesProvider>
+        <QueryClientProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </QueryClientProvider>
+      </ServicesProvider>
+    </NavigationProvider>
   );
 }
