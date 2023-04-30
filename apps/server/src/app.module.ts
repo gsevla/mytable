@@ -15,12 +15,14 @@ import { EnvironmentImageModule } from './resources/environment-image/environmen
 import { ReservationOrderModule } from './resources/reservation-order/reservation-order.module';
 import { ReservationOrderHistoryModule } from './resources/reservation-order-history/reservation-order-history.module';
 import { AuthValidator } from './resources/auth/validator';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: findUpSync('.env'),
     }),
+    EventsModule,
     MailModule,
     AuthModule,
     ClientModule,
