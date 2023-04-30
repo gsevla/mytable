@@ -9,6 +9,7 @@ import { ThemeProvider } from '../Theme';
 import { useStorageService } from '#hooks/storage/useStorageService';
 import { STORAGE_KEYS } from '~/services/storage/keys';
 import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
+import { EventsService } from '~/services/events';
 
 interface IRootContextProvider {
   children: React.ReactNode;
@@ -105,6 +106,12 @@ function RootContextProvider({ children }: IRootContextProvider) {
       setLoaded(true);
     }
   }, [isRestaurantLoading]);
+
+  useEffect(() => {
+    if (client) {
+      EventsService.getInstance().loadService(client.identifier);
+    }
+  }, [client]);
 
   return (
     <RootContext.Provider
