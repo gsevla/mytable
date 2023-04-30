@@ -20,8 +20,10 @@ export class ApiService {
     if (ApiService.isLoaded) return;
 
     console.log('## API_URL', Constants?.manifest?.extra?.API_URL);
+    console.log('## SOCKET_URL', Constants?.manifest?.extra?.SOCKET_URL);
     this.apiService = createApiService(
-      Constants?.manifest?.extra?.API_URL as string
+      Constants?.manifest?.extra?.API_URL as string,
+      Constants?.manifest?.extra?.SOCKET_URL as string
     );
     ApiService.isLoaded = true;
   }

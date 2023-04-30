@@ -6,8 +6,12 @@ import { createRestaurantResource } from './restaurant';
 import { createEnvironmentResource } from './environment';
 import { createEnvironmentImageResource } from './environment-image';
 import { createReservationOrderResource } from './reservation-order';
+import { SocketClientProtocol } from '../protocols/SocketClient';
 
-export function createResources(httpClient: HttpClientProtocol) {
+export function createResources(
+  httpClient: HttpClientProtocol,
+  socketClient: SocketClientProtocol
+) {
   const resources = {
     auth: createAuth(httpClient),
     client: createClientResource(httpClient),
@@ -15,7 +19,7 @@ export function createResources(httpClient: HttpClientProtocol) {
     employee: createEmployeeResource(httpClient),
     environment: createEnvironmentResource(httpClient),
     environmentImage: createEnvironmentImageResource(httpClient),
-    reservationOrder: createReservationOrderResource(httpClient),
+    reservationOrder: createReservationOrderResource(httpClient, socketClient),
   };
 
   return resources;
