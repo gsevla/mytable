@@ -13,7 +13,7 @@ interface IAppPageWrapper {
 }
 
 const routeNameMap = {
-  dashboard: 'Dashboard',
+  // dashboard: 'Dashboard',
   employee: 'Funcionários',
   'reservation-order': 'Ordens de reserva',
   restaurant: 'Restaurante',
@@ -27,7 +27,7 @@ const crudOperationsNameMap = {
   edit: '',
 } as const;
 
-const routesExcludedFromCrudOperations = ['dashboard', 'restaurant'];
+const routesExcludedFromCrudOperations = ['restaurant'];
 
 function getPathnameInfo(pathname: string) {
   const pathParts = pathname.split('/');
@@ -95,7 +95,7 @@ export function AppPageWrapper({
       >
         <View>
           <Subheading>Geral</Subheading>
-          <View>
+          {/* <View>
             <Button
               mode='text'
               onPress={() => {
@@ -105,7 +105,7 @@ export function AppPageWrapper({
               Dashboard
             </Button>
           </View>
-          <SizedBox />
+          <SizedBox /> */}
           <View>
             <Button
               mode='text'
