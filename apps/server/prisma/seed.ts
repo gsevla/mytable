@@ -29,9 +29,9 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      address: 'Endereço do seu restaurante',
-      name: 'Nome do seu restaurante',
-      ownerName: 'Seu nome',
+      address: 'Av. Dr. Silas Munguba, 1700, Itaperi',
+      name: 'RU Uece',
+      ownerName: 'Governo do Estado do Ceará',
       primaryColor: '#6200ee',
       accentColor: '#03dac4',
     },
@@ -76,8 +76,8 @@ async function main() {
       name: 'Gabriel',
       surname: 'Alves',
       cpf: '12345678909',
-      phone: '88997130469',
-      email: 'gabrieltots@gmail.com',
+      phone: '99999999999',
+      email: 'sousa.alves@aluno.uece.br',
     },
   });
   console.log('client created:\n', client);
