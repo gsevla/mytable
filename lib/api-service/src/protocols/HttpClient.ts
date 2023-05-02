@@ -27,7 +27,9 @@ export type HttpOperationResult<R = unknown> = Promise<
   Response<R> | ResponseError
 >;
 
-export type AwaitedHttpOperationResult<R = unknown> = HttpOperationResult<R>;
+export type AwaitedHttpOperationResult<R = unknown> = Awaited<
+  HttpOperationResult<R>
+>;
 
 export interface HttpClientProtocol {
   baseUrl: string;

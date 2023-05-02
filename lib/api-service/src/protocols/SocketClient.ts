@@ -1,3 +1,5 @@
+export type EventListener = {};
+
 export interface SocketClientProtocol {
   connect(
     username: string,
@@ -9,7 +11,10 @@ export interface SocketClientProtocol {
 
   emit<TData = unknown>(event: string, data: TData): void;
 
-  on<TData = unknown>(event: string, handler: (data: TData) => void): void;
+  on<TData = unknown>(
+    event: string,
+    handler: (data: TData) => void
+  ): EventListener;
 
   removeListener(eventName: string, listener: Function): void;
 

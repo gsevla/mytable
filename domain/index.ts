@@ -7,6 +7,7 @@ export * from './entities/WorkingDay';
 export * from './entities/Environment';
 export * from './entities/ReservationOrder';
 export * from './entities/ReservationOrderHistory';
+export * from './entities/WaitingQueue';
 
 // enums
 export * from './enums/Day';

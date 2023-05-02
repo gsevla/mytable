@@ -41,7 +41,7 @@ export function Text({
 
   const innerWeight = {
     normal: 'normal',
-    bold: 'bold,',
+    bold: 'bold',
   }[weight];
 
   return (

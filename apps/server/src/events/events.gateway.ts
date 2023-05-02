@@ -5,8 +5,15 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
+  MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import {
+  JoinWaitingQueueInput,
+  LeaveWaitingQueueInput,
+  WaitingQueueClient,
+} from '@mytable/domain';
 import { EventsService } from './events.service';
 
 @WebSocketGateway()
@@ -41,10 +48,34 @@ export class EventsGateway
     this.logger.log(`client ${client.username} (${client.id}) connected!`);
     // @ts-ignore
     client.join(client.username);
+    client.join('waitingQueue');
   }
 
   handleDisconnect(client: Socket) {
     // @ts-ignore
     this.logger.log(`client ${client.username} (${client.id}) disconnected!`);
   }
+
+  // @SubscribeMessage('joinWaitingQueue')
+  // onJoinWaitingQueue(
+  //   @MessageBody()
+  //   body: JoinWaitingQueueInput
+  // ) {
+  //   console.log('onJoinWaitingQueue', body);
+  //   this.server.to('waitingQueue').emit('onJoinWaitingQueue', {
+  //     name: body.name,
+  //   } as WaitingQueueClient);
+
+  //   return body;
+  // }
+
+  // @SubscribeMessage('leaveWaitingQueue')
+  // onLeaveWaitingQueue(@MessageBody() body: LeaveWaitingQueueInput) {
+  //   console.log('onLeaveWaitingQueue', body);
+  //   this.server.to('waitingQueue').emit('onLeaveWaitingQueue', {
+  //     clientIdentifier: body.clientIdentifier,
+  //   } as LeaveWaitingQueueInput);
+
+  //   return body;
+  // }
 }

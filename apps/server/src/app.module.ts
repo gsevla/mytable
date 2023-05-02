@@ -16,6 +16,8 @@ import { ReservationOrderModule } from './resources/reservation-order/reservatio
 import { ReservationOrderHistoryModule } from './resources/reservation-order-history/reservation-order-history.module';
 import { AuthValidator } from './resources/auth/validator';
 import { EventsModule } from './events/events.module';
+import { WaitingQueueModule } from './resources/waiting-queue/waiting-queue.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { EventsModule } from './events/events.module';
       envFilePath: findUpSync('.env'),
     }),
     EventsModule,
+    RedisModule,
     MailModule,
     AuthModule,
     ClientModule,
@@ -33,6 +36,7 @@ import { EventsModule } from './events/events.module';
     EnvironmentImageModule,
     ReservationOrderModule,
     ReservationOrderHistoryModule,
+    WaitingQueueModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, AuthValidator],

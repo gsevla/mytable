@@ -7,6 +7,7 @@ import { createEnvironmentResource } from './environment';
 import { createEnvironmentImageResource } from './environment-image';
 import { createReservationOrderResource } from './reservation-order';
 import { SocketClientProtocol } from '../protocols/SocketClient';
+import { createWaitingQueueResource } from './waiting-queue';
 
 export function createResources(
   httpClient: HttpClientProtocol,
@@ -20,6 +21,7 @@ export function createResources(
     environment: createEnvironmentResource(httpClient),
     environmentImage: createEnvironmentImageResource(httpClient),
     reservationOrder: createReservationOrderResource(httpClient, socketClient),
+    waitingQueue: createWaitingQueueResource(httpClient, socketClient),
   };
 
   return resources;

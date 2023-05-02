@@ -1,5 +1,8 @@
 import io, { Socket } from 'socket.io-client';
-import { SocketClientProtocol } from '../../protocols/SocketClient';
+import {
+  SocketClientProtocol,
+  EventListener,
+} from '../../protocols/SocketClient';
 
 export class SocketIoClientAdapter implements SocketClientProtocol {
   private socket: Socket = null;
@@ -46,7 +49,10 @@ export class SocketIoClientAdapter implements SocketClientProtocol {
     this.socket.emit(event, data);
   }
 
-  on<TData = unknown>(event: string, handler: (data: TData) => void): unknown {
+  on<TData = unknown>(
+    event: string,
+    handler: (data: TData) => void
+  ): EventListener {
     return this.socket.on(event, handler);
   }
 
