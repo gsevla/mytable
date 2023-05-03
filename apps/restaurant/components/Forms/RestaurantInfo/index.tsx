@@ -3,7 +3,9 @@ import { RestaurantWithInfo } from '@mytable/domain';
 import { useFormik } from 'formik';
 import React from 'react';
 import { View } from 'react-native';
+import { Button } from 'react-native-paper';
 import { yup } from 'utils/yup';
+import { useUpdateRestaurant } from '#/hooks/api/restaurant/useUpdateRestaurant';
 
 const infoSchemaValidation = yup.object().shape({
   name: yup.string().required().label('Nome do restaurante'),
@@ -16,6 +18,8 @@ export type RestaurantInfoFormProps = {
 };
 
 export function RestaurantInfoForm({ restaurant }: RestaurantInfoFormProps) {
+  const { mutate, isLoading } = useUpdateRestaurant();
+
   const infoFormik = useFormik({
     validationSchema: infoSchemaValidation,
     initialValues: {
@@ -23,7 +27,12 @@ export function RestaurantInfoForm({ restaurant }: RestaurantInfoFormProps) {
       address: restaurant?.address ?? '',
       ownerName: restaurant?.ownerName ?? '',
     },
-    onSubmit: () => {},
+    onSubmit: (values) => {
+      mutate({
+        id: restaurant?.id as number,
+        ...values,
+      });
+    },
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
@@ -67,6 +76,16 @@ export function RestaurantInfoForm({ restaurant }: RestaurantInfoFormProps) {
           style={{ width: '75%' }}
         />
       </View>
+      <SizedBox h={24} />
+      <Button
+        mode='contained'
+        onPress={infoFormik.handleSubmit}
+        loading={isLoading}
+        disabled={isLoading}
+        style={{ alignSelf: 'center' }}
+      >
+        Salvar
+      </Button>
     </>
   );
 }
