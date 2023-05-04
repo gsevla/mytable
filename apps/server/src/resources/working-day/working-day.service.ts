@@ -29,9 +29,9 @@ export class WorkingDayService {
       )
     ).getTime();
 
-    if (closingDate >= openingDate) {
+    if (closingDate <= openingDate) {
       throw new BadRequestException(
-        'A hora final não pode ser maior do que a hora inicial.'
+        'A hora inicial não pode ser maior do que a hora final.'
       );
     }
 

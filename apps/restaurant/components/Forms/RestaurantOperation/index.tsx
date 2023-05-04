@@ -4,8 +4,9 @@ import { Day } from '@mytable/domain/dist/enums/Day';
 import { useFormik } from 'formik';
 import React, { useMemo } from 'react';
 import { FlatList, View } from 'react-native';
-import { Switch } from 'react-native-paper';
+import { Button, Switch } from 'react-native-paper';
 import { yup } from 'utils/yup';
+import { useUpdateWorkingDay } from '#/hooks/api/workingDay/useUpdateWorkingDay';
 
 const dayMap = {
   [Day.MONDAY]: 'Segunda-Feira',
@@ -58,6 +59,9 @@ export type RestaurantOperationFormProps = {
 export function RestaurantOperationForm({
   restaurant,
 }: RestaurantOperationFormProps) {
+  const { mutate: updateWorkingDay, isLoading: isUpdatingWorkingDay } =
+    useUpdateWorkingDay();
+
   const workingDays = useMemo(() => {
     if (!restaurant) return [];
 
@@ -135,10 +139,29 @@ export function RestaurantOperationForm({
     }, {});
   }, [workingDays]);
 
+  function onSubmit(values) {
+    const keys = Object.keys(values);
+
+    // eslint-disable-next-line
+    for (let key of keys) {
+      const workingDay = workingDays.find((wd) => wd.key === key);
+
+      const data = {
+        id: workingDay?.id as number,
+        closingTime: values[key].closingTime,
+        openingTime: values[key].openingTime,
+        open: values[key].open,
+      };
+      console.log(data);
+
+      updateWorkingDay(data);
+    }
+  }
+
   const operationFormik = useFormik({
     validationSchema: operationSchemaValidation,
     initialValues: operationFormikInitialValues,
-    onSubmit: () => {},
+    onSubmit,
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
@@ -210,6 +233,16 @@ export function RestaurantOperationForm({
           ItemSeparatorComponent={() => <SizedBox h={32} />}
         />
       </View>
+      <SizedBox h={24} />
+      <Button
+        mode='contained'
+        onPress={operationFormik.handleSubmit}
+        loading={isUpdatingWorkingDay}
+        disabled={isUpdatingWorkingDay}
+        style={{ alignSelf: 'center' }}
+      >
+        Salvar
+      </Button>
     </>
   );
 }
