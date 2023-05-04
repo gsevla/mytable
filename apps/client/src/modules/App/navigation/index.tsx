@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import * as Updates from 'expo-updates';
 import { Icon } from '../../../components/Icon';
 import { Restaurant } from '../modules/Restaurant';
 import { Reservation } from '../modules/Reservation';
@@ -10,6 +11,8 @@ import { Identification } from '../modules/Identification';
 import { DialogWithConfirmation } from '../../../components/Dialog';
 import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
 import { routes } from '~/constants/routes';
+import { useStorageService } from '#hooks/storage/useStorageService';
+import { STORAGE_KEYS } from '~/services/storage/keys';
 
 const AppBottomTabNavigator = createBottomTabNavigator();
 
@@ -20,6 +23,8 @@ function SignOutPage() {
 export function AppBottomTab() {
   const theme = useTheme();
   const { data: restaurant } = useRestaurant();
+
+  const storageService = useStorageService();
 
   const [isSignOutDialogVisible, setIsSignOutDialogVisible] = useState(false);
 
@@ -35,10 +40,14 @@ export function AppBottomTab() {
     closeSignOutDialog();
   }
 
-  function onConfirmSignOutDialog() {
+  async function onConfirmSignOutDialog() {
     closeSignOutDialog();
-    // TODO
-    // remove token/logout function
+    // eslint-disable-next-line
+    for (let key of Object.keys(STORAGE_KEYS)) {
+      // eslint-disable-next-line
+      await storageService.destroyData(key);
+    }
+    await Updates.reloadAsync();
   }
 
   const removeTabFrom = [

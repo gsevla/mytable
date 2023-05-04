@@ -28,6 +28,7 @@
     "expo-linking": "~3.0.0",
     "expo-next-react-navigation": "^2.0.2",
     "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.7",
     "find-up": "5.0.0",
     "formik": "^2.2.9",
     "next": "^11.1.2",
