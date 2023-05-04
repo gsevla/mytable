@@ -51,8 +51,24 @@ export function createWaitingQueueMutations(
     };
   }
 
+  function useAttendWaitingQueue(
+    options: MutationOptions<void> = {}
+  ): MutationResult<void, void> {
+    const { data, isLoading, mutate } = useMutation<void, unknown, void>(
+      endpoints.attendWaitingQueue as unknown as MutationFunction<void, void>,
+      options
+    );
+
+    return {
+      data: data?.data,
+      isLoading,
+      mutate,
+    };
+  }
+
   return {
     useJoinWaitingQueue,
     useLeaveWaitingQueue,
+    useAttendWaitingQueue,
   };
 }

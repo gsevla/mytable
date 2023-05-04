@@ -20,9 +20,14 @@ export function createWaitingQueueEndpoints(httpClient: HttpClientProtocol) {
     return httpClient.get<Array<WaitingQueueClient>>(url);
   }
 
+  function attendWaitingQueue() {
+    return httpClient.post(`${url}/attend`);
+  }
+
   return {
     getWaitingQueue,
     joinWaitingQueue,
     leaveWaitingQueue,
+    attendWaitingQueue,
   };
 }
