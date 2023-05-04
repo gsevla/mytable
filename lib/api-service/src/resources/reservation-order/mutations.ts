@@ -1,5 +1,6 @@
 import {
   CreateReservationOrderInput,
+  CreateReservationOrderWithClientIdentifierInput,
   ReservationOrderWithClientData,
   UpdateReservationOrderInput,
 } from '@mytable/domain';
@@ -28,6 +29,40 @@ export function createReservationOrderMutations(
       reservationOrderEndpoints.createReservationOrder as unknown as MutationFunction<
         ReservationOrderWithClientData,
         CreateReservationOrderInput
+      >,
+      {
+        onSuccess: (output) => {
+          queryClient.invalidateQueries([
+            reservationOrderQueryKeys.reservationOrder,
+          ]);
+          onSuccess?.(output);
+        },
+        ...options,
+      }
+    );
+
+    return {
+      data: data?.data,
+      isLoading,
+      mutate,
+    };
+  }
+
+  function useCreateReservationOrderWithClientIdentifier({
+    onSuccess,
+    ...options
+  }: MutationOptions<ReservationOrderWithClientData> = {}): MutationResult<
+    ReservationOrderWithClientData,
+    CreateReservationOrderWithClientIdentifierInput
+  > {
+    const { data, isLoading, mutate } = useMutation<
+      ReservationOrderWithClientData,
+      unknown,
+      CreateReservationOrderWithClientIdentifierInput
+    >(
+      reservationOrderEndpoints.createReservationOrderWithClientIdentifier as unknown as MutationFunction<
+        ReservationOrderWithClientData,
+        CreateReservationOrderWithClientIdentifierInput
       >,
       {
         onSuccess: (output) => {
@@ -88,5 +123,6 @@ export function createReservationOrderMutations(
   return {
     useCreateReservationOrder,
     useUpdateReservationOrder,
+    useCreateReservationOrderWithClientIdentifier,
   };
 }

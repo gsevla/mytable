@@ -10,10 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedUser } from 'src/interceptors/authenticatedUser';
+import { Employee } from '@mytable/domain';
 import { ReservationOrderService } from './reservation-order.service';
 import { CreateReservationOrderDto } from './dto/create-reservation-order.dto';
 import { UpdateReservationOrderDto } from './dto/update-reservation-order.dto';
 import { ReservationOrderGuard } from './reservation-order.guard';
+import { CreateReservationOrderWithClientIdentifierDto } from './dto/create-reservation-order-with-client-identifier.dto copy';
 
 @Controller('reservation-order')
 @ApiTags('reservation-order')
@@ -25,8 +27,23 @@ export class ReservationOrderController {
   ) {}
 
   @Post()
-  create(@Body() createReservationOrderDto: CreateReservationOrderDto) {
-    return this.reservationOrderService.create(createReservationOrderDto);
+  create(
+    @Body() createReservationOrderDto: CreateReservationOrderDto,
+    @AuthenticatedUser() user: Employee
+  ) {
+    return this.reservationOrderService.create(createReservationOrderDto, user);
+  }
+
+  @Post('/with-client-identifier')
+  createWithClientIdentifier(
+    @Body()
+    createReservationOrderDto: CreateReservationOrderWithClientIdentifierDto,
+    @AuthenticatedUser() user: Employee
+  ) {
+    return this.reservationOrderService.createWithClientIdentifier(
+      createReservationOrderDto,
+      user
+    );
   }
 
   @Get()

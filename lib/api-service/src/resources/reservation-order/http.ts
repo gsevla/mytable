@@ -1,5 +1,6 @@
 import {
   CreateReservationOrderInput,
+  CreateReservationOrderWithClientIdentifierInput,
   ReservationOrder,
   ReservationOrderWithClientData,
   ReservationOrderWithEnvironmentData,
@@ -18,6 +19,15 @@ export function createReservationOrderEndpoints(
   ) {
     return httpClient.post<ReservationOrderWithClientData>(
       url,
+      reservationOrder
+    );
+  }
+
+  function createReservationOrderWithClientIdentifier(
+    reservationOrder: CreateReservationOrderWithClientIdentifierInput
+  ) {
+    return httpClient.post<ReservationOrderWithClientData>(
+      `${url}/with-client-identifier`,
       reservationOrder
     );
   }
@@ -65,5 +75,6 @@ export function createReservationOrderEndpoints(
     getAllReservationOrderHistory,
     getReservationOrderById,
     updateReservationOrder,
+    createReservationOrderWithClientIdentifier,
   };
 }

@@ -6,10 +6,11 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReservationOrderStatusEnum } from '@prisma/client';
-import { Day } from '@mytable/domain';
+import { Day, Employee } from '@mytable/domain';
 import { EventsService } from 'src/events/events.service';
 import { CreateReservationOrderDto } from './dto/create-reservation-order.dto';
 import { UpdateReservationOrderDto } from './dto/update-reservation-order.dto';
+import { CreateReservationOrderWithClientIdentifierDto } from './dto/create-reservation-order-with-client-identifier.dto copy';
 
 const TZ_OFFSET = -3 * 60 * 60 * 1000;
 
@@ -215,7 +216,10 @@ export class ReservationOrderService {
   //   // add future limitation like two weeks from now
   // }
 
-  async create(createReservationOrderDto: CreateReservationOrderDto) {
+  async create(
+    createReservationOrderDto: CreateReservationOrderDto,
+    employee: Employee
+  ) {
     await this.ensureIsRestaurantOpened(
       createReservationOrderDto.date,
       createReservationOrderDto.startTime,
@@ -246,7 +250,66 @@ export class ReservationOrderService {
         reservationOrderHistory: {
           create: [
             {
-              employeeId: 1,
+              employeeId: employee.id,
+              status: ReservationOrderStatusEnum.PENDING,
+              peopleAmount: createReservationOrderDto.peopleAmount,
+              date: createReservationOrderDto.date,
+              startTime: createReservationOrderDto.startTime,
+              endTime: createReservationOrderDto.endTime,
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  async createWithClientIdentifier(
+    {
+      clientIdentifier,
+      ...createReservationOrderDto
+    }: CreateReservationOrderWithClientIdentifierDto,
+    employee: Employee
+  ) {
+    const dbClient = await this.prismaService.client.findUnique({
+      where: {
+        identifier: clientIdentifier,
+      },
+    });
+
+    if (!dbClient) throw new ForbiddenException('Cliente não identificado!');
+
+    await this.ensureIsRestaurantOpened(
+      createReservationOrderDto.date,
+      createReservationOrderDto.startTime,
+      createReservationOrderDto.endTime
+    );
+    await this.ensureEnvironmentCanAttend(
+      createReservationOrderDto.environmentId,
+      createReservationOrderDto.peopleAmount,
+      null,
+      createReservationOrderDto.date,
+      createReservationOrderDto.startTime,
+      createReservationOrderDto.endTime
+    );
+
+    return this.prismaService.reservationOrder.create({
+      include: {
+        client: {
+          select: {
+            name: true,
+            surname: true,
+            identifier: true,
+          },
+        },
+      },
+      data: {
+        ...createReservationOrderDto,
+        clientId: dbClient.id,
+        restaurantId: 1,
+        reservationOrderHistory: {
+          create: [
+            {
+              employeeId: employee.id,
               status: ReservationOrderStatusEnum.PENDING,
               peopleAmount: createReservationOrderDto.peopleAmount,
               date: createReservationOrderDto.date,

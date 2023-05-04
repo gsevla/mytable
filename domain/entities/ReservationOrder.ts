@@ -19,6 +19,13 @@ export type CreateReservationOrderInput = Omit<
   'id' | 'restaurantId' | 'status' | 'createdAt' | 'modifiedAt'
 >;
 
+export type CreateReservationOrderWithClientIdentifierInput = Omit<
+  ReservationOrder,
+  'id' | 'restaurantId' | 'status' | 'createdAt' | 'modifiedAt' | 'clientId'
+> & {
+  clientIdentifier: string;
+};
+
 export type UpdateReservationOrderInput = Partial<
   Omit<ReservationOrder, 'restaurantId' | 'createdAt' | 'modifiedAt'>
 > & {
