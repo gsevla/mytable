@@ -8,6 +8,7 @@ import { useUpdateReservationOrder } from '#/hooks/api/reservationOrder/useUpdat
 import { useActiveReservationOrder } from '#/hooks/api/reservationOrder/useActiveReservationOrder';
 import { TableColumn, TableRow, TableV2 } from '#/components/TableV2';
 import { Item, Menu } from '#/components/Menu';
+import { useSnackbar } from '#/hooks/useSnackbar';
 
 const columns: Array<TableColumn> = [
   {
@@ -36,9 +37,15 @@ const columns: Array<TableColumn> = [
 export function ActiveReservationTab() {
   const router = useRouter();
 
-  const { data: reservationOrder, isLoading } = useActiveReservationOrder();
+  const snackbar = useSnackbar();
 
-  const { mutate } = useUpdateReservationOrder();
+  const { data: reservationOrder, isLoading } = useActiveReservationOrder({});
+
+  const { mutate } = useUpdateReservationOrder({
+    onError: (error) => {
+      snackbar.showSnackbar(error?.error?.message);
+    },
+  });
 
   const mountReservationOrderStatusItems = useCallback(
     (reservationOrderId: number) =>
