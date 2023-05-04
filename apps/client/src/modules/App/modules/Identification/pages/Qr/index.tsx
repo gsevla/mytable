@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Headline, Caption } from 'react-native-paper';
-import { SizedBox } from '../../../../../../components/SizedBox';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Client } from '@mytable/domain';
+import QRCode from 'react-qr-code';
+import { SizedBox } from '../../../../../../components/SizedBox';
 import { IdentificationStackParamList } from '../../navigation/types';
+import { useStorageService } from '#hooks/storage/useStorageService';
+import { useAuthenticatedClient } from '#hooks/storage/useAuthenticatedClient';
 
 type Props = NativeStackScreenProps<IdentificationStackParamList, 'Qr'>;
 
 export function AppIdentificationQrPage(props: Props) {
+  const client = useAuthenticatedClient();
+
   return (
     <View style={styles.container}>
       <View>
@@ -21,16 +27,16 @@ export function AppIdentificationQrPage(props: Props) {
       </View>
 
       <View style={styles.qrImageContainer}>
-        <View style={styles.imageSimulation} />
+        {client?.identifier ? (
+          <QRCode
+            size={200}
+            value={client?.identifier}
+          />
+        ) : (
+          <View style={styles.imageSimulation} />
+        )}
         <Caption>ID</Caption>
-        <Caption
-          onPress={() => {
-            props.navigation.navigate('waiting', { forceNavigate: true });
-          }}
-          style={styles.captionBold}
-        >
-          XXXXXXXXX
-        </Caption>
+        <Caption style={styles.captionBold}>{client?.identifier}</Caption>
       </View>
 
       <SizedBox />
