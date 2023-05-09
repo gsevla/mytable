@@ -1,0 +1,19 @@
+services:
+  pgsql:
+    container_name: pgsql
+    image: postgres:alpine
+    env_file:
+      - .env
+    ports:
+      - ${DATABASE_PORT}:5432
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+
+  redis:
+    container_name: redis
+    image: redis/redis-stack-server:latest
+    env_file:
+      - .env
+    ports:
+      - ${REDIS_PORT}:6379
