@@ -40,6 +40,12 @@ export class ReservationOrderService {
     return innerDate;
   }
 
+  private static employeeIdOrAdminId(employee: Employee) {
+    if (employee.role) return 1;
+
+    return 1;
+  }
+
   private async getEnvironmentOccupation(
     environmentId: number,
     date: string,
@@ -218,7 +224,7 @@ export class ReservationOrderService {
 
   async create(
     createReservationOrderDto: CreateReservationOrderDto,
-    employee: Employee
+    employee?: Employee
   ) {
     await this.ensureIsRestaurantOpened(
       createReservationOrderDto.date,
@@ -250,7 +256,7 @@ export class ReservationOrderService {
         reservationOrderHistory: {
           create: [
             {
-              employeeId: employee.id,
+              employeeId: ReservationOrderService.employeeIdOrAdminId(employee), // 1 when created by client
               status: ReservationOrderStatusEnum.PENDING,
               peopleAmount: createReservationOrderDto.peopleAmount,
               date: createReservationOrderDto.date,
@@ -268,7 +274,7 @@ export class ReservationOrderService {
       clientIdentifier,
       ...createReservationOrderDto
     }: CreateReservationOrderWithClientIdentifierDto,
-    employee: Employee
+    employee?: Employee
   ) {
     const dbClient = await this.prismaService.client.findUnique({
       where: {
@@ -309,7 +315,7 @@ export class ReservationOrderService {
         reservationOrderHistory: {
           create: [
             {
-              employeeId: employee.id,
+              employeeId: ReservationOrderService.employeeIdOrAdminId(employee), // 1 when created by client
               status: ReservationOrderStatusEnum.PENDING,
               peopleAmount: createReservationOrderDto.peopleAmount,
               date: createReservationOrderDto.date,
