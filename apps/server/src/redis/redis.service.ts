@@ -10,7 +10,7 @@ import { createClient } from 'redis';
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private logger = new Logger();
 
-  public pubClient = createClient({ url: `redis://localhost:6379` });
+  public pubClient = createClient({ url: process.env.REDIS_URL });
 
   public subClient = this.pubClient.duplicate();
 
