@@ -1,12 +1,11 @@
 import { useFocusEffect, useRouting } from 'expo-next-react-navigation';
 import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Headline, Subheading, Text } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
-import { AuthContext } from '../../context';
-import { Headline, Subheading, Text } from 'react-native-paper';
-import { SizedBox } from '../../../../components/SizedBox';
 import { mask } from 'remask';
+import { AuthContext } from '../../context';
+import { SizedBox } from '../../../../components/SizedBox';
 import { RootContext } from '../../../Root/context';
 
 export function IdentificationDonePage() {
@@ -14,12 +13,12 @@ export function IdentificationDonePage() {
 
   const handleSetActiveStep = useContextSelector(
     AuthContext,
-    (values) => values.handleSetActiveStep,
+    (values) => values.handleSetActiveStep
   );
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('IdentificationDonePage');
-    }, [handleSetActiveStep]),
+    }, [handleSetActiveStep])
   );
 
   const client = useContextSelector(RootContext, (values) => values.client);
@@ -35,24 +34,26 @@ export function IdentificationDonePage() {
     >
       <Headline style={{ textAlign: 'center' }}>
         Olá,{'\n'}
-        <Headline>{client?.name}</Headline>
+        <Headline style={{ textAlign: 'center' }}>{client?.name}</Headline>
       </Headline>
       <SizedBox h={16} />
       <Headline style={{ textAlign: 'center' }}>Verificamos que</Headline>
       <SizedBox h={16} />
       <Subheading style={{ textAlign: 'center' }}>
         Seu telefone é:{'\n'}
-        <Text>{mask(client?.phone, ['(99) 99999-9999'])}</Text>
+        <Text style={{ textAlign: 'center' }}>
+          {mask(client?.phone, ['(99) 99999-9999'])}
+        </Text>
       </Subheading>
       <SizedBox h={8} />
       <Subheading style={{ textAlign: 'center' }}>
         Seu email é:{'\n'}
-        <Text>{client?.email}</Text>
+        <Text style={{ textAlign: 'center' }}>{client?.email}</Text>
       </Subheading>
       <View>
         <SizedBox h={32} />
         <Button
-          mode="text"
+          mode='text'
           onPress={() => {
             router.navigate({
               routeName: 'forgot-password',
@@ -66,7 +67,7 @@ export function IdentificationDonePage() {
         </Button>
         <SizedBox h={24} />
         <Button
-          mode="contained"
+          mode='contained'
           onPress={() => {
             router.replace({
               routeName: 'authorization',

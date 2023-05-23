@@ -3,19 +3,19 @@ import React, { useCallback, useRef } from 'react';
 import { ScrollView, View, TextInput as RNTextInput } from 'react-native';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { useContextSelector } from 'use-context-selector';
+import { mask } from 'remask';
 import { SizedBox } from '../../../../components/SizedBox';
 import { AuthContext } from '../../context';
-import { mask } from 'remask';
 
 export function IdentificationPage() {
   const handleSetActiveStep = useContextSelector(
     AuthContext,
-    (values) => values.handleSetActiveStep,
+    (values) => values.handleSetActiveStep
   );
   useFocusEffect(
     useCallback(() => {
       handleSetActiveStep('IdentificationPage');
-    }, [handleSetActiveStep]),
+    }, [handleSetActiveStep])
   );
 
   const formik = useContextSelector(AuthContext, (values) => values.formik);
@@ -43,9 +43,9 @@ export function IdentificationPage() {
           <>
             <TextInput
               ref={nameInputRef}
-              label="Nome"
-              returnKeyType="next"
-              placeholder="Digite seu nome"
+              label='Nome'
+              returnKeyType='next'
+              placeholder='Digite seu nome'
               value={formik.values.name}
               onChangeText={formik.handleChange('name')}
               onBlur={formik.handleBlur('name')}
@@ -54,7 +54,7 @@ export function IdentificationPage() {
               }}
             />
             <HelperText
-              type="error"
+              type='error'
               visible={!!formik.touched.name && !!formik.errors.name}
             >
               {formik.errors.name}
@@ -64,9 +64,9 @@ export function IdentificationPage() {
           <>
             <TextInput
               ref={surnameInputRef}
-              label="Sobrenome"
-              returnKeyType="next"
-              placeholder="Digite seu sobrenome"
+              label='Sobrenome'
+              returnKeyType='next'
+              placeholder='Digite seu sobrenome'
               value={formik.values.surname}
               onChangeText={formik.handleChange('surname')}
               onBlur={formik.handleBlur('surname')}
@@ -75,7 +75,7 @@ export function IdentificationPage() {
               }}
             />
             <HelperText
-              type="error"
+              type='error'
               visible={!!formik.touched.surname && !!formik.errors.surname}
             >
               {formik.errors.surname}
@@ -85,10 +85,10 @@ export function IdentificationPage() {
           <>
             <TextInput
               ref={phoneInputRef}
-              label="Telefone"
-              keyboardType="phone-pad"
-              returnKeyType="next"
-              placeholder="Digite seu telefone"
+              label='Telefone'
+              keyboardType='phone-pad'
+              returnKeyType='next'
+              placeholder='Digite seu telefone'
               value={mask(formik.values.phone, ['(99) 99999-9999'])}
               onChangeText={formik.handleChange('phone')}
               onBlur={formik.handleBlur('phone')}
@@ -97,7 +97,7 @@ export function IdentificationPage() {
               }}
             />
             <HelperText
-              type="error"
+              type='error'
               visible={!!formik.touched.phone && !!formik.errors.phone}
             >
               {formik.errors.phone}
@@ -107,8 +107,8 @@ export function IdentificationPage() {
           <>
             <TextInput
               ref={emailInputRef}
-              label="Email"
-              placeholder="Digite seu email"
+              label='Email'
+              placeholder='Digite seu email'
               value={formik.values.email}
               onChangeText={formik.handleChange('email')}
               onBlur={formik.handleBlur('email')}
@@ -117,7 +117,7 @@ export function IdentificationPage() {
               }}
             />
             <HelperText
-              type="error"
+              type='error'
               visible={!!formik.touched.email && !!formik.errors.email}
             >
               {formik.errors.email}
@@ -129,7 +129,7 @@ export function IdentificationPage() {
           <Button
             loading={formik.isSubmitting}
             disabled={formik.isSubmitting || !formik.isValid}
-            mode="contained"
+            mode='contained'
             onPress={formik.handleSubmit}
           >
             Avançar

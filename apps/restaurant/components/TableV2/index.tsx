@@ -74,10 +74,7 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
         )}
       </DataTable.Header>
       {data.map((item) => (
-        <DataTable.Row
-          key={`dt-row-${item.id}`}
-          pointerEvents='none'
-        >
+        <DataTable.Row key={`dt-row-${item.id}`}>
           {columns.map((column) => (
             <DataTable.Cell
               key={`dt-cell-item${item.id}-col${column.itemNameReference}`}
@@ -94,7 +91,13 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
           {isActionButtonsExists && (
             <DataTable.Cell numeric>
               {actionButtons?.map((actionButton, index) => (
-                <React.Fragment key={actionButton.iconName}>
+                <View
+                  key={actionButton.iconName}
+                  pointerEvents='box-none'
+                  style={{
+                    flexDirection: 'row',
+                  }}
+                >
                   <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={() => actionButton.action(item, index)}
@@ -102,7 +105,7 @@ export function TableV2({ data, columns, actionButtons }: TableV2Props) {
                     <Icon name={actionButton.iconName} />
                   </TouchableOpacity>
                   <SizedBox w={4} />
-                </React.Fragment>
+                </View>
               ))}
             </DataTable.Cell>
           )}
