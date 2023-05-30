@@ -10,6 +10,7 @@ import { useStorageService } from '#hooks/storage/useStorageService';
 import { STORAGE_KEYS } from '~/services/storage/keys';
 import { useRestaurant } from '#hooks/api/restaurant/useRestaurant';
 import { EventsService } from '~/services/events';
+import { useApiService } from '#hooks/api/useApiService';
 
 interface IRootContextProvider {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ interface IRootContextValues {
 export const RootContext = createContext({} as IRootContextValues);
 
 function RootContextProvider({ children }: IRootContextProvider) {
+  const apiService = useApiService();
   const storageService = useStorageService();
 
   const [loading, setLoading] = useState(true);
@@ -63,7 +65,7 @@ function RootContextProvider({ children }: IRootContextProvider) {
   async function loadToken() {
     const innerToken = await storageService.getData<string>(STORAGE_KEYS.token);
     if (innerToken) {
-      console.log('token', innerToken);
+      apiService.httpClient.setHeader('Authorization', `Bearer ${innerToken}`);
       setToken(innerToken);
     }
     setTokenLoaded(true);

@@ -199,6 +199,7 @@ export function AppReservationReservePage() {
   } = useCreateReservationOrder({
     onSuccess: () => {
       goBack();
+      // replace('/reservation/reservation-list/reservation-list-active');
     },
     onError: (error) => {
       showSnackbar(error?.error?.message ?? 'Ops! Tente novamente mais tarde!');

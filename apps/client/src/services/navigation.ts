@@ -38,3 +38,11 @@ export function getCurrentRoute() {
   }
   return null;
 }
+
+export function replace(route: string) {
+  if (Platform.OS === 'web') {
+    Router.replace(route);
+  } else if (navigationRef.isReady()) {
+    throw new Error('method not implemented yey');
+  }
+}
