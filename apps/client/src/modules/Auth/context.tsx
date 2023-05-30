@@ -76,7 +76,11 @@ export function AuthContextProvider({
   }, []);
 
   const persistClient = useCallback(async (data: Client) => {
-    await storageService.setData(STORAGE_KEYS.client, JSON.stringify(data));
+    await storageService.setData(STORAGE_KEYS.client, JSON.stringify(data), {
+      options: {
+        path: '/',
+      },
+    });
     setClient(data);
     router.replace({
       routeName: 'identification-done',

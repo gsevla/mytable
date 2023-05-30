@@ -6,20 +6,18 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SizedBox } from '@mytable/components';
-import { useStorageService } from '#hooks/storage/useStorageService';
 import { EventsService } from '~/services/events';
-import { STORAGE_KEYS } from '~/services/storage/keys';
 import { ClientRow } from './components/ClientRow';
 import { QueueEmpty } from './components/QueueEmpty';
 import { QueueFooter } from './components/QueueFooter';
 import { useWaitingQueue } from '#hooks/api/waitingQueue/useWaitingQueue';
 import { useSnackbar } from '#hooks/useSnackbar';
+import { useAuthenticatedClient } from '#hooks/storage/useAuthenticatedClient';
 
 export function WaitingLine() {
-  const storageService = useStorageService();
   const snackbar = useSnackbar();
 
-  const [client, setClient] = useState<Client | undefined>();
+  const client = useAuthenticatedClient();
   const [clientsOnQueue, setClientsOnQueue] = useState<
     Array<WaitingQueueClient>
   >([]);
@@ -29,20 +27,6 @@ export function WaitingLine() {
       setClientsOnQueue(data?.data ?? []);
     },
   });
-
-  async function retrieveClient() {
-    const innerClient = await storageService.getData<Client>(
-      STORAGE_KEYS.client
-    );
-
-    if (innerClient) {
-      setClient(innerClient);
-    }
-  }
-
-  useEffect(() => {
-    retrieveClient();
-  }, []);
 
   useEffect(() => {
     const eventsService = EventsService.getInstance().getService();
