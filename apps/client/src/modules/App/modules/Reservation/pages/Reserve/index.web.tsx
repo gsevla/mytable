@@ -2,7 +2,8 @@ import React, { useRef, useMemo, useReducer } from 'react';
 import { View, TextInput as RNTextInput, Pressable } from 'react-native';
 import { Button, TextInput, Provider, Menu } from 'react-native-paper';
 import { Icon, Text } from '@mytable/components';
-import DateTimePicker from 'react-datepicker';
+import DateTimePicker, { registerLocale } from 'react-datepicker';
+import ptBR from 'date-fns/locale/pt-BR';
 import styles from './styles';
 import { SizedBox } from '~/components/SizedBox';
 import { useCreateReservationOrder } from '#hooks/api/reservationOrder/useCreateReservationOrder';
@@ -14,6 +15,8 @@ import { useSnackbar } from '#hooks/useSnackbar';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import css from './styles.module.css';
+
+registerLocale('ptBR', ptBR);
 
 const TZ_OFFSET = -3 * 60 * 60 * 1000; // br offset = -3
 
@@ -34,12 +37,12 @@ const initialState = {
   isStartTimePickerVisible: false,
   isEndTimePickerVisible: false,
   dateTimePickerMode: 'date', // 'date' | 'time'
-  date: new Date(),
+  date: '',
   dateLabel: '',
   timeMode: 'start', // 'start' | 'end'
-  startTime: minimumDate,
+  startTime: '',
   startTimeLabel: '',
-  endTime: minimumDate,
+  endTime: '',
   endTimeLabel: '',
   peopleAmount: '',
 };
@@ -185,8 +188,6 @@ export function AppReservationReservePage() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const dayInputRef = useRef<RNTextInput>(null);
-  const startTimeInputRef = useRef<RNTextInput>(null);
-  const endTimeInputRef = useRef<RNTextInput>(null);
 
   const { showSnackbar } = useSnackbar();
   const client = useAuthenticatedClient();
@@ -227,64 +228,31 @@ export function AppReservationReservePage() {
     ]
   );
 
-  const onDatePickerChange = (event, date) => {
-    if (event.type === 'dismissed') {
-      dispatch({
-        type: 'hideDatePicker',
-      });
-      dayInputRef.current?.blur();
-      return;
-    }
-
+  const onDatePickerChange = (date: Date) => {
     dispatch({
       type: 'setDate',
       payload: {
         date,
       },
     });
-    dayInputRef.current?.blur();
-    if (state.startTimeLabel === '') {
-      startTimeInputRef.current?.focus();
-    }
   };
 
-  const onStartTimePickerChange = (event, date) => {
-    if (event.type === 'dismissed') {
-      dispatch({
-        type: 'hideStartTimePicker',
-      });
-      startTimeInputRef.current?.blur();
-      return;
-    }
-
+  const onStartTimePickerChange = (date: Date) => {
     dispatch({
       type: 'setStartTime',
       payload: {
         startTime: date,
       },
     });
-    startTimeInputRef.current?.blur();
-    if (state.endTimeLabel === '') {
-      endTimeInputRef.current?.focus();
-    }
   };
 
-  const onEndTimePickerChange = (event, date) => {
-    if (event.type === 'dismissed') {
-      dispatch({
-        type: 'hideEndTimePicker',
-      });
-      endTimeInputRef.current?.blur();
-      return;
-    }
-
+  const onEndTimePickerChange = (date: Date) => {
     dispatch({
       type: 'setEndTime',
       payload: {
         endTime: date,
       },
     });
-    endTimeInputRef.current?.blur();
   };
 
   function handleCreateReservationOrder() {
@@ -325,19 +293,20 @@ export function AppReservationReservePage() {
       </Pressable>
       <SizedBox h={48} />
       <View style={{ flexGrow: 0 }}>
-        {/* {state.isDatePickerVisible && ( */}
         <DateTimePicker
           className={css.picker}
           selected={state.date}
-          // timeZoneOffsetInSeconds={TZ_OFFSET}
-          minimumDate={minimumDate}
-          maximumDate={maximumDate}
+          placeholderText='Dia'
+          includeDateIntervals={[
+            {
+              start: minimumDate,
+              end: maximumDate,
+            },
+          ]}
+          locale='ptBR'
           onChange={onDatePickerChange}
-          timeInputLabel='Time:'
-          dateFormat='MM/dd/yyyy h:mm aa'
-          showTimeInput
+          dateFormat='dd/MM/yyyy'
         />
-        {/* )} */}
         <SizedBox h={24} />
         <View
           style={{
@@ -348,60 +317,47 @@ export function AppReservationReservePage() {
           <View style={{ flex: 0.5 }}>
             <DateTimePicker
               className={`${css.picker} ${css['time-picker']}`}
-              // timeZoneOffsetInSeconds={TZ_OFFSET}
+              locale='ptBR'
               selected={state.startTime}
-              minimumDate={minimumDate}
-              maximumDate={maximumDate}
+              // includeDateIntervals={[
+              //   {
+              //     start: minimumDate,
+              //     end: maximumDate,
+              //   },
+              // ]}
               onChange={onStartTimePickerChange}
+              placeholderText='Chegada'
               timeCaption='Chegada'
               showTimeSelect
               showTimeSelectOnly
-              // dateFormat='Pp'
+              dateFormat='p'
             />
-            {/* <TextInput
-              ref={startTimeInputRef}
-              label='Chegada'
-              showSoftInputOnFocus={false}
-              onFocus={() => {
-                dispatch({
-                  type: 'showStartTimePicker',
-                });
-              }}
-              value={state.startTimeLabel}
-              // disabled={isStartTimeInputDisabled}
-            /> */}
           </View>
           <SizedBox h={48} />
           <View style={{ flex: 0.5, zIndex: 999 }}>
             <DateTimePicker
               className={`${css.picker} ${css['time-picker']}`}
+              locale='ptBR'
               selected={state.endTime}
-              minimumDate={minimumDate}
-              maximumDate={maximumDate}
+              // includeDateIntervals={[
+              //   {
+              //     start: minimumDate,
+              //     end: maximumDate,
+              //   },
+              // ]}
               onChange={onEndTimePickerChange}
+              placeholderText='Saída'
               timeCaption='Saída'
               showTimeSelect
               showTimeSelectOnly
+              dateFormat='p'
             />
-            {/* <TextInput
-              ref={endTimeInputRef}
-              label='Saída'
-              showSoftInputOnFocus={false}
-              onFocus={() => {
-                dispatch({
-                  type: 'showEndTimePicker',
-                });
-              }}
-              value={state.endTimeLabel}
-              // disabled={isEndTimeInputDisabled}
-            /> */}
           </View>
         </View>
         <SizedBox h={48} />
         <TextInput
-          // ref={dayInputRef}
+          ref={dayInputRef}
           label='Quantidade de pessoas'
-          // showSoftInputOnFocus={false}
           keyboardType='decimal-pad'
           onChangeText={(text) => {
             dispatch({

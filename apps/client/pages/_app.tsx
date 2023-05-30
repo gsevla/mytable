@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles.css';
 import { AppProps } from 'next/app';
 import { AuthContextProvider } from '../src/modules/Auth/context';
 import { RootContextProvider } from '../src/modules/Root/context';
