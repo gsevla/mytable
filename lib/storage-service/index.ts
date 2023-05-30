@@ -2,20 +2,6 @@ import Nookies, { parseCookies } from 'nookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-// const keys = {
-//   client: 'client',
-//   restaurant: 'restaurant',
-//   codeSentTime: 'codeSentTime',
-//   codeResentTime: 'codeResentTime',
-//   shouldNotSendCodeAutomatically: 'shouldNotSendCodeAutomatically',
-//   token: 'token',
-// } as const;
-
-enum REPO {
-  CLIENT = 'client',
-  SERVER = 'server',
-}
-
 type CookiesRequiredArgs = {
   ctx: unknown;
   options?: Record<string, unknown>;
@@ -31,10 +17,13 @@ export function createStorageService<T = Record<string, unknown>>(keys: T) {
   async function setData(
     key: string,
     value: string,
-    { ctx = null, options }: SetDataArgs = {} as SetDataArgs
+    { ctx = null, options = {} }: SetDataArgs = {} as SetDataArgs
   ) {
     if (Platform.OS === 'web') {
-      Nookies.set(ctx, key, value, options);
+      Nookies.set(ctx, key, value, {
+        path: '/',
+        ...options,
+      });
     } else {
       await AsyncStorage.setItem(key, value);
     }
@@ -69,10 +58,13 @@ export function createStorageService<T = Record<string, unknown>>(keys: T) {
 
   async function destroyData(
     key: string,
-    { ctx = null, options }: DestroyDataArgs = {} as DestroyDataArgs
+    { ctx = null, options = {} }: DestroyDataArgs = {} as DestroyDataArgs
   ) {
     if (Platform.OS === 'web') {
-      Nookies.destroy(ctx, key, options);
+      Nookies.destroy(ctx, key, {
+        path: '/',
+        ...options,
+      });
     } else {
       await AsyncStorage.removeItem(key);
     }
