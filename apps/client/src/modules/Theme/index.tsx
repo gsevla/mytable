@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-native-paper';
 import { lightTheme } from './lightTheme';
 
@@ -13,14 +13,16 @@ export function ThemeProvider({
   primaryColor,
   accentColor,
 }: IThemeProvider) {
-  document.documentElement.style.setProperty(
-    '--primary-color',
-    primaryColor ?? lightTheme.colors.primary
-  );
-  document.documentElement.style.setProperty(
-    '--accent-color',
-    accentColor ?? lightTheme.colors.accent
-  );
+  if (process.env.PLATFORM === 'web') {
+    document.documentElement.style.setProperty(
+      '--primary-color',
+      primaryColor ?? lightTheme.colors.primary
+    );
+    document.documentElement.style.setProperty(
+      '--accent-color',
+      accentColor ?? lightTheme.colors.accent
+    );
+  }
 
   const _lightTheme = JSON.parse(
     JSON.stringify(lightTheme)
