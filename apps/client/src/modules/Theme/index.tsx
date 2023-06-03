@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-native-paper';
+import Constants from 'expo-constants';
 import { lightTheme } from './lightTheme';
 
 interface IThemeProvider {
@@ -13,7 +14,7 @@ export function ThemeProvider({
   primaryColor,
   accentColor,
 }: IThemeProvider) {
-  if (process.env.PLATFORM === 'web') {
+  if (Constants?.manifest?.extra?.PLATFORM === 'web') {
     document.documentElement.style.setProperty(
       '--primary-color',
       primaryColor ?? lightTheme.colors.primary
