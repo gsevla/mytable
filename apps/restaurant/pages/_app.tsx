@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { EmployeeWithoutPassword } from '@mytable/domain';
 import { useRouter } from 'next/router';
 import { Providers } from '#/providers/index';
@@ -86,6 +87,25 @@ const MemoizedPostProviders = React.memo(PostProviders, () => true); // never re
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Providers>
+      <Head>
+        <title>MyTable</title>
+        <link
+          rel='shortcut icon'
+          href='/img/icon-512x512.png'
+        />
+        <link
+          rel='apple-touch-icon'
+          href='/img/icon-512x512.png'
+        />
+        <link
+          rel='manifest'
+          href='/manifest.json'
+        />
+        <meta
+          name='theme-color'
+          content='#128a8a'
+        />
+      </Head>
       <MemoizedPostProviders />
       <Component {...pageProps} />
     </Providers>
