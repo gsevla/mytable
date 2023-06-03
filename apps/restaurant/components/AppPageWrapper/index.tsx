@@ -4,8 +4,10 @@ import { ActivityIndicator, Button, Subheading } from 'react-native-paper';
 import { useRouter } from 'next/router';
 import AppPageContentHeaderComponent from 'components/AppPageContentHeader';
 import { SizedBox } from 'components/SizedBox';
+import { EmployeeRole } from '@mytable/domain';
 import { useStorageService } from '#/hooks/storage';
 import { STORAGE_KEYS } from '#/services/storage/keys';
+import { useAuthenticatedEmployee } from '#/hooks/storage/useAuthenticatedEmployee';
 
 interface IAppPageWrapper {
   children: React.ReactNode;
@@ -46,6 +48,8 @@ export function AppPageWrapper({
   const { pathname, ...router } = useRouter();
   const storageService = useStorageService();
   const dimensions = useWindowDimensions();
+  const employee = useAuthenticatedEmployee();
+  console.log(employee);
 
   const pathnameInfo = getPathnameInfo(pathname);
 
@@ -127,40 +131,44 @@ export function AppPageWrapper({
               Fila de Espera
             </Button>
           </View>
-          <SizedBox />
-          <Subheading>Admin</Subheading>
-          <View>
-            <Button
-              mode='text'
-              onPress={() => {
-                router.push('/app/restaurant');
-              }}
-            >
-              Restaurante
-            </Button>
-          </View>
-          <SizedBox />
-          <View>
-            <Button
-              mode='text'
-              onPress={() => {
-                router.push('/app/environment');
-              }}
-            >
-              Ambientes
-            </Button>
-          </View>
-          <SizedBox />
-          <View>
-            <Button
-              mode='text'
-              onPress={() => {
-                router.push('/app/employee');
-              }}
-            >
-              Funcionários
-            </Button>
-          </View>
+          {employee?.role === EmployeeRole.ADMIN && (
+            <>
+              <SizedBox />
+              <Subheading>Admin</Subheading>
+              <View>
+                <Button
+                  mode='text'
+                  onPress={() => {
+                    router.push('/app/restaurant');
+                  }}
+                >
+                  Restaurante
+                </Button>
+              </View>
+              <SizedBox />
+              <View>
+                <Button
+                  mode='text'
+                  onPress={() => {
+                    router.push('/app/environment');
+                  }}
+                >
+                  Ambientes
+                </Button>
+              </View>
+              <SizedBox />
+              <View>
+                <Button
+                  mode='text'
+                  onPress={() => {
+                    router.push('/app/employee');
+                  }}
+                >
+                  Funcionários
+                </Button>
+              </View>
+            </>
+          )}
         </View>
         <View>
           <Button
