@@ -34,7 +34,6 @@ export function AppReservationReservePage() {
   } = useCreateReservationOrder({
     onSuccess: () => {
       goBack();
-      // replace('/reservation/reservation-list/reservation-list-active');
     },
     onError: (error) => {
       showSnackbar(error?.error?.message ?? 'Ops! Tente novamente mais tarde!');
@@ -155,12 +154,6 @@ export function AppReservationReservePage() {
               className={`${css.picker} ${css['time-picker']}`}
               locale='ptBR'
               selected={state.startTime}
-              // includeDateIntervals={[
-              //   {
-              //     start: minimumDate,
-              //     end: maximumDate,
-              //   },
-              // ]}
               onChange={onStartTimePickerChange}
               placeholderText='Chegada'
               timeCaption='Chegada'
@@ -175,12 +168,6 @@ export function AppReservationReservePage() {
               className={`${css.picker} ${css['time-picker']}`}
               locale='ptBR'
               selected={state.endTime}
-              // includeDateIntervals={[
-              //   {
-              //     start: minimumDate,
-              //     end: maximumDate,
-              //   },
-              // ]}
               onChange={onEndTimePickerChange}
               placeholderText='Saída'
               timeCaption='Saída'

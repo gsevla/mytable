@@ -66,63 +66,30 @@ export function AppReservationReservePage() {
   );
 
   const onDatePickerChange = (event, date) => {
-    // if (event.type === 'dismissed') {
-    //   dispatch({
-    //     type: 'hideDatePicker',
-    //   });
-    //   dayInputRef.current?.blur();
-    //   return;
-    // }
-
     dispatch({
       type: 'setDate',
       payload: {
         date,
       },
     });
-    // dayInputRef.current?.blur();
-    // if (state.startTimeLabel === '') {
-    //   startTimeInputRef.current?.focus();
-    // }
   };
 
   const onStartTimePickerChange = (event, date) => {
-    // if (event.type === 'dismissed') {
-    //   dispatch({
-    //     type: 'hideStartTimePicker',
-    //   });
-    //   startTimeInputRef.current?.blur();
-    //   return;
-    // }
-
     dispatch({
       type: 'setStartTime',
       payload: {
         startTime: date,
       },
     });
-    // startTimeInputRef.current?.blur();
-    // if (state.endTimeLabel === '') {
-    //   endTimeInputRef.current?.focus();
-    // }
   };
 
   const onEndTimePickerChange = (event, date) => {
-    // if (event.type === 'dismissed') {
-    //   dispatch({
-    //     type: 'hideEndTimePicker',
-    //   });
-    //   endTimeInputRef.current?.blur();
-    //   return;
-    // }
-
     dispatch({
       type: 'setEndTime',
       payload: {
         endTime: date,
       },
     });
-    // endTimeInputRef.current?.blur();
   };
 
   function handleCreateReservationOrder() {
@@ -162,33 +129,6 @@ export function AppReservationReservePage() {
     });
     endTimeInputRef.current?.blur();
   }
-
-  // const handleSetIsMaximumStayChecked = useCallback(() => {
-  //   setIsMaximumStayChecked((prev) => {
-  //     const newIsMaximumStayChecked = !prev;
-
-  //     if (newIsMaximumStayChecked === true) {
-  //       // setEndTime(new Date(startTime).setHours(startTime?.getHours() + 2));
-  //     } else {
-  //       setEndTime('');
-  //     }
-
-  //     return newIsMaximumStayChecked;
-  //   });
-  // }, [startTime]);
-
-  // const onTimeCardPress = useCallback(
-  //   (_time) => {
-  //     if (timeMode === 'start') {
-  //       setStartTime(_time);
-  //     }
-
-  //     if (timeMode === 'end') {
-  //       setEndTime(_time);
-  //     }
-  //   },
-  //   [timeMode]
-  // );
 
   if (isRestaurantLoading) {
     return <LoadingScreen />;
@@ -254,7 +194,6 @@ export function AppReservationReservePage() {
                 });
               }}
               value={state.startTimeLabel}
-              // disabled={isStartTimeInputDisabled}
             />
           </View>
           <SizedBox h={48} />
@@ -274,15 +213,12 @@ export function AppReservationReservePage() {
                 });
               }}
               value={state.endTimeLabel}
-              // disabled={isEndTimeInputDisabled}
             />
           </View>
         </View>
         <SizedBox h={48} />
         <TextInput
-          // ref={dayInputRef}
           label='Quantidade de pessoas'
-          // showSoftInputOnFocus={false}
           keyboardType='decimal-pad'
           onChangeText={(text) => {
             dispatch({
@@ -294,39 +230,7 @@ export function AppReservationReservePage() {
           }}
           value={state.peopleAmount}
         />
-        {/* <SizedBox />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Checkbox
-            disabled={isMaximumStayCheckedDisabled}
-            status={isMaximumStayChecked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              // setIsMaximumStayChecked((prev) => !prev);
-              handleSetIsMaximumStayChecked();
-            }}
-          />
-          <Text>Permanência máxima</Text>
-        </View>
-        <Caption>O tempo de permanência máxima é de X horas.</Caption> */}
       </View>
-      {/* <SizedBox /> */}
-      {/* <FlatList
-        data={timeList}
-        keyExtractor={(item) => item.index.toString()}
-        numColumns={3}
-        renderItem={({ item }) => (
-          <View style={{ marginHorizontal: 8 }}>
-            <AppReservationReserveTimeCardComponent
-              time={item.time}
-              onPress={onTimeCardPress}
-            />
-          </View>
-        )}
-        style={{
-          alignSelf: 'center',
-          marginVertical: 16,
-        }}
-        ItemSeparatorComponent={SizedBox}
-      /> */}
       <Provider>
         <Menu
           visible={state.isEnvironmentPickerVisible}
@@ -378,10 +282,7 @@ export function AppReservationReservePage() {
         <DateTimePicker
           mode='time'
           is24Hour
-          // timeZoneOffsetInMinutes={TZ_OFFSET_IN_MINUTES}
           value={state.startTime}
-          // minimumDate={minimumDate}
-          // maximumDate={maximumDate}
           display='spinner'
           onChange={onStartTimePickerChange}
         />
@@ -390,10 +291,7 @@ export function AppReservationReservePage() {
         <DateTimePicker
           mode='time'
           is24Hour
-          // timeZoneOffsetInMinutes={TZ_OFFSET_IN_MINUTES}
           value={state.endTime}
-          // minimumDate={minimumDate}
-          // maximumDate={maximumDate}
           display='spinner'
           onChange={onEndTimePickerChange}
         />
